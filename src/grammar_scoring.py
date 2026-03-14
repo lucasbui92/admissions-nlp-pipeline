@@ -1,13 +1,12 @@
-import os, json, nltk
+import nltk
 import language_tool_python
-
-import pandas as pd
 
 nltk.download("punkt", quiet=True)
 nltk.download("punkt_tab", quiet=True)
 
-tool = language_tool_python.LanguageTool("en-US")
 
+def get_language_tool():
+    return language_tool_python.LanguageTool("en-US")
 
 def trim_text_by_words(text, max_words=30):
     """
@@ -29,7 +28,7 @@ def trim_text_by_words(text, max_words=30):
         return text
     return " ".join(words[:max_words]) + "..."
 
-def score_grammar_quality(text):
+def score_grammar_quality(text, tool):
     """
     Evaluate the grammatical quality of a text using LanguageTool and compute
     a simple document-level grammar score based on the proportion of detected errors.
@@ -65,16 +64,10 @@ def score_grammar_quality(text):
 
     word_count = len(text.split())
     error_count = len(matches)
-
-    if word_count == 0:
-        error_rate = 0
-    else:
-        error_rate = error_count / word_count
-
+    error_rate = 0 if word_count == 0 else error_count / word_count
     final_score = 100 * (1 - error_rate)
 
     match_list = []
-
     for m in matches:
         item = {}
         item["message"] = m.message
@@ -91,31 +84,3 @@ def score_grammar_quality(text):
     result["matches"] = match_list
 
     return result
-
-
-if __name__ == "__main__":
-
-    input_file = "personal_statements.xlsx"
-    df = pd.read_excel(input_file)
-
-    all_results = []
-    for _, row in df.iterrows():
-        statement = row["statement"]
-        score_result = score_grammar_quality(statement)
-        record = {
-            "index": row["index"],
-            "subject": row["subject"],
-            "statement": trim_text_by_words(statement),
-            "grammar_result": score_result
-        }
-
-        all_results.append(record)
-
-    # Ensure output folder exists
-    os.makedirs("output", exist_ok=True)
-
-    # Save JSON properly formatted
-    with open("output/scores.json", "w", encoding="utf-8") as f:
-        json.dump(all_results, f, indent=4, ensure_ascii=False)
-
-    print("Finished. Output saved.")

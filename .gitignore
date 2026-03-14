@@ -1,0 +1,30 @@
+# ===== Virtual Environments =====
+venv/
+.venv/
+env/
+ENV/
+
+# ===== Sensitive Data =====
+data/
+
+# ===== Python Cache =====
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ===== OS Files =====
+.DS_Store
+Thumbs.db
+
+# ===== Output Files =====
+output/
+*.log
+
+# ===== IDE =====
+.vscode/
+.idea/
+
+# ===== Temporary Files =====
+*.tmp
+*.bak
