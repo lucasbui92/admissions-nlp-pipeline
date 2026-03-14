@@ -124,14 +124,13 @@ def pdf_subject_statements_to_excel(pdf_path: str, out_xlsx: str):
 
 
 if __name__ == "__main__":
-    # Path to the PDF file
-    pdf_path = r"data\Essex sample personal statements.pdf"
-    out_xlsx = "personal_statements.xlsx"
+    pdf_path = Path("sample_data/Essex sample personal statements.pdf")
+    out_xlsx = Path("sample_data/sample_personal_statements.xlsx")
 
-    if not Path(pdf_path).exists():
+    if not pdf_path.exists():
         raise FileNotFoundError(
             f"Cannot find PDF: {pdf_path}\n"
-            "Put the PDF in the same folder as this script, or change pdf_path."
+            "Put the PDF in sample_data/ or change pdf_path."
         )
 
     pdf_subject_statements_to_excel(pdf_path, out_xlsx)
