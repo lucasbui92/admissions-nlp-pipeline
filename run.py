@@ -1,38 +1,58 @@
-import os
-import json
+import os, json
 import pandas as pd
 
-from src.grammar_scoring import get_language_tool, trim_text_by_words, score_grammar_quality
+from src.grammar_scoring import (
+    get_language_tool,
+    trim_text_by_words,
+    score_grammar_quality,
+)
+from src.readability_scoring import score_readability
 
 
 def main():
     input_file = "sample_data/sample_personal_statements.xlsx"
-    output_file = "output/scores.json"
+    grammar_output_file = "output/grammar.json"
+    readability_output_file = "output/readability.json"
 
     df = pd.read_excel(input_file)
     tool = get_language_tool()
 
-    all_results = []
+    grammar_results = []
+    readability_results = []
 
     for _, row in df.iterrows():
         statement = row["personal_statement"]
-        score_result = score_grammar_quality(statement, tool)
 
-        record = {
+        grammar_result = score_grammar_quality(statement, tool)
+        readability_result = score_readability(statement)
+
+        grammar_record = {
             "index": row["index"],
             "subject": row["subject"],
             "statement": trim_text_by_words(statement),
-            "grammar_result": score_result
+            "grammar_result": grammar_result
         }
 
-        all_results.append(record)
+        readability_record = {
+            "index": row["index"],
+            "subject": row["subject"],
+            "statement": trim_text_by_words(statement),
+            "readability_result": readability_result
+        }
+
+        grammar_results.append(grammar_record)
+        readability_results.append(readability_record)
 
     os.makedirs("output", exist_ok=True)
 
-    with open(output_file, "w", encoding="utf-8") as f:
-        json.dump(all_results, f, indent=4, ensure_ascii=False)
+    with open(grammar_output_file, "w", encoding="utf-8") as f:
+        json.dump(grammar_results, f, indent=4, ensure_ascii=False)
 
-    print(f"Finished. Output saved to {output_file}")
+    with open(readability_output_file, "w", encoding="utf-8") as f:
+        json.dump(readability_results, f, indent=4, ensure_ascii=False)
+
+    print(f"Finished. Grammar output saved to {grammar_output_file}")
+    print(f"Finished. Readability output saved to {readability_output_file}")
 
 
 if __name__ == "__main__":
