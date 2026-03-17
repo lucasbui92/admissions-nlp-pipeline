@@ -8,13 +8,16 @@ from src.grammar_scoring import (
 )
 from src.readability_scoring import score_readability
 
+from config.paths import (
+    PERSONAL_STATEMENT_FILE,
+    GRAMMAR_OUTPUT_FILE,
+    READABILITY_OUTPUT_FILE,
+    OUTPUT_DIR
+)
+
 
 def main():
-    input_file = "data/sample/sample_personal_statements.xlsx"
-    grammar_output_file = "output/sample/grammar.json"
-    readability_output_file = "output/sample/readability.json"
-
-    df = pd.read_excel(input_file)
+    df = pd.read_excel(PERSONAL_STATEMENT_FILE)
     tool = get_language_tool()
 
     grammar_results = []
@@ -26,33 +29,30 @@ def main():
         grammar_result = score_grammar_quality(statement, tool)
         readability_result = score_readability(statement)
 
-        grammar_record = {
+        grammar_results.append({
             "index": row["index"],
             "subject": row["subject"],
             "statement": trim_text_by_words(statement),
             "grammar_result": grammar_result
-        }
+        })
 
-        readability_record = {
+        readability_results.append({
             "index": row["index"],
             "subject": row["subject"],
             "statement": trim_text_by_words(statement),
             "readability_result": readability_result
-        }
+        })
 
-        grammar_results.append(grammar_record)
-        readability_results.append(readability_record)
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    os.makedirs("output", exist_ok=True)
-
-    with open(grammar_output_file, "w", encoding="utf-8") as f:
+    with open(GRAMMAR_OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(grammar_results, f, indent=4, ensure_ascii=False)
 
-    with open(readability_output_file, "w", encoding="utf-8") as f:
+    with open(READABILITY_OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(readability_results, f, indent=4, ensure_ascii=False)
 
-    print(f"Finished. Grammar output saved to {grammar_output_file}")
-    print(f"Finished. Readability output saved to {readability_output_file}")
+    print(f"Grammar output → {GRAMMAR_OUTPUT_FILE}")
+    print(f"Readability output → {READABILITY_OUTPUT_FILE}")
 
 
 if __name__ == "__main__":

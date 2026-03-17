@@ -6,7 +6,7 @@ nltk.download("punkt_tab", quiet=True)
 
 
 def get_language_tool():
-    return language_tool_python.LanguageTool("en-US")
+    return language_tool_python.LanguageTool("en-UK")
 
 def trim_text_by_words(text, max_words=30):
     """

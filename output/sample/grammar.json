@@ -4,16 +4,11 @@
         "subject": "ACCOUNTING, FINANCE AND BANKING",
         "statement": "I am applying for a degree in Accounting as I believe this degree will set me in good stead for my future career. In recent years I have become interested...",
         "grammar_result": {
-            "final_score": 98.86,
-            "error_count": 5,
+            "final_score": 99.09,
+            "error_count": 4,
             "word_count": 440,
-            "error_rate": 0.0114,
+            "error_rate": 0.0091,
             "matches": [
-                {
-                    "message": "Possible spelling mistake. ‘specialise’ is British English.",
-                    "context": "...is very diverse. Phillips and Woodstock specialise in helping small businesses with their ...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "A comma may be missing after the conjunctive/linking adverb ‘However’.",
                     "context": "...ortance of expertise in a chosen field. However it was the unit ‘Introduction to Accoun...",
@@ -42,60 +37,15 @@
         "subject": "ACTUARIAL SCIENCE",
         "statement": "‘Nature has established patterns originating in the return of events, but only for the most part’. It is the latter part of Gottfried von Leibniz’s comment in 1703 that lays...",
         "grammar_result": {
-            "final_score": 98.48,
-            "error_count": 10,
+            "final_score": 99.85,
+            "error_count": 1,
             "word_count": 660,
-            "error_rate": 0.0152,
+            "error_rate": 0.0015,
             "matches": [
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...eally interested me after reading James Gleik’s Chaos: The Amazing Science of the Unp...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘maths’ is British English.",
-                    "context": "...asters in the future. My obsession with maths was pronounced right from secondary sch...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...id A*, before moving on to studying the edexcel Free Standing Maths Qualification; Addi...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘Maths’ is British English.",
-                    "context": "...n to studying the edexcel Free Standing Maths Qualification; Additional Maths. In yea...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘Maths’ is British English.",
-                    "context": "...tanding Maths Qualification; Additional Maths. In year 10, I also took part in the We...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘Maths’ is British English.",
-                    "context": "..., I also took part in the West Midlands Maths Challenge after being placed second in ...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘Maths’ is British English.",
-                    "context": "...r being placed second in the Birmingham Maths Challenge, and used my free time to wri...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "When ‘1500-Word’ is used as a modifier, it is usually spelled with a hyphen.",
                     "context": "...lenge, and used my free time to write a 1500 Word essay titled ‘Should Zero Be considered...",
                     "category": "GRAMMAR"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘analysing’ is British English.",
-                    "context": "...arge part of Actuarial Science involves analysing statistical data, needed to assess the ...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘analysing’ is British English.",
-                    "context": "...ible for in their day-to-day work, from analysing risk and calculating profit, to develop...",
-                    "category": "TYPOS"
                 }
             ]
         }
@@ -105,10 +55,10 @@
         "subject": "AMERICAN STUDIES",
         "statement": "I am currently taking A-levels in History, English Language and Literature, and Geography. I enjoy all of these subjects but History has always stood out as my favourite. As part...",
         "grammar_result": {
-            "final_score": 98.91,
-            "error_count": 4,
+            "final_score": 99.45,
+            "error_count": 2,
             "word_count": 366,
-            "error_rate": 0.0109,
+            "error_rate": 0.0055,
             "matches": [
                 {
                     "message": "Use a comma before ‘but’ if it connects two independent clauses (unless they are closely connected and short).",
@@ -116,19 +66,9 @@
                     "category": "PUNCTUATION"
                 },
                 {
-                    "message": "Possible spelling mistake. ‘favourite’ is British English.",
-                    "context": "... but History has always stood out as my favourite. As part of my History AS-level studies...",
-                    "category": "TYPOS"
-                },
-                {
                     "message": "This word is normally spelled as one.",
                     "context": "...s. Most recently, we came second in the inter-school county finals, the topic being ‘Do stop...",
                     "category": "MISC"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘flavour’ is British English.",
-                    "context": "... visited her twice. This has given me a flavour of student life and as a result I feel ...",
-                    "category": "TYPOS"
                 }
             ]
         }
@@ -138,40 +78,20 @@
         "subject": "ART HISTORY",
         "statement": "My childhood visits to London always involved an excursion to a gallery or museum. The works of art that I saw there prompted me to ask many questions which sparked...",
         "grammar_result": {
-            "final_score": 98.7,
-            "error_count": 7,
+            "final_score": 99.44,
+            "error_count": 3,
             "word_count": 538,
-            "error_rate": 0.013,
+            "error_rate": 0.0056,
             "matches": [
-                {
-                    "message": "Possible spelling mistake. ‘realised’ is British English.",
-                    "context": "...answer the questions myself, but I only realised that art history existed as a subject i...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "An apostrophe may be missing.",
                     "context": "...at A-level. The critical and contextual studies element of the course helped me to real...",
                     "category": "TYPOS"
                 },
                 {
-                    "message": "Possible spelling mistake. ‘realise’ is British English.",
-                    "context": "...dies element of the course helped me to realise many answers to my questions and showed...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...ally, it is the artist and model Lizzie Siddal, lover of Dante Gabriel Rossetti, posed...",
-                    "category": "TYPOS"
-                },
-                {
                     "message": "The adjective “groundbreaking” is spelled as one word.",
                     "context": "...ess. On a more historical level it is a ground breaking masterpiece by a Victorian rebel determ...",
                     "category": "GRAMMAR"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘colour’ is British English.",
-                    "context": "...the job, my keen eye for design detail, colour and an obvious flair for arrangement ha...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "This word is normally spelled with a hyphen.",
@@ -186,35 +106,15 @@
         "subject": "BIOCHEMISTRY AND BIOMEDICAL SCIENCE",
         "statement": "When I was twelve years old the car that my mother was driving was hit by lorry. Thankfully she recovered from the accident but only because she had a blood...",
         "grammar_result": {
-            "final_score": 97.42,
-            "error_count": 12,
+            "final_score": 98.5,
+            "error_count": 7,
             "word_count": 466,
-            "error_rate": 0.0258,
+            "error_rate": 0.015,
             "matches": [
-                {
-                    "message": "‘lorry’ is a common British expression. Consider using expressions more common to American English.",
-                    "context": "...r that my mother was driving was hit by lorry. Thankfully she recovered from the acci...",
-                    "category": "STYLE"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘Maths’ is British English.",
-                    "context": "...els, Biology, Chemistry, Psychology and Maths, will provide me with the solid foundat...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "Use a comma before ‘and’ if it connects two independent clauses (unless they are closely connected and short).",
                     "context": "...nabled me to gain good laboratory skills and I am eager to acquire more developed an...",
                     "category": "PUNCTUATION"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘Maths’ is British English.",
-                    "context": "...sophisticated techniques at university. Maths has helped me to think logically and to...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘maths’ is British English.",
-                    "context": "...iving I received prizes for biology and maths. I was also awarded the Stubbs Cup whic...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
@@ -225,11 +125,6 @@
                     "message": "Did you mean “am I” or “I am”?",
                     "context": "...ave taken Mollie to many open shows and am hoping to present her at her first cham...",
                     "category": "GRAMMAR"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘socialise’ is British English.",
-                    "context": "...on to detail. It is also a great way to socialise as I am constantly meeting new faces at...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "The possessive apostrophe seems to be incorrect. Please remove the apostrophe if you want to use the plural form of ‘dog’.",
@@ -259,16 +154,11 @@
         "subject": "BIOLOGICAL SCIENCES",
         "statement": "From an early age I have been fascinated by biology. I can clearly recall spending time in the garden with my Grandfather looking at bugs and creepy crawlies. As I...",
         "grammar_result": {
-            "final_score": 97.89,
-            "error_count": 9,
+            "final_score": 98.36,
+            "error_count": 7,
             "word_count": 427,
-            "error_rate": 0.0211,
+            "error_rate": 0.0164,
             "matches": [
-                {
-                    "message": "Possible spelling mistake. ‘programme’ is British English.",
-                    "context": "...nd beach erosion. As a volunteer on the programme I was able to help with research and co...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "Use a comma before ‘and’ if it connects two independent clauses (unless they are closely connected and short).",
                     "context": "... provided me with an excellent grounding and I am confident that I have a real aptit...",
@@ -283,11 +173,6 @@
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
                     "context": "...oped pieces of apparatus at university. I have held several positions of responsi...",
                     "category": "REPETITIONS_STYLE"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘honour’ is British English.",
-                    "context": "...ion of Senior Prefect. This was a great honour and I learnt many new skills, including...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "A comma is probably missing here.",
@@ -317,40 +202,15 @@
         "subject": "BUSINESS AND MANAGEMENT",
         "statement": "I have always been a very academically determined and studious individual, hence why I knew that a degree at university would be my definite next step. I have a broad...",
         "grammar_result": {
-            "final_score": 97.31,
-            "error_count": 11,
+            "final_score": 98.78,
+            "error_count": 5,
             "word_count": 409,
-            "error_rate": 0.0269,
+            "error_rate": 0.0122,
             "matches": [
-                {
-                    "message": "Possible spelling mistake. ‘Behaviour’ is British English.",
-                    "context": "...: Cultural Q&As for successful Business Behaviour around the World by Gwyneth Oloffson, i...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...s Behaviour around the World by Gwyneth Oloffson, is an excellent read. I particularly e...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘organisational’ is British English.",
-                    "context": "...me insight into the human influences on organisational behaviour through looking at motivation...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘behaviour’ is British English.",
-                    "context": "... the human influences on organisational behaviour through looking at motivational theorie...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "Possible verb agreement error. Did you mean “models”? (Some collective nouns can be treated as both singular and plural, so ‘model’ is not always incorrect.)",
                     "context": "...heories, such as the hierarchy of needs model proposed by Maslow. The coursework elem...",
                     "category": "GRAMMAR"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘analysing’ is British English.",
-                    "context": "...s developed my skills in collecting and analysing data in order to establish trends and d...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "Use a comma before ‘and’ if it connects two independent clauses (unless they are closely connected and short).",
@@ -368,11 +228,6 @@
                     "category": "REPETITIONS_STYLE"
                 },
                 {
-                    "message": "Possible spelling mistake. ‘realise’ is British English.",
-                    "context": "...n by a current student and this made me realise that a campus-style university is defin...",
-                    "category": "TYPOS"
-                },
-                {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
                     "context": "... university is definitely suited to me. I am certainly going to take advantage of...",
                     "category": "REPETITIONS_STYLE"
@@ -385,20 +240,15 @@
         "subject": "COMPUTER SCIENCE",
         "statement": "I am fascinated by the way developments in computer science have changed our lives and our work. The world-wide computing industry is set to continue evolving and I am determined...",
         "grammar_result": {
-            "final_score": 99.23,
-            "error_count": 3,
+            "final_score": 99.49,
+            "error_count": 2,
             "word_count": 391,
-            "error_rate": 0.0077,
+            "error_rate": 0.0051,
             "matches": [
                 {
                     "message": "Use a comma before ‘and’ if it connects two independent clauses (unless they are closely connected and short).",
                     "context": "...ing industry is set to continue evolving and I am determined to be part of this. Sin...",
                     "category": "PUNCTUATION"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘realise’ is British English.",
-                    "context": "...ely a worthwhile activity. This made me realise how important communication is when pro...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
@@ -413,55 +263,15 @@
         "subject": "DRAMA",
         "statement": "From an early age I have always been fascinated by the stage. Far from being mere entertainment, I believe that a theatrical production can convey so much information and emotion...",
         "grammar_result": {
-            "final_score": 98.1,
-            "error_count": 9,
+            "final_score": 99.79,
+            "error_count": 1,
             "word_count": 473,
-            "error_rate": 0.019,
+            "error_rate": 0.0021,
             "matches": [
-                {
-                    "message": "Possible spelling mistake. ‘theatre’ is British English.",
-                    "context": "...udience. Although my main experience in theatre to date is through acting, I am also ve...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘theatre’ is British English.",
-                    "context": "... and Shakespeare’s Henry V. I go to the theatre as often as I can, and have seen many a...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘favourite’ is British English.",
-                    "context": "...mateur and professional productions. My favourite playwright is Willy Russell. I think al...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘favourite’ is British English.",
-                    "context": "...sicals, but Blood Brothers is by far my favourite; I have now seen it four times! I am lo...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
                     "context": "...vourite; I have now seen it four times! I am looking forward to discovering more ...",
                     "category": "REPETITIONS_STYLE"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘theatre’ is British English.",
-                    "context": "...niversity. My interest in drama and the theatre takes up a lot of my social life. I hav...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "... local drama group ‘The Bournemouth and Boscombe Light Operatic Club’ - BBLOC for short....",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...mouth and Boscombe Light Operatic Club’ - BBLOC for short. Every year we hold a major p...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "... helps me improve my performance within BBLOC and at school, as good teamwork is cruc...",
-                    "category": "TYPOS"
                 }
             ]
         }
@@ -471,30 +281,15 @@
         "subject": "ECONOMICS",
         "statement": "Since starting my AS-level studies in Economics, I have been eager to continue to a higher level. I am particularly interested in the behaviour of firms and organisations from an...",
         "grammar_result": {
-            "final_score": 96.03,
-            "error_count": 16,
+            "final_score": 97.52,
+            "error_count": 10,
             "word_count": 403,
-            "error_rate": 0.0397,
+            "error_rate": 0.0248,
             "matches": [
-                {
-                    "message": "Possible spelling mistake. ‘behaviour’ is British English.",
-                    "context": "...el. I am particularly interested in the behaviour of firms and organisations from an econ...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘organisations’ is British English.",
-                    "context": "...nterested in the behaviour of firms and organisations from an economic point of view and I ha...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
                     "context": "...range of real-life economic situations. I also take Maths and Politics at AS-leve...",
                     "category": "REPETITIONS_STYLE"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘Maths’ is British English.",
-                    "context": "...l-life economic situations. I also take Maths and Politics at AS-level and know that ...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "This word seems to be formatted incorrectly. Consider fixing the spacing or removing the hyphen completely.",
@@ -510,21 +305,6 @@
                     "message": "Use a comma before ‘and’ if it connects two independent clauses (unless they are closely connected and short).",
                     "context": "...r school. It was an excellent experience and I was able to enhance my management, co...",
                     "category": "PUNCTUATION"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...he age of 16 I have worked part-time at Tescos and have enjoyed positions of increasin...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...-ordinate a small group of staff on the shopfloor and have leant a lot about the way busi...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "... know I would be able to manage my time succesffully and would enjoy being self sufficient. ...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "This word is normally spelled with a hyphen.",
@@ -564,16 +344,11 @@
         "subject": "ENGLISH LANGUAGE AND LINGUISTICS",
         "statement": "My interest in linguistics has grown from my first year of sixth form when I took a course in English Language. During this course, I studied the work of Trudgill....",
         "grammar_result": {
-            "final_score": 98.21,
-            "error_count": 8,
+            "final_score": 98.66,
+            "error_count": 6,
             "word_count": 447,
-            "error_rate": 0.0179,
+            "error_rate": 0.0134,
             "matches": [
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...ring this course, I studied the work of Trudgill. I found this particularly interesting ...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "Consider replacing this phrase with the adverb “differently” to avoid wordiness.",
                     "context": "...how males and females approach language in a different manner very interesting. I have a general inte...",
@@ -588,11 +363,6 @@
                     "message": "‘Everyday’ is an adjective. Did you mean “every day”?",
                     "context": "...that language is an essential tool used everyday for communication. This opportunity all...",
                     "category": "CONFUSED_WORDS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘organised’ is British English.",
-                    "context": "...e successfully. As well as these school organised activities, I also work in the local su...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "This word is normally spelled as one.",
@@ -617,30 +387,15 @@
         "subject": "EUROPEAN STUDIES AND POLITICS",
         "statement": "(example of a joint degree application) The history, politics and culture of the European Union, since its beginnings in the 1950s, has always interested me, and as a result European...",
         "grammar_result": {
-            "final_score": 98.82,
-            "error_count": 5,
+            "final_score": 99.53,
+            "error_count": 2,
             "word_count": 425,
-            "error_rate": 0.0118,
+            "error_rate": 0.0047,
             "matches": [
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...f degree for me to study. I find Europe fasinating: that a group of diverse countries with...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...rnments in the nineteenth and twentieth centrury and I also keep up-to-date with modern ...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
                     "context": "...nema and spending time with my friends. I am looking forward to the opportunities...",
                     "category": "REPETITIONS_STYLE"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "... studying two subjects that have always fasinated me. I have a long-term goal of working ...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
@@ -655,21 +410,11 @@
         "subject": "FILM STUDIES",
         "statement": "Film Studies is my chosen subject at University because I have a lifelong passion for all aspects of film. Obviously I love watching and critiquing films, but I also have...",
         "grammar_result": {
-            "final_score": 99.13,
-            "error_count": 4,
+            "final_score": 99.56,
+            "error_count": 2,
             "word_count": 459,
-            "error_rate": 0.0087,
+            "error_rate": 0.0044,
             "matches": [
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...pact upon me in recent years is Florian Hankel von Donnersmarck’s ‘The Lives of Others...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...e in recent years is Florian Hankel von Donnersmarck’s ‘The Lives of Others’. As I am also i...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
                     "context": "...aspects of these courses at University. I am also keen to get involved with the U...",
@@ -688,16 +433,11 @@
         "subject": "HISTORY",
         "statement": "I am applying to study History at university because this is a subject which has fascinated me from an early age. The study of history plays a large part in...",
         "grammar_result": {
-            "final_score": 98.71,
-            "error_count": 5,
+            "final_score": 99.49,
+            "error_count": 2,
             "word_count": 389,
-            "error_rate": 0.0129,
+            "error_rate": 0.0051,
             "matches": [
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "... to see the play ‘War Horse’ by Michael Morpurgo, which left a great impression upon me....",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
                     "context": "...es is a great complement to my studies. I am passionate about preserving historic...",
@@ -707,16 +447,6 @@
                     "message": "This word is normally spelled as one.",
                     "context": "... team: we were recently finalists in an inter-school tournament. I also work weekends in my ...",
                     "category": "MISC"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...ament. I also work weekends in my local Asda store, where I have recently been promo...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘favourite’ is British English.",
-                    "context": "... my interest in what has always been my favourite subject.",
-                    "category": "TYPOS"
                 }
             ]
         }
@@ -726,10 +456,10 @@
         "subject": "LATIN AMERICAN STUDIES",
         "statement": "My name is Katherine Jones and I am 17 years old. I am applying to study Latin American Studies at university as I am passionate about other countries and cultures...",
         "grammar_result": {
-            "final_score": 97.96,
-            "error_count": 8,
+            "final_score": 98.47,
+            "error_count": 6,
             "word_count": 393,
-            "error_rate": 0.0204,
+            "error_rate": 0.0153,
             "matches": [
                 {
                     "message": "Use a comma before ‘and’ if it connects two independent clauses (unless they are closely connected and short).",
@@ -742,19 +472,9 @@
                     "category": "REDUNDANCY"
                 },
                 {
-                    "message": "Possible spelling mistake. ‘civilisations’ is British English.",
-                    "context": "...ravel to Peru to visit the ancient Inca civilisations. I intend to take a gap year before sta...",
-                    "category": "TYPOS"
-                },
-                {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
                     "context": "...d an opportunity to improve my Spanish! I also hope to travel to neighbouring cou...",
                     "category": "REPETITIONS_STYLE"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘neighbouring’ is British English.",
-                    "context": "...ve my Spanish! I also hope to travel to neighbouring countries and believe that spending my ...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
@@ -779,16 +499,11 @@
         "subject": "LAW AND HUMAN RIGHTS",
         "statement": "My aspration to study law is firmly rooted in my interest in world events and with my desire to help others. Law affects our everyday lives, almost without us noticing....",
         "grammar_result": {
-            "final_score": 97.69,
-            "error_count": 13,
+            "final_score": 98.04,
+            "error_count": 11,
             "word_count": 562,
-            "error_rate": 0.0231,
+            "error_rate": 0.0196,
             "matches": [
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "My aspration to study law is firmly rooted in my int...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "This word is normally spelled with a hyphen.",
                     "context": "... have always maintained an independent, self- motivated approach to my academic studies. Having...",
@@ -825,11 +540,6 @@
                     "category": "PUNCTUATION"
                 },
                 {
-                    "message": "Possible spelling mistake. ‘recognised’ is British English.",
-                    "context": "...ay netball. Although I do not play at a recognised level, I would be very keen to continue...",
-                    "category": "TYPOS"
-                },
-                {
                     "message": "Use a comma before ‘and’ if it connects two independent clauses (unless they are closely connected and short).",
                     "context": "...ing a good balance between work and play and I am confident that I would make the mo...",
                     "category": "PUNCTUATION"
@@ -857,26 +567,11 @@
         "subject": "LIBERAL ARTS",
         "statement": "I am applying to study Liberal Arts at university because I have always been interested in many different subjects and reluctant to pinpoint a favourite. When I first heard that...",
         "grammar_result": {
-            "final_score": 96.88,
-            "error_count": 13,
+            "final_score": 98.8,
+            "error_count": 5,
             "word_count": 416,
-            "error_rate": 0.0312,
+            "error_rate": 0.012,
             "matches": [
-                {
-                    "message": "Possible spelling mistake. ‘favourite’ is British English.",
-                    "context": "...nt subjects and reluctant to pinpoint a favourite. When I first heard that there was a de...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘realised’ is British English.",
-                    "context": "...ered a range of different disciplines I realised that this would be the perfect option f...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘specialised’ is British English.",
-                    "context": "...university course which was not totally specialised and would allow me to continue with my ...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "This word is normally spelled with a hyphen.",
                     "context": "...ral Arts course is a perfect fit for my wide ranging interests and thirst for many different...",
@@ -888,26 +583,6 @@
                     "category": "COMPOUNDING"
                 },
                 {
-                    "message": "Possible spelling mistake. ‘organising’ is British English.",
-                    "context": "...nal roles and responsibilities: such as organising exhibitions, managing the mailing list ...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘publicising’ is British English.",
-                    "context": "...ibitions, managing the mailing list and publicising the gallery. I recently had to organise...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘organise’ is British English.",
-                    "context": "...licising the gallery. I recently had to organise a private view for a local artist which...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘organising’ is British English.",
-                    "context": "...st which involved printing invitations, organising the guest list and refreshments, and en...",
-                    "category": "TYPOS"
-                },
-                {
                     "message": "Use a comma before ‘and’ if it connects two independent clauses (unless they are closely connected and short).",
                     "context": "...oothly. I really enjoyed this experience and I am now considering a career in galler...",
                     "category": "PUNCTUATION"
@@ -916,11 +591,6 @@
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
                     "context": "...gallery management or public relations. I also enjoy reading (my favourite genres...",
                     "category": "REPETITIONS_STYLE"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘favourite’ is British English.",
-                    "context": "...lic relations. I also enjoy reading (my favourite genres are the historical novel and aut...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
@@ -935,21 +605,11 @@
         "subject": "LITERATURE AND CREATIVE WRITING",
         "statement": "“Every secret of a writer’s soul, every experience of his life, every quality of his mind is written large in his works.” This quote by Virginia Woolf summarises why I...",
         "grammar_result": {
-            "final_score": 98.83,
-            "error_count": 5,
+            "final_score": 99.53,
+            "error_count": 2,
             "word_count": 427,
-            "error_rate": 0.0117,
+            "error_rate": 0.0047,
             "matches": [
-                {
-                    "message": "Possible spelling mistake. ‘summarises’ is British English.",
-                    "context": "...is works.” This quote by Virginia Woolf summarises why I believe literature to be so fasci...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘organise’ is British English.",
-                    "context": "...staff on book promotions and helping to organise a book signing which was taking place t...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
                     "context": "...ch was taking place the following week. I was also asked to write reviews on book...",
@@ -959,11 +619,6 @@
                     "message": "Did you mean the adverb “no longer”?",
                     "context": "... not previously heard of. Although I am not longer convinced that working in retail is rig...",
                     "category": "GRAMMAR"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...n my spare time. As part of my school’s voluntering scheme, I work on Wednesday afternoons ...",
-                    "category": "TYPOS"
                 }
             ]
         }
@@ -973,10 +628,10 @@
         "subject": "MATHEMATICS",
         "statement": "Mathematics is a subject that I have thoroughly enjoyed throughout my primary and secondary education. I enjoy the challenge of thinking in a logical way and am always attracted to...",
         "grammar_result": {
-            "final_score": 97.07,
-            "error_count": 13,
+            "final_score": 99.32,
+            "error_count": 3,
             "word_count": 444,
-            "error_rate": 0.0293,
+            "error_rate": 0.0068,
             "matches": [
                 {
                     "message": "Consider replacing this phrase with the adverb “logically” to avoid wordiness.",
@@ -984,59 +639,9 @@
                     "category": "REDUNDANCY"
                 },
                 {
-                    "message": "Possible spelling mistake. ‘favourite’ is British English.",
-                    "context": "...ifferent topics. Pure mathematics is my favourite area, particularly sequences and functi...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘Maths’ is British English.",
-                    "context": "... been appointed to the position of Head Maths Prefect, I am now responsible for the M...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘Maths’ is British English.",
-                    "context": "...s Prefect, I am now responsible for the Maths Department during lunchtimes and run a ...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘maths’ is British English.",
-                    "context": "...ment during lunchtimes and run a weekly maths club called Pythagoras. This club is fo...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘realise’ is British English.",
-                    "context": "...ime with the younger pupils has made me realise that I might like to be a teacher. My e...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘maths’ is British English.",
-                    "context": "...or the subject resulted in me winning a maths prize, which was a great honour. Out of...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘honour’ is British English.",
-                    "context": "...inning a maths prize, which was a great honour. Out of school I am a keen musician and...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "In American English, ‘afterward’ is the preferred variant. ‘Afterwards’ is more commonly used in British English and other dialects.",
-                    "context": "...his winter and intend to start teaching afterwards as I think this would be a valuable ski...",
-                    "category": "BRITISH_ENGLISH"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...ther passion of mine is comic art. John McLusky, who was the original artist of the Jam...",
-                    "category": "TYPOS"
-                },
-                {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
                     "context": "...te, that I am not able to do at school. I believe that the challenge of studying ...",
                     "category": "REPETITIONS_STYLE"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘maths’ is British English.",
-                    "context": "...hly enjoy. Did you know...  89% of our maths students are in employment or further s...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "If this is a question, use a question mark.",
@@ -1051,10 +656,10 @@
         "subject": "MODERN LANGUAGES",
         "statement": "‘If you can speak three languages, you are trilingual; if you can speak two languages, you are bilingual; if you can speak one language, you are English’. This German joke...",
         "grammar_result": {
-            "final_score": 98.11,
-            "error_count": 9,
+            "final_score": 98.53,
+            "error_count": 7,
             "word_count": 477,
-            "error_rate": 0.0189,
+            "error_rate": 0.0147,
             "matches": [
                 {
                     "message": "Use a comma before ‘and’ if it connects two independent clauses (unless they are closely connected and short).",
@@ -1082,19 +687,9 @@
                     "category": "PUNCTUATION"
                 },
                 {
-                    "message": "Possible spelling mistake. ‘organisations’ is British English.",
-                    "context": "...iversity and have been researching into organisations which offer placements teaching English...",
-                    "category": "TYPOS"
-                },
-                {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
                     "context": "...lacements teaching English to children. I would like to go to a Latin American co...",
                     "category": "REPETITIONS_STYLE"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘specialise’ is British English.",
-                    "context": "... linguistic goals. Did you know...  We specialise in developing translation, interpreting...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "If this is a question, use a question mark.",
@@ -1109,30 +704,15 @@
         "subject": "PHILOSOPHY",
         "statement": "Philosophy involves a critical examination of our most fundamental beliefs about truth and reality, right and wrong. It challenges many of our assumptions about what we know and how we...",
         "grammar_result": {
-            "final_score": 98.18,
-            "error_count": 7,
+            "final_score": 98.96,
+            "error_count": 4,
             "word_count": 385,
-            "error_rate": 0.0182,
+            "error_rate": 0.0104,
             "matches": [
-                {
-                    "message": "Possible spelling mistake. ‘favourite’ is British English.",
-                    "context": "...eward and punish. Psychology is another favourite subject which I am taking at A-level an...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "Use a comma before ‘and’ if it connects two independent clauses (unless they are closely connected and short).",
                     "context": "...ite subject which I am taking at A-level and I am definitely acquiring transferable ...",
                     "category": "PUNCTUATION"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘organisation’ is British English.",
-                    "context": "... involved with Worldwide Volunteers, an organisation which gives people volunteering placeme...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘organising’ is British English.",
-                    "context": "... locally, mainly working in a care home organising activities for patients with dementia. ...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "Use a comma before ‘and’ if it connects two independent clauses (unless they are closely connected and short).",
@@ -1157,20 +737,15 @@
         "subject": "POLITICS",
         "statement": "I am eager to read Politics at university, particularly Comparative Politics and International Relations. I am currently studying History, Economics and English Literature at A-level. These subjects have enabled me...",
         "grammar_result": {
-            "final_score": 99.01,
-            "error_count": 4,
+            "final_score": 99.26,
+            "error_count": 3,
             "word_count": 406,
-            "error_rate": 0.0099,
+            "error_rate": 0.0074,
             "matches": [
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
                     "context": "...er delivering leaflets and newsletters. I found this highly enjoyable and my ambi...",
                     "category": "REPETITIONS_STYLE"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘organise’ is British English.",
-                    "context": ".... I was recently involved in helping to organise a visit to my school by our local Labou...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "This word is normally spelled as one.",
@@ -1190,16 +765,11 @@
         "subject": "PSYCHOLOGY",
         "statement": "From an early age I have been interested in people and the way that they behave. This keen interest has been enhanced through my study of Psychology at A-level. I...",
         "grammar_result": {
-            "final_score": 97.9,
-            "error_count": 9,
+            "final_score": 98.14,
+            "error_count": 8,
             "word_count": 429,
-            "error_rate": 0.021,
+            "error_rate": 0.0186,
             "matches": [
-                {
-                    "message": "Possible spelling mistake. ‘favourite’ is British English.",
-                    "context": "...ills in new areas of the discipline. My favourite module so far has been Social Psycholog...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
                     "context": "...hological research at university-level. I have achieved my Bronze Duke of Edinbur...",
@@ -1248,10 +818,10 @@
         "subject": "SOCIOLOGY",
         "statement": "I like the way that Sociology makes you question the world around you. For example, why do some people commit more crime than others? It was this question that sparked...",
         "grammar_result": {
-            "final_score": 98.36,
-            "error_count": 8,
+            "final_score": 98.77,
+            "error_count": 6,
             "word_count": 488,
-            "error_rate": 0.0164,
+            "error_rate": 0.0123,
             "matches": [
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
@@ -1274,19 +844,9 @@
                     "category": "PUNCTUATION"
                 },
                 {
-                    "message": "Possible spelling mistake. ‘socialise’ is British English.",
-                    "context": "... as I think this is an excellent way to socialise and develop your skills and hobbies. I ...",
-                    "category": "TYPOS"
-                },
-                {
                     "message": "Use a comma before ‘although’ if it connects two independent clauses (unless they are closely connected and short).",
                     "context": "...ies. This is an excellent opportunity as although I am not able to get quite as involved ...",
                     "category": "PUNCTUATION"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘organised’ is British English.",
-                    "context": "...with a healthy social life because I am organised and good at working to a timetable. Tha...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "If this is a question, use a question mark.",
@@ -1301,20 +861,15 @@
         "subject": "SPORTS AND EXERCISE SCIENCE AND SPORTS THERAPY",
         "statement": "I have always wanted a career in sport. Since taking A-level Sports Science my eyes have been opened to the opportunities that are available at undergraduate level. Detailed research has...",
         "grammar_result": {
-            "final_score": 97.98,
-            "error_count": 8,
+            "final_score": 98.24,
+            "error_count": 7,
             "word_count": 397,
-            "error_rate": 0.0202,
+            "error_rate": 0.0176,
             "matches": [
                 {
                     "message": "Use a comma before ‘and’ if it connects two independent clauses (unless they are closely connected and short).",
                     "context": "...I also heard talks from current students and they really made me realise that I woul...",
                     "category": "PUNCTUATION"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘realise’ is British English.",
-                    "context": "...urrent students and they really made me realise that I would fit into student life easi...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
@@ -1354,10 +909,10 @@
         "subject": "BIOMEDICAL SCIENCE",
         "statement": "(example of a European application) Biomedical science has always interested me in both an educational and personal aspect. I believe that I will successfully complete this course, as I am...",
         "grammar_result": {
-            "final_score": 98.16,
-            "error_count": 11,
+            "final_score": 98.32,
+            "error_count": 10,
             "word_count": 597,
-            "error_rate": 0.0184,
+            "error_rate": 0.0168,
             "matches": [
                 {
                     "message": "This word is normally spelled as one.",
@@ -1383,11 +938,6 @@
                     "message": "Use a comma before ‘and’ if it connects two independent clauses (unless they are closely connected and short).",
                     "context": "... included research projects, experiments and I was also involved in the Lunar Eclips...",
                     "category": "PUNCTUATION"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘organised’ is British English.",
-                    "context": "...in the Lunar Eclipse Project, which was organised by our village. These gave me skills fo...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
@@ -1422,27 +972,11 @@
         "subject": "LIBERAL ARTS",
         "statement": "(example of an international application) My first contact with English literature was at my high school. My English teacher showed us part of the movie Pride and Prejudice; I could...",
         "grammar_result": {
-            "final_score": 99.56,
-            "error_count": 3,
+            "final_score": 100.0,
+            "error_count": 0,
             "word_count": 676,
-            "error_rate": 0.0044,
-            "matches": [
-                {
-                    "message": "Possible spelling mistake. ‘humour’ is British English.",
-                    "context": "...to understand, however the elegance and humour of the literature fascinated me deeply,...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...pare time, I like to play the flute and Guzheng. I used to teach my brother playing Guz...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake found.",
-                    "context": "...eng. I used to teach my brother playing Guzheng at weekends. In the third International...",
-                    "category": "TYPOS"
-                }
-            ]
+            "error_rate": 0.0,
+            "matches": []
         }
     },
     {
@@ -1450,26 +984,11 @@
         "subject": "ROBOTIC ENGINEERING",
         "statement": "(example of an BTEC application) Engineering is the future; new technologies around the world are exciting and varied, and I would relish the chance of specialising in design engineer work...",
         "grammar_result": {
-            "final_score": 96.21,
-            "error_count": 15,
+            "final_score": 97.47,
+            "error_count": 10,
             "word_count": 396,
-            "error_rate": 0.0379,
+            "error_rate": 0.0253,
             "matches": [
-                {
-                    "message": "Possible spelling mistake. ‘specialising’ is British English.",
-                    "context": "...aried, and I would relish the chance of specialising in design engineer work coupled with ro...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘Defence’ is British English.",
-                    "context": "...ar marine department of the Military of Defence, I have always been encouraged to look ...",
-                    "category": "TYPOS"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘maths’ is British English.",
-                    "context": "...or answers using my love of physics and maths. At a young age, I enjoyed taking damag...",
-                    "category": "TYPOS"
-                },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
                     "context": "...ic claw machine for my GCSE DT project. I am now designing my own remote controll...",
@@ -1479,11 +998,6 @@
                     "message": "‘Cafe’ is a foreign word which originally has a diacritic.",
                     "context": "...two years at an extremely popular beach cafe. Progressing from washing up (essential...",
                     "category": "TYPOGRAPHY"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘organise’ is British English.",
-                    "context": "... chef. I train the new, young staff and organise their time management which can be quit...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
@@ -1519,11 +1033,6 @@
                     "message": "Use a comma before ‘and’ if it connects two independent clauses (unless they are closely connected and short).",
                     "context": "...work or at college, like problem solving and I enjoy the social side of team buildin...",
                     "category": "PUNCTUATION"
-                },
-                {
-                    "message": "Possible spelling mistake. ‘humour’ is British English.",
-                    "context": "...m building, plus I have a good sense of humour. I am really looking forward to going t...",
-                    "category": "TYPOS"
                 },
                 {
                     "message": "Three successive sentences begin with the same word. Consider rewording the sentence or use a thesaurus to find a synonym.",
