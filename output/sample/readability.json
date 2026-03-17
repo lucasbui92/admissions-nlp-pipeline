@@ -1,0 +1,338 @@
+[
+    {
+        "index": 1,
+        "subject": "ACCOUNTING, FINANCE AND BANKING",
+        "statement": "I am applying for a degree in Accounting as I believe this degree will set me in good stead for my future career. In recent years I have become interested...",
+        "readability_result": {
+            "flesch_reading_ease": 53.66924242424244,
+            "flesch_kincaid_grade": 10.9787012987013,
+            "smog_index": 13.10208751628618,
+            "automated_readability_index": 11.22600865800866,
+            "dale_chall_score": 9.089760822510822
+        }
+    },
+    {
+        "index": 2,
+        "subject": "ACTUARIAL SCIENCE",
+        "statement": "‘Nature has established patterns originating in the return of events, but only for the most part’. It is the latter part of Gottfried von Leibniz’s comment in 1703 that lays...",
+        "readability_result": {
+            "flesch_reading_ease": 40.02764550264553,
+            "flesch_kincaid_grade": 13.730553866936848,
+            "smog_index": 15.567600802838829,
+            "automated_readability_index": 14.469321548821547,
+            "dale_chall_score": 10.844510491950917
+        }
+    },
+    {
+        "index": 3,
+        "subject": "AMERICAN STUDIES",
+        "statement": "I am currently taking A-levels in History, English Language and Literature, and Geography. I enjoy all of these subjects but History has always stood out as my favourite. As part...",
+        "readability_result": {
+            "flesch_reading_ease": 40.09492622950822,
+            "flesch_kincaid_grade": 12.213120218579238,
+            "smog_index": 13.968273953766033,
+            "automated_readability_index": 11.604590163934425,
+            "dale_chall_score": 9.721229180327867
+        }
+    },
+    {
+        "index": 4,
+        "subject": "ART HISTORY",
+        "statement": "My childhood visits to London always involved an excursion to a gallery or museum. The works of art that I saw there prompted me to ask many questions which sparked...",
+        "readability_result": {
+            "flesch_reading_ease": 50.56547740168266,
+            "flesch_kincaid_grade": 13.240890236744281,
+            "smog_index": 13.856773240637725,
+            "automated_readability_index": 13.949158677362547,
+            "dale_chall_score": 9.619476169047154
+        }
+    },
+    {
+        "index": 5,
+        "subject": "BIOCHEMISTRY AND BIOMEDICAL SCIENCE",
+        "statement": "When I was twelve years old the car that my mother was driving was hit by lorry. Thankfully she recovered from the accident but only because she had a blood...",
+        "readability_result": {
+            "flesch_reading_ease": 53.39200396170355,
+            "flesch_kincaid_grade": 10.264806866952792,
+            "smog_index": 12.367839424501923,
+            "automated_readability_index": 10.29316936282602,
+            "dale_chall_score": 9.337029679762297
+        }
+    },
+    {
+        "index": 6,
+        "subject": "BIOLOGICAL SCIENCES",
+        "statement": "From an early age I have been fascinated by biology. I can clearly recall spending time in the garden with my Grandfather looking at bugs and creepy crawlies. As I...",
+        "readability_result": {
+            "flesch_reading_ease": 50.08378610460579,
+            "flesch_kincaid_grade": 11.325011709601874,
+            "smog_index": 13.63333581228068,
+            "automated_readability_index": 10.742404371584698,
+            "dale_chall_score": 9.452293286494925
+        }
+    },
+    {
+        "index": 7,
+        "subject": "BUSINESS AND MANAGEMENT",
+        "statement": "I have always been a very academically determined and studious individual, hence why I knew that a degree at university would be my definite next step. I have a broad...",
+        "readability_result": {
+            "flesch_reading_ease": 41.22784326341531,
+            "flesch_kincaid_grade": 12.85660790117102,
+            "smog_index": 14.094315096169485,
+            "automated_readability_index": 12.606776476643937,
+            "dale_chall_score": 9.954669810835156
+        }
+    },
+    {
+        "index": 8,
+        "subject": "COMPUTER SCIENCE",
+        "statement": "I am fascinated by the way developments in computer science have changed our lives and our work. The world-wide computing industry is set to continue evolving and I am determined...",
+        "readability_result": {
+            "flesch_reading_ease": 51.582662538699736,
+            "flesch_kincaid_grade": 11.176965944272446,
+            "smog_index": 13.110285616738597,
+            "automated_readability_index": 11.433744783954772,
+            "dale_chall_score": 9.180182541391844
+        }
+    },
+    {
+        "index": 9,
+        "subject": "DRAMA",
+        "statement": "From an early age I have always been fascinated by the stage. Far from being mere entertainment, I believe that a theatrical production can convey so much information and emotion...",
+        "readability_result": {
+            "flesch_reading_ease": 56.05840088430364,
+            "flesch_kincaid_grade": 10.538478260869564,
+            "smog_index": 12.879409894740693,
+            "automated_readability_index": 10.03084842356834,
+            "dale_chall_score": 9.17058588798821
+        }
+    },
+    {
+        "index": 10,
+        "subject": "ECONOMICS",
+        "statement": "Since starting my AS-level studies in Economics, I have been eager to continue to a higher level. I am particularly interested in the behaviour of firms and organisations from an...",
+        "readability_result": {
+            "flesch_reading_ease": 48.98958758837392,
+            "flesch_kincaid_grade": 11.682474469756482,
+            "smog_index": 13.531616421267348,
+            "automated_readability_index": 11.378277393234946,
+            "dale_chall_score": 9.281528593872743
+        }
+    },
+    {
+        "index": 11,
+        "subject": "ENGLISH LANGUAGE AND LINGUISTICS",
+        "statement": "My interest in linguistics has grown from my first year of sixth form when I took a course in English Language. During this course, I studied the work of Trudgill....",
+        "readability_result": {
+            "flesch_reading_ease": 52.97177699816962,
+            "flesch_kincaid_grade": 10.918430953833639,
+            "smog_index": 12.948620331739964,
+            "automated_readability_index": 11.309694935936541,
+            "dale_chall_score": 8.671261683953631
+        }
+    },
+    {
+        "index": 12,
+        "subject": "EUROPEAN STUDIES AND POLITICS",
+        "statement": "(example of a joint degree application) The history, politics and culture of the European Union, since its beginnings in the 1950s, has always interested me, and as a result European...",
+        "readability_result": {
+            "flesch_reading_ease": 46.89623529411767,
+            "flesch_kincaid_grade": 12.928941176470591,
+            "smog_index": 14.299716787436793,
+            "automated_readability_index": 13.844235294117645,
+            "dale_chall_score": 10.040758823529412
+        }
+    },
+    {
+        "index": 13,
+        "subject": "FILM STUDIES",
+        "statement": "Film Studies is my chosen subject at University because I have a lifelong passion for all aspects of film. Obviously I love watching and critiquing films, but I also have...",
+        "readability_result": {
+            "flesch_reading_ease": 52.95252673796793,
+            "flesch_kincaid_grade": 11.056622103386811,
+            "smog_index": 12.563389971838223,
+            "automated_readability_index": 11.187046939988122,
+            "dale_chall_score": 9.556260110913053
+        }
+    },
+    {
+        "index": 14,
+        "subject": "HISTORY",
+        "statement": "I am applying to study History at university because this is a subject which has fascinated me from an early age. The study of history plays a large part in...",
+        "readability_result": {
+            "flesch_reading_ease": 44.842138674664426,
+            "flesch_kincaid_grade": 12.373551842330766,
+            "smog_index": 14.474971422386794,
+            "automated_readability_index": 12.380696943730364,
+            "dale_chall_score": 9.416997229363039
+        }
+    },
+    {
+        "index": 15,
+        "subject": "LATIN AMERICAN STUDIES",
+        "statement": "My name is Katherine Jones and I am 17 years old. I am applying to study Latin American Studies at university as I am passionate about other countries and cultures...",
+        "readability_result": {
+            "flesch_reading_ease": 42.58585541086663,
+            "flesch_kincaid_grade": 13.062523574315225,
+            "smog_index": 13.497565539657195,
+            "automated_readability_index": 12.44439604849574,
+            "dale_chall_score": 9.725043691064212
+        }
+    },
+    {
+        "index": 16,
+        "subject": "LAW AND HUMAN RIGHTS",
+        "statement": "My aspration to study law is firmly rooted in my interest in world events and with my desire to help others. Law affects our everyday lives, almost without us noticing....",
+        "readability_result": {
+            "flesch_reading_ease": 48.40489010989012,
+            "flesch_kincaid_grade": 11.858571428571434,
+            "smog_index": 14.16338327113693,
+            "automated_readability_index": 11.808109772789486,
+            "dale_chall_score": 9.723771978021977
+        }
+    },
+    {
+        "index": 17,
+        "subject": "LIBERAL ARTS",
+        "statement": "I am applying to study Liberal Arts at university because I have always been interested in many different subjects and reluctant to pinpoint a favourite. When I first heard that...",
+        "readability_result": {
+            "flesch_reading_ease": 37.3467243589744,
+            "flesch_kincaid_grade": 14.93994230769231,
+            "smog_index": 15.817742638202084,
+            "automated_readability_index": 16.02063301282051,
+            "dale_chall_score": 10.022361794871795
+        }
+    },
+    {
+        "index": 18,
+        "subject": "LITERATURE AND CREATIVE WRITING",
+        "statement": "“Every secret of a writer’s soul, every experience of his life, every quality of his mind is written large in his works.” This quote by Virginia Woolf summarises why I...",
+        "readability_result": {
+            "flesch_reading_ease": 47.20093750000004,
+            "flesch_kincaid_grade": 13.24355644208038,
+            "smog_index": 13.81666964889586,
+            "automated_readability_index": 14.346009953161591,
+            "dale_chall_score": 9.539218439716311
+        }
+    },
+    {
+        "index": 19,
+        "subject": "MATHEMATICS",
+        "statement": "Mathematics is a subject that I have thoroughly enjoyed throughout my primary and secondary education. I enjoy the challenge of thinking in a logical way and am always attracted to...",
+        "readability_result": {
+            "flesch_reading_ease": 58.57099617234272,
+            "flesch_kincaid_grade": 9.87478653449799,
+            "smog_index": 11.882522634951826,
+            "automated_readability_index": 9.745502350176263,
+            "dale_chall_score": 8.86904003336932
+        }
+    },
+    {
+        "index": 20,
+        "subject": "MODERN LANGUAGES",
+        "statement": "‘If you can speak three languages, you are trilingual; if you can speak two languages, you are bilingual; if you can speak one language, you are English’. This German joke...",
+        "readability_result": {
+            "flesch_reading_ease": 54.95266233766233,
+            "flesch_kincaid_grade": 10.969610389610391,
+            "smog_index": 12.563389971838223,
+            "automated_readability_index": 11.101578044596913,
+            "dale_chall_score": 8.988886325439267
+        }
+    },
+    {
+        "index": 21,
+        "subject": "PHILOSOPHY",
+        "statement": "Philosophy involves a critical examination of our most fundamental beliefs about truth and reality, right and wrong. It challenges many of our assumptions about what we know and how we...",
+        "readability_result": {
+            "flesch_reading_ease": 40.588836058815474,
+            "flesch_kincaid_grade": 12.605782602720904,
+            "smog_index": 14.326819011148277,
+            "automated_readability_index": 12.382453861927551,
+            "dale_chall_score": 9.542362910540058
+        }
+    },
+    {
+        "index": 22,
+        "subject": "POLITICS",
+        "statement": "I am eager to read Politics at university, particularly Comparative Politics and International Relations. I am currently studying History, Economics and English Literature at A-level. These subjects have enabled me...",
+        "readability_result": {
+            "flesch_reading_ease": 50.96824356435647,
+            "flesch_kincaid_grade": 10.164875247524751,
+            "smog_index": 12.891045113551908,
+            "automated_readability_index": 9.51554187192118,
+            "dale_chall_score": 9.753481544554456
+        }
+    },
+    {
+        "index": 23,
+        "subject": "PSYCHOLOGY",
+        "statement": "From an early age I have been interested in people and the way that they behave. This keen interest has been enhanced through my study of Psychology at A-level. I...",
+        "readability_result": {
+            "flesch_reading_ease": 46.05524028103045,
+            "flesch_kincaid_grade": 11.078694145199062,
+            "smog_index": 12.891045113551908,
+            "automated_readability_index": 10.989370629370633,
+            "dale_chall_score": 9.919569639344262
+        }
+    },
+    {
+        "index": 24,
+        "subject": "SOCIOLOGY",
+        "statement": "I like the way that Sociology makes you question the world around you. For example, why do some people commit more crime than others? It was this question that sparked...",
+        "readability_result": {
+            "flesch_reading_ease": 51.72199074074075,
+            "flesch_kincaid_grade": 11.07581275720165,
+            "smog_index": 12.954912879858846,
+            "automated_readability_index": 10.74899590163934,
+            "dale_chall_score": 9.644315637860082
+        }
+    },
+    {
+        "index": 25,
+        "subject": "SPORTS AND EXERCISE SCIENCE AND SPORTS THERAPY",
+        "statement": "I have always wanted a career in sport. Since taking A-level Sports Science my eyes have been opened to the opportunities that are available at undergraduate level. Detailed research has...",
+        "readability_result": {
+            "flesch_reading_ease": 55.099563392107484,
+            "flesch_kincaid_grade": 10.270514573587622,
+            "smog_index": 12.20465563037327,
+            "automated_readability_index": 9.84023989444644,
+            "dale_chall_score": 9.267425560753269
+        }
+    },
+    {
+        "index": 26,
+        "subject": "BIOMEDICAL SCIENCE",
+        "statement": "(example of a European application) Biomedical science has always interested me in both an educational and personal aspect. I believe that I will successfully complete this course, as I am...",
+        "readability_result": {
+            "flesch_reading_ease": 57.39830904522614,
+            "flesch_kincaid_grade": 10.197130653266331,
+            "smog_index": 11.917574213422942,
+            "automated_readability_index": 10.421105527638193,
+            "dale_chall_score": 8.934712529313233
+        }
+    },
+    {
+        "index": 27,
+        "subject": "LIBERAL ARTS",
+        "statement": "(example of an international application) My first contact with English literature was at my high school. My English teacher showed us part of the movie Pride and Prejudice; I could...",
+        "readability_result": {
+            "flesch_reading_ease": 45.31977832215574,
+            "flesch_kincaid_grade": 11.456829846190917,
+            "smog_index": 13.671253762203715,
+            "automated_readability_index": 11.820763233647853,
+            "dale_chall_score": 9.794196413798643
+        }
+    },
+    {
+        "index": 28,
+        "subject": "ROBOTIC ENGINEERING",
+        "statement": "(example of an BTEC application) Engineering is the future; new technologies around the world are exciting and varied, and I would relish the chance of specialising in design engineer work...",
+        "readability_result": {
+            "flesch_reading_ease": 53.00163636363638,
+            "flesch_kincaid_grade": 10.785535353535359,
+            "smog_index": 12.773325707644965,
+            "automated_readability_index": 11.211212121212121,
+            "dale_chall_score": 10.001534545454547
+        }
+    }
+]
