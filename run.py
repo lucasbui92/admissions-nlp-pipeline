@@ -1,58 +1,46 @@
-import os, json
+import argparse, json
 import pandas as pd
 
-from src.grammar_scoring import (
-    get_language_tool,
-    trim_text_by_words,
-    score_grammar_quality,
-)
-from src.readability_scoring import score_readability
+from config.paths import resolve_paths
+from config.schema import SCHEMA
 
-from config.paths import (
-    PERSONAL_STATEMENT_FILE,
-    GRAMMAR_OUTPUT_FILE,
-    READABILITY_OUTPUT_FILE,
-    OUTPUT_DIR
-)
+from utils.processing import process_row
 
 
 def main():
-    df = pd.read_excel(PERSONAL_STATEMENT_FILE)
-    tool = get_language_tool()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", required=True, choices=["sample", "restricted"])
+    parser.add_argument("--input", type=str, default=None)
+    args = parser.parse_args()
+
+    paths = resolve_paths(args.mode, args.input)
+    schema = SCHEMA[paths.data_source_type]
+
+    df = pd.read_excel(paths.input_file)
 
     grammar_results = []
     readability_results = []
 
     for _, row in df.iterrows():
-        statement = row["personal_statement"]
+        grammar_record, readability_record = process_row(
+            row=row,
+            schema=schema,
+            data_source_type=paths.data_source_type,
+        )
 
-        grammar_result = score_grammar_quality(statement, tool)
-        readability_result = score_readability(statement)
+        grammar_results.append(grammar_record)
+        readability_results.append(readability_record)
 
-        grammar_results.append({
-            "index": row["index"],
-            "subject": row["subject"],
-            "statement": trim_text_by_words(statement),
-            "grammar_result": grammar_result
-        })
+    paths.output_dir.mkdir(parents=True, exist_ok=True)
 
-        readability_results.append({
-            "index": row["index"],
-            "subject": row["subject"],
-            "statement": trim_text_by_words(statement),
-            "readability_result": readability_result
-        })
-
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
-    with open(GRAMMAR_OUTPUT_FILE, "w", encoding="utf-8") as f:
+    with open(paths.grammar_output_file, "w", encoding="utf-8") as f:
         json.dump(grammar_results, f, indent=4, ensure_ascii=False)
 
-    with open(READABILITY_OUTPUT_FILE, "w", encoding="utf-8") as f:
+    with open(paths.readability_output_file, "w", encoding="utf-8") as f:
         json.dump(readability_results, f, indent=4, ensure_ascii=False)
 
-    print(f"Grammar output → {GRAMMAR_OUTPUT_FILE}")
-    print(f"Readability output → {READABILITY_OUTPUT_FILE}")
+    print(f"Grammar output → {paths.grammar_output_file}")
+    print(f"Readability output → {paths.readability_output_file}")
 
 
 if __name__ == "__main__":

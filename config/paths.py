@@ -1,38 +1,59 @@
+from dataclasses import dataclass
 from pathlib import Path
 
+# ======================================
+# Static project layout
+# ======================================
 
-# GLOBAL DATA MODE SWITCH
-MODE = "sample"       # change to "restricted" when needed
-
-# Allowed modes
-ALLOWED_MODES = {"sample", "restricted"}
-if MODE not in ALLOWED_MODES:
-    raise ValueError(f"Invalid MODE '{MODE}'. Must be one of {ALLOWED_MODES}")
-
-# BASE DIRECTORIES
 DATA_ROOT = Path("data")
 OUTPUT_ROOT = Path("output")
 
-DATA_DIR = DATA_ROOT / MODE
-OUTPUT_DIR = OUTPUT_ROOT / MODE
-
-# FILE NAME MAPPING PER MODE
-INPUT_FILES = {
-    "sample": {
-        "personal_statements": "sample_personal_statements.xlsx"
-    },
-    "restricted": {
-        "personal_statements": "restricted_personal_statements.xlsx"
-    }
+DEFAULT_INPUT_FILES = {
+    "sample": DATA_ROOT / "sample" / "sample_personal_statements.xlsx",
+    "restricted": DATA_ROOT / "restricted" / "restricted_personal_statements.xlsx",
 }
 
-OUTPUT_FILES = {
-    "grammar": "grammar.json",
-    "readability": "readability.json"
-}
+VALID_MODES = {"sample", "restricted"}
 
-# RESOLVED FULL PATHS (Public Variables)
-PERSONAL_STATEMENT_FILE = DATA_DIR / INPUT_FILES[MODE]["personal_statements"]
 
-GRAMMAR_OUTPUT_FILE = OUTPUT_DIR / OUTPUT_FILES["grammar"]
-READABILITY_OUTPUT_FILE = OUTPUT_DIR / OUTPUT_FILES["readability"]
+# ======================================
+# Runtime IO container
+# ======================================
+
+@dataclass
+class Paths:
+    input_file: Path
+    output_dir: Path
+    grammar_output_file: Path
+    readability_output_file: Path
+    data_source_type: str
+
+
+# ======================================
+# Resolver
+# ======================================
+
+def resolve_paths(mode: str, external_input: str | None) -> Paths:
+    if mode not in VALID_MODES:
+        raise ValueError(f"Invalid mode '{mode}'. Must be one of {VALID_MODES}")
+
+    output_dir = OUTPUT_ROOT / mode
+
+    if external_input:
+        input_file = Path(external_input)
+
+        if not input_file.exists():
+            raise FileNotFoundError(f"External input file not found: {input_file}")
+
+        data_source_type = "external_raw"
+    else:
+        input_file = DEFAULT_INPUT_FILES[mode]
+        data_source_type = mode
+
+    return Paths(
+        input_file=input_file,
+        output_dir=output_dir,
+        grammar_output_file=output_dir / "grammar.json",
+        readability_output_file=output_dir / "readability.json",
+        data_source_type=data_source_type,
+    )
