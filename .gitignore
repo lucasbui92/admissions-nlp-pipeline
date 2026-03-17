@@ -5,7 +5,7 @@ env/
 ENV/
 
 # ===== Sensitive Data =====
-data/
+data/restricted/
 
 # ===== Python Cache =====
 __pycache__/

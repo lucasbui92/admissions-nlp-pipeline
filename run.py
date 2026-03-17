@@ -10,7 +10,7 @@ from src.readability_scoring import score_readability
 
 
 def main():
-    input_file = "sample_data/sample_personal_statements.xlsx"
+    input_file = "data/sample/sample_personal_statements.xlsx"
     grammar_output_file = "output/sample/grammar.json"
     readability_output_file = "output/sample/readability.json"
 
