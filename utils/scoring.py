@@ -31,25 +31,16 @@ def trim_text_by_words(text, max_words=30):
 
 def score_grammar_quality(text, tool):
     """
-    Evaluate the grammatical quality of a text using LanguageTool and compute
-    a simple document-level grammar score based on the proportion of detected errors.
-
-    Parameters
-        text (str): Full input text (e.g., personal statement) to be analysed.
+    Evaluate grammatical quality using LanguageTool and compute
+    a document-level grammar score.
 
     Returns
-        dict: A dictionary containing:
-            - final_score : float or None
-                Grammar quality score scaled to 0-100 (higher is better).
-            - error_count : int
-                Total number of grammar/spelling issues detected.
-            - word_count : int
-                Number of words in the input text.
-            - error_rate : float or None
-                Ratio of detected errors to total words.
-            - matches : list of dict
-                Simplified list of detected issues including message, context,
-                and error category for inspection or downstream analysis.
+        dict with:
+            final_score
+            error_count
+            word_count
+            char_count
+            matches
     """
     # Handle empty text
     if not text or not isinstance(text, str):
@@ -57,34 +48,36 @@ def score_grammar_quality(text, tool):
             "final_score": None,
             "error_count": 0,
             "word_count": 0,
-            "error_rate": None,
+            "char_count": 0,
             "matches": []
         }
 
     matches = tool.check(text)
 
     word_count = len(text.split())
+    char_count = len(text)   # character count including spaces
     error_count = len(matches)
-    error_rate = 0 if word_count == 0 else error_count / word_count
-    final_score = 100 * (1 - error_rate)
+
+    # Grammar score based on word-normalised error proportion
+    error_ratio = 0 if word_count == 0 else error_count / word_count
+    final_score = 100 * (1 - error_ratio)
 
     match_list = []
     for m in matches:
-        item = {}
-        item["message"] = m.message
-        item["context"] = m.context
-        item["category"] = getattr(m.category, "id", str(m.category))
-
+        item = {
+            "message": m.message,
+            "context": m.context,
+            "category": getattr(m.category, "id", str(m.category))
+        }
         match_list.append(item)
 
-    result = {}
-    result["final_score"] = round(final_score, 2)
-    result["error_count"] = error_count
-    result["word_count"] = word_count
-    result["error_rate"] = round(error_rate, 4)
-    result["matches"] = match_list
-
-    return result
+    return {
+        "final_score": round(final_score, 2),
+        "error_count": error_count,
+        "word_count": word_count,
+        "char_count": char_count,
+        "matches": match_list
+    }
 
 def score_readability(text):
     """

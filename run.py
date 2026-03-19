@@ -2,10 +2,10 @@ import argparse, json
 import pandas as pd
 
 from config.paths import resolve_paths
-from config.schema import SCHEMA
+from config.schema import DATA_SOURCE
 
 from utils.processing import process_row
-from utils.exporting import export_grammar_to_excel
+from utils.exporting import export_results_to_excel
 
 
 def main():
@@ -15,7 +15,6 @@ def main():
     args = parser.parse_args()
 
     paths = resolve_paths(args.mode, args.input)
-    schema = SCHEMA[paths.data_source_type]
 
     df = pd.read_excel(paths.input_file)
 
@@ -25,7 +24,7 @@ def main():
     for _, row in df.iterrows():
         grammar_record, readability_record = process_row(
             row=row,
-            schema=schema,
+            schema=DATA_SOURCE[paths.data_source_type],
             data_source_type=paths.data_source_type,
         )
 
@@ -40,9 +39,11 @@ def main():
     with open(paths.readability_output_file, "w", encoding="utf-8") as f:
         json.dump(readability_results, f, indent=4, ensure_ascii=False)
 
-    grammar_excel_file = export_grammar_to_excel(
+    grammar_excel_file = export_results_to_excel(
         grammar_results=grammar_results,
-        mode=args.mode,
+        readability_results=readability_results,
+        schema=DATA_SOURCE[paths.data_source_type],
+        data_source_type=paths.data_source_type
     )
 
     print(f"Grammar output JSON → {paths.grammar_output_file}")

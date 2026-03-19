@@ -1,10 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-# ======================================
-# Static project layout
-# ======================================
-
 DATA_ROOT = Path("data")
 OUTPUT_ROOT = Path("output")
 
@@ -16,10 +12,7 @@ DEFAULT_INPUT_FILES = {
 VALID_MODES = {"sample", "restricted"}
 
 
-# ======================================
 # Runtime IO container
-# ======================================
-
 @dataclass
 class Paths:
     input_file: Path
@@ -28,11 +21,7 @@ class Paths:
     readability_output_file: Path
     data_source_type: str
 
-
-# ======================================
 # Resolver
-# ======================================
-
 def resolve_paths(mode: str, external_input: str | None) -> Paths:
     if mode not in VALID_MODES:
         raise ValueError(f"Invalid mode '{mode}'. Must be one of {VALID_MODES}")
