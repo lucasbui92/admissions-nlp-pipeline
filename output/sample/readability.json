@@ -1,0 +1,338 @@
+[
+    {
+        "index": 1,
+        "subject": "ACCOUNTING, FINANCE AND BANKING",
+        "readability_result": {
+            "flesch_reading_ease": 53.66924242424244,
+            "flesch_kincaid_grade": 10.9787012987013,
+            "smog_index": 13.10208751628618,
+            "automated_readability_index": 11.22600865800866,
+            "gunning_fog_index": 13.471861471861473,
+            "linsear_write_formula": 12.4
+        }
+    },
+    {
+        "index": 2,
+        "subject": "ACTUARIAL SCIENCE",
+        "readability_result": {
+            "flesch_reading_ease": 40.02764550264553,
+            "flesch_kincaid_grade": 13.730553866936848,
+            "smog_index": 15.567600802838829,
+            "automated_readability_index": 14.469321548821547,
+            "gunning_fog_index": 16.921400427783407,
+            "linsear_write_formula": 13.0
+        }
+    },
+    {
+        "index": 3,
+        "subject": "AMERICAN STUDIES",
+        "readability_result": {
+            "flesch_reading_ease": 40.09492622950822,
+            "flesch_kincaid_grade": 12.213120218579238,
+            "smog_index": 13.968273953766033,
+            "automated_readability_index": 11.604590163934425,
+            "gunning_fog_index": 13.003060109289619,
+            "linsear_write_formula": 14.4
+        }
+    },
+    {
+        "index": 4,
+        "subject": "ART HISTORY",
+        "readability_result": {
+            "flesch_reading_ease": 50.56547740168266,
+            "flesch_kincaid_grade": 13.240890236744281,
+            "smog_index": 13.856773240637725,
+            "automated_readability_index": 13.949158677362547,
+            "gunning_fog_index": 15.04378790843279,
+            "linsear_write_formula": 11.6
+        }
+    },
+    {
+        "index": 5,
+        "subject": "BIOCHEMISTRY AND BIOMEDICAL SCIENCE",
+        "readability_result": {
+            "flesch_reading_ease": 53.39200396170355,
+            "flesch_kincaid_grade": 10.264806866952792,
+            "smog_index": 12.367839424501923,
+            "automated_readability_index": 10.29316936282602,
+            "gunning_fog_index": 12.748629910861672,
+            "linsear_write_formula": 11.0
+        }
+    },
+    {
+        "index": 6,
+        "subject": "BIOLOGICAL SCIENCES",
+        "readability_result": {
+            "flesch_reading_ease": 50.08378610460579,
+            "flesch_kincaid_grade": 11.325011709601874,
+            "smog_index": 13.63333581228068,
+            "automated_readability_index": 10.742404371584698,
+            "gunning_fog_index": 14.128649492583918,
+            "linsear_write_formula": 13.8
+        }
+    },
+    {
+        "index": 7,
+        "subject": "BUSINESS AND MANAGEMENT",
+        "readability_result": {
+            "flesch_reading_ease": 41.22784326341531,
+            "flesch_kincaid_grade": 12.85660790117102,
+            "smog_index": 14.094315096169485,
+            "automated_readability_index": 12.606776476643937,
+            "gunning_fog_index": 14.967494530948398,
+            "linsear_write_formula": 16.75
+        }
+    },
+    {
+        "index": 8,
+        "subject": "COMPUTER SCIENCE",
+        "readability_result": {
+            "flesch_reading_ease": 51.582662538699736,
+            "flesch_kincaid_grade": 11.176965944272446,
+            "smog_index": 13.110285616738597,
+            "automated_readability_index": 11.433744783954772,
+            "gunning_fog_index": 13.960479203122896,
+            "linsear_write_formula": 11.166666666666666
+        }
+    },
+    {
+        "index": 9,
+        "subject": "DRAMA",
+        "readability_result": {
+            "flesch_reading_ease": 56.05840088430364,
+            "flesch_kincaid_grade": 10.538478260869564,
+            "smog_index": 12.879409894740693,
+            "automated_readability_index": 10.03084842356834,
+            "gunning_fog_index": 13.378187177597642,
+            "linsear_write_formula": 12.8
+        }
+    },
+    {
+        "index": 10,
+        "subject": "ECONOMICS",
+        "readability_result": {
+            "flesch_reading_ease": 48.98958758837392,
+            "flesch_kincaid_grade": 11.682474469756482,
+            "smog_index": 13.531616421267348,
+            "automated_readability_index": 11.378277393234946,
+            "gunning_fog_index": 14.13479968578162,
+            "linsear_write_formula": 18.0
+        }
+    },
+    {
+        "index": 11,
+        "subject": "ENGLISH LANGUAGE AND LINGUISTICS",
+        "readability_result": {
+            "flesch_reading_ease": 52.97177699816962,
+            "flesch_kincaid_grade": 10.918430953833639,
+            "smog_index": 12.948620331739964,
+            "automated_readability_index": 11.309694935936541,
+            "gunning_fog_index": 12.780516575147448,
+            "linsear_write_formula": 9.0
+        }
+    },
+    {
+        "index": 12,
+        "subject": "EUROPEAN STUDIES AND POLITICS",
+        "readability_result": {
+            "flesch_reading_ease": 46.89623529411767,
+            "flesch_kincaid_grade": 12.928941176470591,
+            "smog_index": 14.299716787436793,
+            "automated_readability_index": 13.844235294117645,
+            "gunning_fog_index": 15.270588235294117,
+            "linsear_write_formula": 23.333333333333332
+        }
+    },
+    {
+        "index": 13,
+        "subject": "FILM STUDIES",
+        "readability_result": {
+            "flesch_reading_ease": 52.95252673796793,
+            "flesch_kincaid_grade": 11.056622103386811,
+            "smog_index": 12.563389971838223,
+            "automated_readability_index": 11.187046939988122,
+            "gunning_fog_index": 13.225628837393543,
+            "linsear_write_formula": 12.4
+        }
+    },
+    {
+        "index": 14,
+        "subject": "HISTORY",
+        "readability_result": {
+            "flesch_reading_ease": 44.842138674664426,
+            "flesch_kincaid_grade": 12.373551842330766,
+            "smog_index": 14.474971422386794,
+            "automated_readability_index": 12.380696943730364,
+            "gunning_fog_index": 14.814110254213084,
+            "linsear_write_formula": 16.75
+        }
+    },
+    {
+        "index": 15,
+        "subject": "LATIN AMERICAN STUDIES",
+        "readability_result": {
+            "flesch_reading_ease": 42.58585541086663,
+            "flesch_kincaid_grade": 13.062523574315225,
+            "smog_index": 13.497565539657195,
+            "automated_readability_index": 12.44439604849574,
+            "gunning_fog_index": 13.82721149528514,
+            "linsear_write_formula": 13.2
+        }
+    },
+    {
+        "index": 16,
+        "subject": "LAW AND HUMAN RIGHTS",
+        "readability_result": {
+            "flesch_reading_ease": 48.40489010989012,
+            "flesch_kincaid_grade": 11.858571428571434,
+            "smog_index": 14.16338327113693,
+            "automated_readability_index": 11.808109772789486,
+            "gunning_fog_index": 14.758241758241759,
+            "linsear_write_formula": 8.142857142857142
+        }
+    },
+    {
+        "index": 17,
+        "subject": "LIBERAL ARTS",
+        "readability_result": {
+            "flesch_reading_ease": 37.3467243589744,
+            "flesch_kincaid_grade": 14.93994230769231,
+            "smog_index": 15.817742638202084,
+            "automated_readability_index": 16.02063301282051,
+            "gunning_fog_index": 17.43948717948718,
+            "linsear_write_formula": 15.75
+        }
+    },
+    {
+        "index": 18,
+        "subject": "LITERATURE AND CREATIVE WRITING",
+        "readability_result": {
+            "flesch_reading_ease": 47.20093750000004,
+            "flesch_kincaid_grade": 13.24355644208038,
+            "smog_index": 13.81666964889586,
+            "automated_readability_index": 14.346009953161591,
+            "gunning_fog_index": 15.303132387706857,
+            "linsear_write_formula": 22.333333333333332
+        }
+    },
+    {
+        "index": 19,
+        "subject": "MATHEMATICS",
+        "readability_result": {
+            "flesch_reading_ease": 58.57099617234272,
+            "flesch_kincaid_grade": 9.87478653449799,
+            "smog_index": 11.882522634951826,
+            "automated_readability_index": 9.745502350176263,
+            "gunning_fog_index": 11.94814015114339,
+            "linsear_write_formula": 13.6
+        }
+    },
+    {
+        "index": 20,
+        "subject": "MODERN LANGUAGES",
+        "readability_result": {
+            "flesch_reading_ease": 54.95266233766233,
+            "flesch_kincaid_grade": 10.969610389610391,
+            "smog_index": 12.563389971838223,
+            "automated_readability_index": 11.101578044596913,
+            "gunning_fog_index": 13.024293353705119,
+            "linsear_write_formula": 12.6
+        }
+    },
+    {
+        "index": 21,
+        "subject": "PHILOSOPHY",
+        "readability_result": {
+            "flesch_reading_ease": 40.588836058815474,
+            "flesch_kincaid_grade": 12.605782602720904,
+            "smog_index": 14.326819011148277,
+            "automated_readability_index": 12.382453861927551,
+            "gunning_fog_index": 15.0605469286794,
+            "linsear_write_formula": 8.857142857142858
+        }
+    },
+    {
+        "index": 22,
+        "subject": "POLITICS",
+        "readability_result": {
+            "flesch_reading_ease": 50.96824356435647,
+            "flesch_kincaid_grade": 10.164875247524751,
+            "smog_index": 12.891045113551908,
+            "automated_readability_index": 9.51554187192118,
+            "gunning_fog_index": 12.899643564356436,
+            "linsear_write_formula": 10.714285714285714
+        }
+    },
+    {
+        "index": 23,
+        "subject": "PSYCHOLOGY",
+        "readability_result": {
+            "flesch_reading_ease": 46.05524028103045,
+            "flesch_kincaid_grade": 11.078694145199062,
+            "smog_index": 12.891045113551908,
+            "automated_readability_index": 10.989370629370633,
+            "gunning_fog_index": 13.295700234192038,
+            "linsear_write_formula": 9.0
+        }
+    },
+    {
+        "index": 24,
+        "subject": "SOCIOLOGY",
+        "readability_result": {
+            "flesch_reading_ease": 51.72199074074075,
+            "flesch_kincaid_grade": 11.07581275720165,
+            "smog_index": 12.954912879858846,
+            "automated_readability_index": 10.74899590163934,
+            "gunning_fog_index": 13.5320987654321,
+            "linsear_write_formula": 8.571428571428571
+        }
+    },
+    {
+        "index": 25,
+        "subject": "SPORTS AND EXERCISE SCIENCE AND SPORTS THERAPY",
+        "readability_result": {
+            "flesch_reading_ease": 55.099563392107484,
+            "flesch_kincaid_grade": 10.270514573587622,
+            "smog_index": 12.20465563037327,
+            "automated_readability_index": 9.84023989444644,
+            "gunning_fog_index": 12.498932469713328,
+            "linsear_write_formula": 11.5
+        }
+    },
+    {
+        "index": 26,
+        "subject": "BIOMEDICAL SCIENCE",
+        "readability_result": {
+            "flesch_reading_ease": 57.39830904522614,
+            "flesch_kincaid_grade": 10.197130653266331,
+            "smog_index": 11.917574213422942,
+            "automated_readability_index": 10.421105527638193,
+            "gunning_fog_index": 12.181105527638191,
+            "linsear_write_formula": 13.4
+        }
+    },
+    {
+        "index": 27,
+        "subject": "LIBERAL ARTS",
+        "readability_result": {
+            "flesch_reading_ease": 45.31977832215574,
+            "flesch_kincaid_grade": 11.456829846190917,
+            "smog_index": 13.671253762203715,
+            "automated_readability_index": 11.820763233647853,
+            "gunning_fog_index": 13.932436448335409,
+            "linsear_write_formula": 13.8
+        }
+    },
+    {
+        "index": 28,
+        "subject": "ROBOTIC ENGINEERING",
+        "readability_result": {
+            "flesch_reading_ease": 53.00163636363638,
+            "flesch_kincaid_grade": 10.785535353535359,
+            "smog_index": 12.773325707644965,
+            "automated_readability_index": 11.211212121212121,
+            "gunning_fog_index": 12.86949494949495,
+            "linsear_write_formula": 17.25
+        }
+    }
+]
