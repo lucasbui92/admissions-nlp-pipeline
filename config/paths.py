@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
+from datetime import datetime
 
 DATA_ROOT = Path("data")
 OUTPUT_ROOT = Path("output")
@@ -22,22 +23,23 @@ class Paths:
     data_source_type: str
 
 # Resolver
-def resolve_paths(mode: str, external_input: str | None) -> Paths:
+def resolve_paths(mode, external_input, output_name):
     if mode not in VALID_MODES:
         raise ValueError(f"Invalid mode '{mode}'. Must be one of {VALID_MODES}")
 
-    output_dir = OUTPUT_ROOT / mode
+    today = datetime.now().strftime("%Y%m%d")
+    output_dir = OUTPUT_ROOT / mode / f"{output_name}_{today}"
 
     if external_input:
         input_file = Path(external_input)
-
         if not input_file.exists():
             raise FileNotFoundError(f"External input file not found: {input_file}")
-
         data_source_type = "external_raw"
     else:
         input_file = DEFAULT_INPUT_FILES[mode]
         data_source_type = mode
+
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     return Paths(
         input_file=input_file,

@@ -56,11 +56,12 @@ def flatten_readability_record(record, schema, data_source_type):
     return row
 
 
-def export_results_to_excel(grammar_results, readability_results, schema, data_source_type):
+def export_results_to_excel(grammar_results, readability_results, schema, data_source_type, output_name):
     EXCEL_EXPORT_DIR.mkdir(parents=True, exist_ok=True)
 
     today = datetime.now().strftime("%Y%m%d")
-    output_file = EXCEL_EXPORT_DIR / f"random500_{today}.xlsx"
+
+    output_file = EXCEL_EXPORT_DIR / f"{output_name}_{today}.xlsx"
 
     grammar_rows = [
         flatten_grammar_record(record, schema, data_source_type)
