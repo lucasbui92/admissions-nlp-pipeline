@@ -12,16 +12,18 @@ def flatten_base_identifiers(record, schema, data_source_type):
     """
     Map internal record identifier keys to export column names.
     """
-    if data_source_type == "external_raw":
+    if data_source_type == "restricted":
         return {
             schema["app_id_col"]: record.get("app_id"),
             schema["admit_year_col"]: record.get("admit_year"),
         }
-
-    return {
-        schema["index_col"]: record.get("index"),
-        schema["subject_col"]: record.get("subject"),
-    }
+    elif data_source_type == "sample":
+        return {
+            schema["index_col"]: record.get("index"),
+            schema["subject_col"]: record.get("subject"),
+        }
+    else:
+        raise ValueError(f"Unsupported data source type: {data_source_type}")
 
 def flatten_grammar_record(record, schema, data_source_type):
     """

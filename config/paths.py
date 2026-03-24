@@ -34,10 +34,8 @@ def resolve_paths(mode, external_input, output_name):
         input_file = Path(external_input)
         if not input_file.exists():
             raise FileNotFoundError(f"External input file not found: {input_file}")
-        data_source_type = "external_raw"
     else:
         input_file = DEFAULT_INPUT_FILES[mode]
-        data_source_type = mode
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -46,5 +44,5 @@ def resolve_paths(mode, external_input, output_name):
         output_dir=output_dir,
         grammar_output_file=output_dir / "grammar.json",
         readability_output_file=output_dir / "readability.json",
-        data_source_type=data_source_type,
+        data_source_type=mode,
     )

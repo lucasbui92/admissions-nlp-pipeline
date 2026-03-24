@@ -7,36 +7,30 @@ def process_row(row, schema, data_source_type, tool=get_language_tool()):
     grammar_result = score_grammar_quality(raw_statement, tool)
     readability_result = score_readability(raw_statement)
 
-    if data_source_type in {"sample", "restricted"}:
+    if data_source_type == "sample":
         grammar_record = {
             "index": row[schema["index_col"]],
             "subject": row[schema["subject_col"]],
-            # "statement": trimmed_statement,
             "grammar_result": grammar_result
         }
 
         readability_record = {
             "index": row[schema["index_col"]],
             "subject": row[schema["subject_col"]],
-            # "statement": trimmed_statement,
             "readability_result": readability_result
         }
-
-    elif data_source_type == "external_raw":
+    elif data_source_type == "restricted":
         grammar_record = {
             "app_id": row[schema["app_id_col"]],
             "admit_year": row[schema["admit_year_col"]],
-            # "statement": trimmed_statement,
             "grammar_result": grammar_result
         }
 
         readability_record = {
             "app_id": row[schema["app_id_col"]],
             "admit_year": row[schema["admit_year_col"]],
-            # "statement": trimmed_statement,
             "readability_result": readability_result
         }
-
     else:
         raise ValueError(f"Unsupported data source type: {data_source_type}")
 
