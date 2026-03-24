@@ -13,22 +13,22 @@ def main():
     parser.add_argument("--mode", required=True, choices=["sample", "restricted"])
     parser.add_argument("--input", type=str, default=None)
     parser.add_argument("--output_name", required=True, type=str)
+    parser.add_argument("--include_matches", action="store_true",
+            help="Include grammar match details in the Excel export."
+    )
     args = parser.parse_args()
 
     paths = resolve_paths(args.mode, args.input, args.output_name)
-
     df = pd.read_excel(paths.input_file)
 
     grammar_results = []
     readability_results = []
-
     for _, row in df.iterrows():
         grammar_record, readability_record = process_row(
             row,
             DATA_SOURCE[paths.data_source_type],
             paths.data_source_type,
         )
-
         grammar_results.append(grammar_record)
         readability_results.append(readability_record)
 
@@ -36,7 +36,6 @@ def main():
 
     with open(paths.grammar_output_file, "w", encoding="utf-8") as f:
         json.dump(grammar_results, f, indent=4, ensure_ascii=False)
-
     with open(paths.readability_output_file, "w", encoding="utf-8") as f:
         json.dump(readability_results, f, indent=4, ensure_ascii=False)
 
@@ -45,7 +44,8 @@ def main():
         readability_results,
         DATA_SOURCE[paths.data_source_type],
         paths.data_source_type,
-        args.output_name
+        args.output_name,
+        args.include_matches,
     )
 
     print(f"Grammar output JSON → {paths.grammar_output_file}")

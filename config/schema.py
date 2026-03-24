@@ -7,7 +7,8 @@ DATA_SOURCE = {
     "restricted": {
         "statement_col": "StatementText",
         "app_id_col": "ApplicantNumber",
-        "admit_year_col": "YearOfEntry"
+        "admit_year_col": "YearOfEntry",
+        "course_col": "applicationCourse"   # optional in actual file
     }
 }
 

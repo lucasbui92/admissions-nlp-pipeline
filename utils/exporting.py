@@ -25,24 +25,24 @@ def flatten_base_identifiers(record, schema, data_source_type):
     else:
         raise ValueError(f"Unsupported data source type: {data_source_type}")
 
-def flatten_grammar_record(record, schema, data_source_type):
+def flatten_grammar_record(record, schema, data_source_type, include_matches=False):
     """
     Flatten one grammar record for Excel export.
     """
     row = flatten_base_identifiers(record, schema, data_source_type)
 
     grammar = record.get("grammar_result", {})
-
     for source_key, output_key in GRAMMAR_EXPORT_MAP.items():
         row[output_key] = grammar.get(source_key)
 
-    matches = grammar.get("matches", [])
-    for i, match in enumerate(matches, start=1):
-        row[f"Match{i}"] = (
-            f"message: {match.get('message', '')} | "
-            f"context: {match.get('context', '')} | "
-            f"category: {match.get('category', '')}"
-        )
+    if include_matches:
+        matches = grammar.get("matches", [])
+        for i, match in enumerate(matches, start=1):
+            row[f"Match{i}"] = (
+                f"message: {match.get('message', '')} | "
+                f"context: {match.get('context', '')} | "
+                f"category: {match.get('category', '')}"
+            )
     return row
 
 def flatten_readability_record(record, schema, data_source_type):
@@ -52,23 +52,29 @@ def flatten_readability_record(record, schema, data_source_type):
     row = flatten_base_identifiers(record, schema, data_source_type)
 
     readability = record.get("readability_result", {})
-
     for source_key, output_key in READABILITY_EXPORT_MAP.items():
         row[output_key] = readability.get(source_key)
     return row
 
 
-def export_results_to_excel(grammar_results, readability_results, schema, data_source_type, output_name):
+def export_results_to_excel(
+    grammar_results,
+    readability_results,
+    schema,
+    data_source_type,
+    output_name,
+    include_matches=False,
+):
     EXCEL_EXPORT_DIR.mkdir(parents=True, exist_ok=True)
 
     today = datetime.now().strftime("%Y%m%d")
-
     output_file = EXCEL_EXPORT_DIR / f"{output_name}_{today}.xlsx"
 
     grammar_rows = [
-        flatten_grammar_record(record, schema, data_source_type)
+        flatten_grammar_record(record, schema, data_source_type, include_matches=include_matches)
         for record in grammar_results
     ]
+
     readability_rows = [
         flatten_readability_record(record, schema, data_source_type)
         for record in readability_results
