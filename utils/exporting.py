@@ -13,10 +13,15 @@ def flatten_base_identifiers(record, schema, data_source_type):
     Map internal record identifier keys to export column names.
     """
     if data_source_type == "restricted":
-        return {
+        row = {
             schema["app_id_col"]: record.get("app_id"),
             schema["admit_year_col"]: record.get("admit_year"),
         }
+        
+        course_col = schema.get("course_col")
+        if course_col:
+            row[course_col] = record.get("application_course")
+        return row
     elif data_source_type == "sample":
         return {
             schema["index_col"]: record.get("index"),
