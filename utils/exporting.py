@@ -17,10 +17,19 @@ def flatten_base_identifiers(record, schema, data_source_type):
             schema["app_id_col"]: record.get("app_id"),
             schema["admit_year_col"]: record.get("admit_year"),
         }
-        
+
         course_col = schema.get("course_col")
         if course_col:
             row[course_col] = record.get("application_course")
+
+        course_title_col = schema.get("course_title")
+        if course_title_col:
+            row[course_title_col] = record.get("application_course_titlemain")
+
+        subject_col = schema.get("subject_col")
+        if subject_col:
+            row[subject_col] = record.get("subject")
+
         return row
     elif data_source_type == "sample":
         return {

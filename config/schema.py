@@ -8,7 +8,9 @@ DATA_SOURCE = {
         "statement_col": "StatementText",
         "app_id_col": "ApplicantNumber",
         "admit_year_col": "YearOfEntry",
-        "course_col": "applicationCourse"   # optional in actual file
+        "course_col": "applicationCourse",
+        "course_title": "applicationCourse_titlemain",
+        "subject_col": "Subject"
     }
 }
 

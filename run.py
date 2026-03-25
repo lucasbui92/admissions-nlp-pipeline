@@ -1,10 +1,10 @@
 import argparse, json
 import pandas as pd
 
-from config.paths import resolve_paths
+from config.paths import COURSES_FILE, resolve_paths
 from config.schema import DATA_SOURCE
 
-from utils.processing import process_row
+from utils.processing import process_row, add_matched_subject_column
 from utils.exporting import export_results_to_excel
 
 
@@ -19,7 +19,14 @@ def main():
     args = parser.parse_args()
 
     paths = resolve_paths(args.mode, args.input, args.output_name)
+
     df = pd.read_excel(paths.input_file)
+    if "applicationCourse_titlemain" in df.columns:
+        df = add_matched_subject_column(
+            df, 
+            pd.read_excel(COURSES_FILE),
+            DATA_SOURCE[paths.data_source_type]
+        )
 
     grammar_results = []
     readability_results = []
