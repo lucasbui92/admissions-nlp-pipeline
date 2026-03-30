@@ -35,7 +35,7 @@ def add_matched_subject_column(
     student_df[schema["subject_col"]] = matched_values
     return student_df
 
-def process_row(row, schema, data_source_type, tool=get_language_tool()):
+def process_writing_quality(row, schema, data_source_type, tool=get_language_tool()):
     raw_statement = row[schema["statement_col"]]
 
     grammar_result = score_grammar_quality(raw_statement, tool)
