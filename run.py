@@ -4,8 +4,12 @@ import pandas as pd
 from config.paths import COURSES_FILE, resolve_paths
 from config.schema import DATA_SOURCE
 
-from utils.processing import process_writing_quality, add_matched_subject_column
 from utils.exporting import export_results_to_excel
+from utils.processing import (
+    process_semantic_alignment,
+    process_writing_quality,
+    add_matched_subject_column
+)
 
 
 def main():
@@ -33,10 +37,16 @@ def main():
         grammar_record, readability_record = process_writing_quality(
             row,
             DATA_SOURCE[paths.data_source_type],
-            paths.data_source_type,
+            paths.data_source_type
         )
         grammar_results.append(grammar_record)
         readability_results.append(readability_record)
+
+        semantic_record = process_semantic_alignment(
+            row,
+            DATA_SOURCE[paths.data_source_type],
+            paths.data_source_type
+        )
 
     paths.output_dir.mkdir(parents=True, exist_ok=True)
 

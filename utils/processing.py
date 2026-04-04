@@ -1,6 +1,11 @@
 import pandas as pd
 
-from utils.scoring import trim_text_by_words, get_language_tool, score_grammar_quality, score_readability
+from utils.scoring import (
+    get_language_tool, 
+    score_grammar_quality, 
+    score_readability
+)
+from utils.cleaning import clean_text_for_semantics
 
 
 def get_optional_value(row, col_name):
@@ -79,3 +84,10 @@ def process_writing_quality(row, schema, data_source_type, tool=get_language_too
         raise ValueError(f"Unsupported data source type: {data_source_type}")
 
     return grammar_record, readability_record
+
+def process_semantic_alignment(row, schema, data_source_type):
+    raw_statement = row[schema["statement_col"]]
+
+    cleaned_statement = clean_text_for_semantics(raw_statement)
+
+    return
