@@ -31,8 +31,11 @@ def main():
             DATA_SOURCE[paths.data_source_type]
         )
 
+    course_desc_df = pd.read_excel(COURSES_FILE)
+
     grammar_results = []
     readability_results = []
+    semantic_results = []
     for _, row in df.iterrows():
         grammar_record, readability_record = process_writing_quality(
             row,
@@ -45,8 +48,10 @@ def main():
         semantic_record = process_semantic_alignment(
             row,
             DATA_SOURCE[paths.data_source_type],
-            paths.data_source_type
+            paths.data_source_type,
+            course_desc_df,
         )
+        semantic_results.append(semantic_record)
 
     paths.output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -54,10 +59,13 @@ def main():
         json.dump(grammar_results, f, indent=4, ensure_ascii=False)
     with open(paths.readability_output_file, "w", encoding="utf-8") as f:
         json.dump(readability_results, f, indent=4, ensure_ascii=False)
+    with open(paths.semantic_output_file, "w", encoding="utf-8") as f:
+        json.dump(semantic_results, f, indent=4, ensure_ascii=False)
 
-    grammar_excel_file = export_results_to_excel(
+    excel_file = export_results_to_excel(
         grammar_results,
         readability_results,
+        semantic_results,
         DATA_SOURCE[paths.data_source_type],
         paths.data_source_type,
         args.output_name,
@@ -66,7 +74,8 @@ def main():
 
     print(f"Grammar output JSON → {paths.grammar_output_file}")
     print(f"Readability output JSON → {paths.readability_output_file}")
-    print(f"Grammar output Excel → {grammar_excel_file}")
+    print(f"Semantic output JSON → {paths.semantic_output_file}")
+    print(f"Excel output → {excel_file}")
 
 
 if __name__ == "__main__":

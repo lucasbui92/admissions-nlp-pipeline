@@ -2,7 +2,7 @@ import pandas as pd
 
 from pathlib import Path
 from datetime import datetime
-from config.schema import GRAMMAR_EXPORT_MAP, READABILITY_EXPORT_MAP
+from config.schema import GRAMMAR_EXPORT_MAP, READABILITY_EXPORT_MAP, SEMANTIC_EXPORT_MAP
 
 
 EXCEL_EXPORT_DIR = Path(r"B:\derived")
@@ -71,9 +71,22 @@ def flatten_readability_record(record, schema, data_source_type):
     return row
 
 
+def flatten_semantic_record(record, schema, data_source_type):
+    """
+    Flatten one semantic record for Excel export.
+    """
+    row = flatten_base_identifiers(record, schema, data_source_type)
+
+    semantic = record.get("semantic_result", {})
+    for source_key, output_key in SEMANTIC_EXPORT_MAP.items():
+        row[output_key] = semantic.get(source_key)
+    return row
+
+
 def export_results_to_excel(
     grammar_results,
     readability_results,
+    semantic_results,
     schema,
     data_source_type,
     output_name,
@@ -94,11 +107,18 @@ def export_results_to_excel(
         for record in readability_results
     ]
 
+    semantic_rows = [
+        flatten_semantic_record(record, schema, data_source_type)
+        for record in semantic_results
+    ]
+
     grammar_df = pd.DataFrame(grammar_rows)
     readability_df = pd.DataFrame(readability_rows)
+    semantic_df = pd.DataFrame(semantic_rows)
 
     with pd.ExcelWriter(output_file, engine="openpyxl") as writer:
         grammar_df.to_excel(writer, sheet_name="grammar", index=False)
         readability_df.to_excel(writer, sheet_name="readability", index=False)
+        semantic_df.to_excel(writer, sheet_name="semantic", index=False)
 
     return output_file

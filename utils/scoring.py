@@ -1,10 +1,43 @@
-import nltk
-import textstat
-import language_tool_python
+import nltk, textstat, language_tool_python
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from sentence_transformers import SentenceTransformer
+from sentence_transformers.util import cos_sim
 
 nltk.download("punkt", quiet=True)
 nltk.download("punkt_tab", quiet=True)
 
+
+def get_embedding_model():
+    return SentenceTransformer("all-MiniLM-L6-v2")
+
+def score_tfidf_embedding_cosine(statement, description, model=get_embedding_model(), alpha=0.7):
+    """
+    Compute a weighted cosine similarity score combining TF-IDF (keyword overlap)
+    and sentence embedding (semantic meaning).
+
+    Parameters:
+        statement (str): Cleaned personal statement text.
+        description (str): Cleaned course description text.
+        model: SentenceTransformer model instance (loaded once via default argument).
+        alpha (float): Weight given to the embedding score (default 0.7).
+                       TF-IDF weight = 1 - alpha.
+
+    Returns:
+        float: Weighted combined score in [0, 1], or None if inputs are invalid.
+    """
+    if not statement or not description:
+        return None
+
+    corpus = [statement, description]
+    tfidf_matrix = TfidfVectorizer().fit_transform(corpus)
+    tfidf_score = float(cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:]).flatten()[0])
+
+    embeddings = model.encode(corpus, convert_to_tensor=True)
+    embedding_score = float(cos_sim(embeddings[0], embeddings[1]))
+
+    return round(alpha * embedding_score + (1 - alpha) * tfidf_score, 4)
 
 def get_language_tool():
     return language_tool_python.LanguageTool("en-UK")

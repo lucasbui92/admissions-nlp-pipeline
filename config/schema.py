@@ -29,3 +29,17 @@ READABILITY_EXPORT_MAP = {
     "gunning_fog_index": "GunningFogIndex",
     "linsear_write_formula": "LinsearWriteFormula",
 }
+
+SEMANTIC_SOURCE_MAP = {
+    "essex_score": "description_essex",
+    "manchester_score": "description_manchester",
+    "ucas_score": "description_ucas",
+    "combined_score": "combined_description",
+}
+
+SEMANTIC_EXPORT_MAP = {
+    "essex_score": "EssexScore",
+    "manchester_score": "ManchesterScore",
+    "ucas_score": "UCASScore",
+    "combined_score": "CombinedScore",
+}
