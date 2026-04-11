@@ -71,13 +71,13 @@ def flatten_readability_record(record, schema, data_source_type):
     return row
 
 
-def flatten_semantic_record(record, schema, data_source_type):
+def flatten_doc_semantic_record(record, schema, data_source_type):
     """
     Flatten one document-level semantic record for Excel export.
     """
     row = flatten_base_identifiers(record, schema, data_source_type)
 
-    semantic = record.get("semantic_result", {})
+    semantic = record.get("doc_semantic_result", {})
     for source_key, output_key in SEMANTIC_EXPORT_MAP.items():
         row[output_key] = semantic.get(source_key)
     return row
@@ -91,7 +91,7 @@ def flatten_chunk_semantic_record(record, schema, data_source_type):
     """
     row = flatten_base_identifiers(record, schema, data_source_type)
 
-    semantic = record.get("semantic_result", {})
+    semantic = record.get("chunk_semantic_result", {})
     for source_key, output_key in SEMANTIC_EXPORT_MAP.items():
         scores = semantic.get(source_key)
         if isinstance(scores, dict):
@@ -108,7 +108,7 @@ def flatten_chunk_semantic_record(record, schema, data_source_type):
 def export_results_to_excel(
     grammar_results,
     readability_results,
-    semantic_results,
+    doc_semantic_results,
     chunk_semantic_results,
     schema,
     data_source_type,
@@ -130,9 +130,9 @@ def export_results_to_excel(
         for record in readability_results
     ]
 
-    semantic_rows = [
-        flatten_semantic_record(record, schema, data_source_type)
-        for record in semantic_results
+    doc_semantic_rows = [
+        flatten_doc_semantic_record(record, schema, data_source_type)
+        for record in doc_semantic_results
     ]
 
     chunk_semantic_rows = [
@@ -142,13 +142,13 @@ def export_results_to_excel(
 
     grammar_df = pd.DataFrame(grammar_rows)
     readability_df = pd.DataFrame(readability_rows)
-    semantic_df = pd.DataFrame(semantic_rows)
+    doc_semantic_df = pd.DataFrame(doc_semantic_rows)
     chunk_semantic_df = pd.DataFrame(chunk_semantic_rows)
 
     with pd.ExcelWriter(output_file, engine="openpyxl") as writer:
         grammar_df.to_excel(writer, sheet_name="grammar", index=False)
         readability_df.to_excel(writer, sheet_name="readability", index=False)
-        semantic_df.to_excel(writer, sheet_name="document", index=False)
+        doc_semantic_df.to_excel(writer, sheet_name="document", index=False)
         chunk_semantic_df.to_excel(writer, sheet_name="chunk", index=False)
 
     return output_file

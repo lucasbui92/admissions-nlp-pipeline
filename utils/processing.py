@@ -111,7 +111,7 @@ def process_chunk_level_semantic(row, schema, data_source_type, course_desc_df=N
         return {
             "index": row[schema["index_col"]],
             "subject": subject,
-            "semantic_result": semantic_result,
+            "chunk_semantic_result": semantic_result,
         }
     elif data_source_type == "restricted":
         return {
@@ -120,7 +120,7 @@ def process_chunk_level_semantic(row, schema, data_source_type, course_desc_df=N
             "application_course": get_optional_value(row, schema.get("course_col")),
             "application_course_titlemain": get_optional_value(row, schema.get("course_title")),
             "subject": subject,
-            "semantic_result": semantic_result,
+            "chunk_semantic_result": semantic_result,
         }
     else:
         raise ValueError(f"Unsupported data source type: {data_source_type}")
@@ -165,7 +165,7 @@ def process_document_level_semantic(row, schema, data_source_type, course_desc_d
         return {
             "index": row[schema["index_col"]],
             "subject": subject,
-            "semantic_result": semantic_result,
+            "doc_semantic_result": semantic_result,
         }
     elif data_source_type == "restricted":
         return {
@@ -174,7 +174,7 @@ def process_document_level_semantic(row, schema, data_source_type, course_desc_d
             "application_course": get_optional_value(row, schema.get("course_col")),
             "application_course_titlemain": get_optional_value(row, schema.get("course_title")),
             "subject": subject,
-            "semantic_result": semantic_result,
+            "doc_semantic_result": semantic_result,
         }
     else:
         raise ValueError(f"Unsupported data source type: {data_source_type}")
