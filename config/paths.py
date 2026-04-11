@@ -18,7 +18,8 @@ class Paths:
     output_dir: Path
     grammar_output_file: Path
     readability_output_file: Path
-    semantic_output_file: Path
+    doc_semantic_output_file: Path
+    chunk_semantic_output_file: Path
     data_source_type: str
 
 
@@ -51,6 +52,7 @@ def resolve_paths(mode, external_input, output_name):
         output_dir=output_dir,
         grammar_output_file=output_dir / "grammar.json",
         readability_output_file=output_dir / "readability.json",
-        semantic_output_file=output_dir / "semantic.json",
+        doc_semantic_output_file=output_dir / "doc_semantic.json",
+        chunk_semantic_output_file=output_dir / "chunk_semantic.json",
         data_source_type=data_source_type,
     )

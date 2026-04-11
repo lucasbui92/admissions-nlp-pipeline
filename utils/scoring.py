@@ -12,7 +12,7 @@ nltk.download("punkt_tab", quiet=True)
 def get_embedding_model():
     return SentenceTransformer("all-MiniLM-L6-v2")
 
-def score_tfidf_embedding_cosine(statement, description, model=get_embedding_model(), alpha=0.7):
+def score_document_level_similarity(statement, description, model=get_embedding_model(), alpha=0.7):
     """
     Compute a weighted cosine similarity score combining TF-IDF (keyword overlap)
     and sentence embedding (semantic meaning).
@@ -38,6 +38,53 @@ def score_tfidf_embedding_cosine(statement, description, model=get_embedding_mod
     embedding_score = float(cos_sim(embeddings[0], embeddings[1]))
 
     return round(alpha * embedding_score + (1 - alpha) * tfidf_score, 4)
+
+def score_chunk_level_similarity(statement, description, model=get_embedding_model(), alpha=0.7, k=3):
+    """
+    Compute chunk-level hybrid similarity between a personal statement and a course description.
+
+    The statement is split sentence by sentence. For each sentence, a weighted combination
+    of TF-IDF cosine similarity and embedding cosine similarity is computed against the
+    full course description. Three aggregations are returned: mean, max, and top-k mean.
+
+    Parameters:
+        statement (str): Cleaned personal statement text.
+        description (str): Cleaned course description text (kept whole).
+        model: SentenceTransformer model instance (loaded once via default argument).
+        alpha (float): Weight given to the embedding score (default 0.7).
+                       TF-IDF weight = 1 - alpha.
+        k (int): Number of top-scoring sentences used for the top-k mean (default 3).
+
+    Returns:
+        dict with keys 'avg', 'max', 'top_k', or None if inputs are invalid.
+    """
+    if not statement or not description:
+        return None
+
+    sentences = nltk.sent_tokenize(statement)
+    if not sentences:
+        return None
+
+    desc_embedding = model.encode(description, convert_to_tensor=True)
+    sentence_embeddings = model.encode(sentences, convert_to_tensor=True)
+
+    chunk_scores = []
+    for sentence, sent_emb in zip(sentences, sentence_embeddings):
+        tfidf_matrix = TfidfVectorizer().fit_transform([sentence, description])
+        tfidf_score = float(cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:]).flatten()[0])
+
+        embedding_score = float(cos_sim(sent_emb, desc_embedding))
+
+        chunk_scores.append(alpha * embedding_score + (1 - alpha) * tfidf_score)
+
+    sorted_scores = sorted(chunk_scores, reverse=True)
+    top_k_scores = sorted_scores[:k]
+
+    return {
+        "avg": round(sum(chunk_scores) / len(chunk_scores), 4),
+        "max": round(sorted_scores[0], 4),
+        "top_k": round(sum(top_k_scores) / len(top_k_scores), 4),
+    }
 
 def get_language_tool():
     return language_tool_python.LanguageTool("en-UK")

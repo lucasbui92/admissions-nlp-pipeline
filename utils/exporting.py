@@ -71,22 +71,45 @@ def flatten_readability_record(record, schema, data_source_type):
     return row
 
 
-def flatten_semantic_record(record, schema, data_source_type):
+def flatten_doc_semantic_record(record, schema, data_source_type):
     """
-    Flatten one semantic record for Excel export.
+    Flatten one document-level semantic record for Excel export.
     """
     row = flatten_base_identifiers(record, schema, data_source_type)
 
-    semantic = record.get("semantic_result", {})
+    semantic = record.get("doc_semantic_result", {})
     for source_key, output_key in SEMANTIC_EXPORT_MAP.items():
         row[output_key] = semantic.get(source_key)
+    return row
+
+def flatten_chunk_semantic_record(record, schema, data_source_type):
+    """
+    Flatten one chunk-level semantic record for Excel export.
+
+    Each institution score is a dict with 'avg', 'max', 'top_k' keys,
+    expanded into separate columns (e.g. EssexScore_Avg, EssexScore_Max, EssexScore_TopK).
+    """
+    row = flatten_base_identifiers(record, schema, data_source_type)
+
+    semantic = record.get("chunk_semantic_result", {})
+    for source_key, output_key in SEMANTIC_EXPORT_MAP.items():
+        scores = semantic.get(source_key)
+        if isinstance(scores, dict):
+            row[f"{output_key}_Avg"]   = scores.get("avg")
+            row[f"{output_key}_Max"]   = scores.get("max")
+            row[f"{output_key}_TopK"]  = scores.get("top_k")
+        else:
+            row[f"{output_key}_Avg"]   = None
+            row[f"{output_key}_Max"]   = None
+            row[f"{output_key}_TopK"]  = None
     return row
 
 
 def export_results_to_excel(
     grammar_results,
     readability_results,
-    semantic_results,
+    doc_semantic_results,
+    chunk_semantic_results,
     schema,
     data_source_type,
     output_name,
@@ -107,18 +130,25 @@ def export_results_to_excel(
         for record in readability_results
     ]
 
-    semantic_rows = [
-        flatten_semantic_record(record, schema, data_source_type)
-        for record in semantic_results
+    doc_semantic_rows = [
+        flatten_doc_semantic_record(record, schema, data_source_type)
+        for record in doc_semantic_results
+    ]
+
+    chunk_semantic_rows = [
+        flatten_chunk_semantic_record(record, schema, data_source_type)
+        for record in chunk_semantic_results
     ]
 
     grammar_df = pd.DataFrame(grammar_rows)
     readability_df = pd.DataFrame(readability_rows)
-    semantic_df = pd.DataFrame(semantic_rows)
+    doc_semantic_df = pd.DataFrame(doc_semantic_rows)
+    chunk_semantic_df = pd.DataFrame(chunk_semantic_rows)
 
     with pd.ExcelWriter(output_file, engine="openpyxl") as writer:
         grammar_df.to_excel(writer, sheet_name="grammar", index=False)
         readability_df.to_excel(writer, sheet_name="readability", index=False)
-        semantic_df.to_excel(writer, sheet_name="semantic", index=False)
+        doc_semantic_df.to_excel(writer, sheet_name="document", index=False)
+        chunk_semantic_df.to_excel(writer, sheet_name="chunk", index=False)
 
     return output_file
