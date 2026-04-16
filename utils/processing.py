@@ -21,6 +21,53 @@ def normalize_text(value):
         return None
     return str(value).strip().lower()
 
+def add_label_lookups(course_desc_df):
+    """
+    Add lookup tables from course_descriptions.xlsx for label assignment.
+
+    Returns:
+        subject_set    : set of reference subjects in lowercase
+        related_lookup : dict mapping related term (lowercase) → reference subject
+    """
+    subject_set = {
+        str(s).lower()
+        for s in course_desc_df["subject"].dropna()
+    }
+
+    related_lookup = {}
+    if "related_terms" in course_desc_df.columns:
+        for _, row in course_desc_df.iterrows():
+            subject = row.get("subject")
+            related_raw = row.get("related_terms")
+            if pd.isna(subject) or pd.isna(related_raw):
+                continue
+            for term in str(related_raw).split(";"):
+                term = term.strip()
+                if term:
+                    related_lookup[term.lower()] = str(subject)
+
+    return subject_set, related_lookup
+
+def assign_label(subject, course_title, subject_set, related_lookup):
+    """
+    Assign a match label for a single record.
+
+    - "Exact Match"   : subject matches a reference subject exactly (case-insensitive)
+    - "Related Terms" : application_course_titlemain is in the related_terms of
+                        a reference subject
+    - ""              : no match
+    """
+    subject_val = normalize_text(subject)
+    title_val = normalize_text(course_title)
+
+    if subject_val and subject_val in subject_set:
+        return "Exact Match"
+
+    if title_val and title_val in related_lookup:
+        return "Related Terms"
+
+    return ""
+
 def add_matched_subject_column(
     student_df,
     course_desc_df,
@@ -43,28 +90,31 @@ def add_matched_subject_column(
     student_df[schema["subject_col"]] = matched_values
     return student_df
 
-def process_writing_quality(row, schema, data_source_type, tool=get_language_tool()):
+def process_writing_quality(row, schema, data_source_type, tool=get_language_tool(), subject_set=None, related_lookup=None):
     raw_statement = row[schema["statement_col"]]
 
     grammar_result = score_grammar_quality(raw_statement, tool)
     readability_result = score_readability(raw_statement)
 
     if data_source_type == "sample":
+        subject_value = row[schema["subject_col"]]
+
         grammar_record = {
             "index": row[schema["index_col"]],
-            "subject": row[schema["subject_col"]],
+            "subject": subject_value,
             "grammar_result": grammar_result
         }
 
         readability_record = {
             "index": row[schema["index_col"]],
-            "subject": row[schema["subject_col"]],
+            "subject": subject_value,
             "readability_result": readability_result
         }
     elif data_source_type == "restricted":
         course_value = get_optional_value(row, schema.get("course_col"))
         course_title_value = get_optional_value(row, schema.get("course_title"))
         subject_value = get_optional_value(row, schema.get("subject_col"))
+        label = assign_label(subject_value, course_title_value, subject_set or set(), related_lookup or {})
 
         grammar_record = {
             "app_id": row[schema["app_id_col"]],
@@ -72,6 +122,7 @@ def process_writing_quality(row, schema, data_source_type, tool=get_language_too
             "application_course": course_value,
             "application_course_titlemain": course_title_value,
             "subject": subject_value,
+            "label": label,
             "grammar_result": grammar_result
         }
 
@@ -81,13 +132,14 @@ def process_writing_quality(row, schema, data_source_type, tool=get_language_too
             "application_course": course_value,
             "application_course_titlemain": course_title_value,
             "subject": subject_value,
+            "label": label,
             "readability_result": readability_result
         }
     else:
         raise ValueError(f"Unsupported data source type: {data_source_type}")
     return grammar_record, readability_record
 
-def process_chunk_level_semantic(row, schema, data_source_type, course_desc_df=None):
+def process_chunk_level_semantic(row, schema, data_source_type, course_desc_df=None, subject_set=None, related_lookup=None):
     raw_statement = row[schema["statement_col"]]
     cleaned_statement = clean_text_for_semantics(raw_statement)
 
@@ -114,18 +166,21 @@ def process_chunk_level_semantic(row, schema, data_source_type, course_desc_df=N
             "chunk_semantic_result": semantic_result,
         }
     elif data_source_type == "restricted":
+        course_title = get_optional_value(row, schema.get("course_title"))
+        label = assign_label(subject, course_title, subject_set or set(), related_lookup or {})
         return {
             "app_id": row[schema["app_id_col"]],
             "admit_year": row[schema["admit_year_col"]],
             "application_course": get_optional_value(row, schema.get("course_col")),
-            "application_course_titlemain": get_optional_value(row, schema.get("course_title")),
+            "application_course_titlemain": course_title,
             "subject": subject,
+            "label": label,
             "chunk_semantic_result": semantic_result,
         }
     else:
         raise ValueError(f"Unsupported data source type: {data_source_type}")
 
-def process_document_level_semantic(row, schema, data_source_type, course_desc_df=None):
+def process_document_level_semantic(row, schema, data_source_type, course_desc_df=None, subject_set=None, related_lookup=None):
     """
     Compute TF-IDF cosine similarity between a student's personal statement
     and each institution's course description for their matched subject.
@@ -137,10 +192,12 @@ def process_document_level_semantic(row, schema, data_source_type, course_desc_d
         course_desc_df: DataFrame with 'subject', 'description_essex',
                         'description_manchester', 'description_ucas', and
                         'combined_description' columns. If None, all scores are None.
+        subject_set: set of reference subjects (lowercase) for label assignment.
+        related_lookup: dict mapping related term (lowercase) → reference subject.
 
     Returns:
-        dict with identity fields and a 'semantic_result' sub-dict containing
-        one score per institution plus a combined score.
+        dict with identity fields, a 'label' field, and a 'doc_semantic_result'
+        sub-dict containing one score per institution plus a combined score.
     """
     raw_statement = row[schema["statement_col"]]
     cleaned_statement = clean_text_for_semantics(raw_statement)
@@ -168,12 +225,15 @@ def process_document_level_semantic(row, schema, data_source_type, course_desc_d
             "doc_semantic_result": semantic_result,
         }
     elif data_source_type == "restricted":
+        course_title = get_optional_value(row, schema.get("course_title"))
+        label = assign_label(subject, course_title, subject_set or set(), related_lookup or {})
         return {
             "app_id": row[schema["app_id_col"]],
             "admit_year": row[schema["admit_year_col"]],
             "application_course": get_optional_value(row, schema.get("course_col")),
-            "application_course_titlemain": get_optional_value(row, schema.get("course_title")),
+            "application_course_titlemain": course_title,
             "subject": subject,
+            "label": label,
             "doc_semantic_result": semantic_result,
         }
     else:

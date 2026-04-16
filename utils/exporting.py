@@ -30,6 +30,8 @@ def flatten_base_identifiers(record, schema, data_source_type):
         if subject_col:
             row[subject_col] = record.get("subject")
 
+        row["label"] = record.get("label", "")
+
         return row
     elif data_source_type == "sample":
         return {
