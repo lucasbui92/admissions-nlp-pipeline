@@ -74,9 +74,7 @@ def process_chunk_level_semantic(row, schema, data_source_type, course_desc_df=N
     semantic_result = {score_key: None for score_key in SEMANTIC_SOURCE_MAP}
 
     if cleaned_statement and course_desc_df is not None and subject and pd.notna(subject):
-        subset = course_desc_df[
-            course_desc_df["subject"].str.lower() == str(subject).strip().lower()
-        ]
+        subset = course_desc_df[course_desc_df["index"] == int(subject)]
         if not subset.empty:
             desc_row = subset.iloc[0]
             for score_key, col in SEMANTIC_SOURCE_MAP.items():
@@ -127,9 +125,7 @@ def process_document_level_semantic(row, schema, data_source_type, course_desc_d
     semantic_result = {score_key: None for score_key in SEMANTIC_SOURCE_MAP}
 
     if cleaned_statement and course_desc_df is not None and subject and pd.notna(subject):
-        subset = course_desc_df[
-            course_desc_df["subject"].str.lower() == str(subject).strip().lower()
-        ]
+        subset = course_desc_df[course_desc_df["index"] == int(subject)]
         if not subset.empty:
             desc_row = subset.iloc[0]
             for score_key, col in SEMANTIC_SOURCE_MAP.items():
