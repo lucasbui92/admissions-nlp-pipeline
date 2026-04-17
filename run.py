@@ -9,8 +9,6 @@ from utils.processing import (
     process_document_level_semantic,
     process_chunk_level_semantic,
     process_writing_quality,
-    add_matched_subject_column,
-    add_label_lookups,
 )
 
 
@@ -26,15 +24,7 @@ def main():
     paths = resolve_paths(args.mode, args.input, args.output_name)
 
     df = pd.read_excel(paths.input_file)
-    if "applicationCourse_titlemain" in df.columns:
-        df = add_matched_subject_column(
-            df, 
-            pd.read_excel(COURSES_FILE),
-            DATA_SOURCE[paths.data_source_type]
-        )
-
     course_desc_df = pd.read_excel(COURSES_FILE)
-    subject_set, related_lookup = add_label_lookups(course_desc_df)
 
     grammar_results = []
     readability_results = []
@@ -45,8 +35,6 @@ def main():
             row,
             DATA_SOURCE[paths.data_source_type],
             paths.data_source_type,
-            subject_set=subject_set,
-            related_lookup=related_lookup,
         )
         grammar_results.append(grammar_record)
         readability_results.append(readability_record)
@@ -56,8 +44,6 @@ def main():
             DATA_SOURCE[paths.data_source_type],
             paths.data_source_type,
             course_desc_df,
-            subject_set=subject_set,
-            related_lookup=related_lookup,
         )
         doc_semantic_results.append(doc_semantic_record)
 
@@ -66,8 +52,6 @@ def main():
             DATA_SOURCE[paths.data_source_type],
             paths.data_source_type,
             course_desc_df,
-            subject_set=subject_set,
-            related_lookup=related_lookup,
         )
         chunk_semantic_results.append(chunk_semantic_record)
 

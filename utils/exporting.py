@@ -26,12 +26,6 @@ def flatten_base_identifiers(record, schema, data_source_type):
         if course_title_col:
             row[course_title_col] = record.get("application_course_titlemain")
 
-        subject_col = schema.get("subject_col")
-        if subject_col:
-            row[subject_col] = record.get("subject")
-
-        row["label"] = record.get("label", "")
-
         return row
     elif data_source_type == "sample":
         return {
