@@ -26,32 +26,26 @@ def main():
     df = pd.read_excel(paths.input_file)
     course_desc_df = pd.read_excel(COURSES_FILE)
 
+    schema = DATA_SOURCE[paths.data_source_type]
+
     grammar_results = []
     readability_results = []
     doc_semantic_results = []
     chunk_semantic_results = []
     for _, row in df.iterrows():
         grammar_record, readability_record = process_writing_quality(
-            row,
-            DATA_SOURCE[paths.data_source_type],
-            paths.data_source_type,
+            row, schema, paths.data_source_type,
         )
         grammar_results.append(grammar_record)
         readability_results.append(readability_record)
 
         doc_semantic_record = process_document_level_semantic(
-            row,
-            DATA_SOURCE[paths.data_source_type],
-            paths.data_source_type,
-            course_desc_df,
+            row, schema, paths.data_source_type, course_desc_df,
         )
         doc_semantic_results.append(doc_semantic_record)
 
         chunk_semantic_record = process_chunk_level_semantic(
-            row,
-            DATA_SOURCE[paths.data_source_type],
-            paths.data_source_type,
-            course_desc_df,
+            row, schema, paths.data_source_type, course_desc_df,
         )
         chunk_semantic_results.append(chunk_semantic_record)
 
@@ -71,7 +65,7 @@ def main():
         readability_results,
         doc_semantic_results,
         chunk_semantic_results,
-        DATA_SOURCE[paths.data_source_type],
+        schema,
         paths.data_source_type,
         args.output_name,
         args.include_matches,

@@ -7,6 +7,7 @@ OUTPUT_ROOT = Path("output")
 
 SAMPLE_INPUT_FILE = DATA_ROOT / "sample" / "sample_personal_statements.xlsx"
 COURSES_FILE = DATA_ROOT / "reference" / "course_descriptions.xlsx"
+COURSE_MAPPINGS_FILE = DATA_ROOT / "reference" / "course_mappings.xlsx"
 
 VALID_MODES = {"sample", "restricted"}
 
