@@ -1,3 +1,5 @@
+ALL_METRICS = {"grammar", "readability", "doc_semantic", "chunk_semantic"}
+
 DATA_SOURCE = {
     "sample": {
         "statement_col": "personal_statement",
@@ -10,7 +12,7 @@ DATA_SOURCE = {
         "admit_year_col": "YearOfEntry",
         "course_col": "applicationCourse",
         "course_title": "applicationCourse_titlemain",
-        "subject_col": "Subject"
+        "subject_col": "subject"
     }
 }
 

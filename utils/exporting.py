@@ -116,35 +116,34 @@ def export_results_to_excel(
     today = datetime.now().strftime("%Y%m%d")
     output_file = EXCEL_EXPORT_DIR / f"{output_name}_{today}.xlsx"
 
-    grammar_rows = [
-        flatten_grammar_record(record, schema, data_source_type, include_matches=include_matches)
-        for record in grammar_results
-    ]
+    sheets = {}
 
-    readability_rows = [
-        flatten_readability_record(record, schema, data_source_type)
-        for record in readability_results
-    ]
+    if grammar_results is not None:
+        sheets["grammar"] = pd.DataFrame([
+            flatten_grammar_record(record, schema, data_source_type, include_matches=include_matches)
+            for record in grammar_results
+        ])
 
-    doc_semantic_rows = [
-        flatten_doc_semantic_record(record, schema, data_source_type)
-        for record in doc_semantic_results
-    ]
+    if readability_results is not None:
+        sheets["readability"] = pd.DataFrame([
+            flatten_readability_record(record, schema, data_source_type)
+            for record in readability_results
+        ])
 
-    chunk_semantic_rows = [
-        flatten_chunk_semantic_record(record, schema, data_source_type)
-        for record in chunk_semantic_results
-    ]
+    if doc_semantic_results is not None:
+        sheets["document"] = pd.DataFrame([
+            flatten_doc_semantic_record(record, schema, data_source_type)
+            for record in doc_semantic_results
+        ])
 
-    grammar_df = pd.DataFrame(grammar_rows)
-    readability_df = pd.DataFrame(readability_rows)
-    doc_semantic_df = pd.DataFrame(doc_semantic_rows)
-    chunk_semantic_df = pd.DataFrame(chunk_semantic_rows)
+    if chunk_semantic_results is not None:
+        sheets["chunk"] = pd.DataFrame([
+            flatten_chunk_semantic_record(record, schema, data_source_type)
+            for record in chunk_semantic_results
+        ])
 
     with pd.ExcelWriter(output_file, engine="openpyxl") as writer:
-        grammar_df.to_excel(writer, sheet_name="grammar", index=False)
-        readability_df.to_excel(writer, sheet_name="readability", index=False)
-        doc_semantic_df.to_excel(writer, sheet_name="document", index=False)
-        chunk_semantic_df.to_excel(writer, sheet_name="chunk", index=False)
+        for sheet_name, df in sheets.items():
+            df.to_excel(writer, sheet_name=sheet_name, index=False)
 
     return output_file

@@ -43,12 +43,16 @@ def add_subject_index(input_path):
         print("No applicationCourse_titlemain column found. Nothing to do.")
         return
 
-    df["Subject"] = df["applicationCourse_titlemain"].map(
+    if "subject" not in df.columns:
+        print("subject column not found. Please add it to the file before running this script.")
+        return
+
+    df["subject"] = df["applicationCourse_titlemain"].map(
         lambda v: course_lookup.get(normalize(v))
     )
 
-    matched = df["Subject"].notna().sum()
-    blank = df["Subject"].isna().sum()
+    matched = df["subject"].notna().sum()
+    blank = df["subject"].isna().sum()
 
     df.to_excel(input_path, index=False)
 
