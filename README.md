@@ -1,13 +1,21 @@
 
 ## Data Preparation
 
-Run once before using the pipeline to build the `combined_description` column in `course_descriptions.xlsx`:
+Run these once before using the pipeline.
+
+**1. Build course descriptions** — populates the `combined_description` column in `course_descriptions.xlsx`:
 
 ```
 python -m prep.build_course_descriptions
 ```
 
-Must be run from the project root.
+**2. Populate subject indices** (restricted mode only) — looks up each course title in `course_mappings.xlsx` and writes the corresponding subject index into the `subject` column of your input file. Modifies the file in-place:
+
+```
+python prep/add_subject_index.py --input path/to/your/data.xlsx
+```
+
+Both scripts must be run from the project root.
 
 ## Running the Pipeline
 
