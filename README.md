@@ -9,10 +9,13 @@ Run these once before using the pipeline.
 python -m prep.build_course_descriptions
 ```
 
-**2. Populate subject indices** (restricted mode only) — looks up each course title in `course_mappings.xlsx` and writes the corresponding subject index into the `subject` column of your input file. Modifies the file in-place:
+**2. Populate subject indices** — looks up each course title in `course_mappings.xlsx` and writes the corresponding subject index into the `subject` column of your input file. Modifies the file in-place.
+
+- **Sample mode:** pass `--input data/sample/sample_personal_statements.xlsx` to populate the built-in sample file, or pass `--input <path>` to populate your own file (which can also be placed inside `data/sample/`).
+- **Restricted mode:** `--input <path>` is required as the production dataset must be explicitly specified.
 
 ```
-python prep/add_subject_index.py --input path/to/your/data.xlsx
+python prep/add_subject_index.py --input <path>
 ```
 
 Both scripts must be run from the project root.
@@ -27,7 +30,7 @@ python run.py --mode <mode> --output_name <name> [--input <path>] [--include_mat
 
 | Argument | Required | Description |
 |---|---|---|
-| `--mode` | Yes | `sample` or `restricted` |
+| `--mode` | Yes | `sample` (for external use) or `restricted` (internal only — requires access to the production dataset) |
 | `--output_name` | Yes | Label for the output folder (e.g. `trial1`) |
 | `--input` | Only in `restricted` mode | Path to your `.xlsx` input file |
 | `--metric` | No | Single metric to compute: `chunk_semantic`, `doc_semantic`, `grammar`, `readability`. Defaults to all metrics when omitted. |
@@ -41,11 +44,7 @@ python run.py --mode <mode> --output_name <name> [--input <path>] [--include_mat
 python run.py --mode sample --output_name trial1
 ```
 
-**`restricted`** — Uses a custom input file you provide via `--input`.
-
-```bash
-python run.py --mode restricted --input path/to/your/data.xlsx --output_name trial1
-```
+**`restricted`** — For internal use only. Requires access to the production dataset, which is not publicly available. If you are an external user, use `sample` mode instead.
 
 ### Output
 
