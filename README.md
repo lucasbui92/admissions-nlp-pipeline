@@ -22,6 +22,7 @@ python run.py --mode <mode> --output_name <name> [--input <path>] [--include_mat
 | `--mode` | Yes | `sample` or `restricted` |
 | `--output_name` | Yes | Label for the output folder (e.g. `trial1`) |
 | `--input` | Only in `restricted` mode | Path to your `.xlsx` input file |
+| `--metric` | No | Single metric to compute: `chunk_semantic`, `doc_semantic`, `grammar`, `readability`. Defaults to all metrics when omitted. |
 | `--include_matches` | No | Adds grammar match details to the Excel export |
 
 ### Modes
@@ -46,8 +47,11 @@ Results are saved to `output/<mode>/<output_name>_<YYYYMMDD>/`:
 |---|---|
 | `grammar.json` | Grammar scoring records |
 | `readability.json` | Readability scoring records |
-| `semantic.json` | Semantic alignment records |
+| `doc_semantic.json` | Document-level semantic alignment records |
+| `chunk_semantic.json` | Chunk-level semantic alignment records |
 | `<output_name>.xlsx` | Combined Excel report |
+
+Only the files for the computed metrics are written. If `--metric` is used, only the relevant JSON file(s) are produced.
 
 ### Optional: Grammar Match Details
 
