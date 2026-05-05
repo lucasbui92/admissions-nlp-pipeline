@@ -5,10 +5,10 @@ from config.paths import COURSES_FILE, resolve_paths
 from config.schema import ALL_METRICS, DATA_SOURCE
 
 from utils.exporting import export_results_to_excel
-from utils.processing import (
+from utils.processing import process_writing_quality
+from analyzers.semantic_similarity import (
     process_document_level_semantic,
     process_chunk_level_semantic,
-    process_writing_quality,
     precompute_course_embeddings,
     precompute_statement_embeddings,
     precompute_sentence_embeddings,
