@@ -21,10 +21,10 @@ def remove_stopwords(text):
 
 
 def precompute_topic_embeddings(df, schema):
-    statements = [
-        remove_stopwords(clean_text_for_semantics(row[schema["statement_col"]])) or ""
-        for _, row in df.iterrows()
-    ]
+    statements = []
+    for _, row in df.iterrows():
+        cleaned = remove_stopwords(clean_text_for_semantics(row[schema["statement_col"]]))
+        statements.append(cleaned or "")
     return EMBEDDING_MODEL.encode(
         statements,
         batch_size=64,
@@ -66,21 +66,26 @@ def reduce_bertopic_topics(topic_model, docs, nr_topics):
 
 
 def build_topic_results(topics, probs, topic_model, df, schema, top_n=5):
-    topic_ids = sorted([t for t in set(topics) if t != -1])
+    topic_ids = []
+    for t in set(topics):
+        if t != -1:
+            topic_ids.append(t)
+    topic_ids.sort()
 
-    topics_section = [
-        {
-            "topic_number": t,
-            "keywords": [word for word, _ in topic_model.get_topic(t)],
-        }
-        for t in topic_ids
-    ]
+    topics_section = []
+    for t in topic_ids:
+        keywords = []
+        for word, _ in topic_model.get_topic(t):
+            keywords.append(word)
+        topics_section.append({"topic_number": t, "keywords": keywords})
 
     probs_array = np.array(probs)
     if probs_array.ndim == 1:
         # BERTopic returned one scalar per doc (assigned-topic probability only);
         # reconstruct a full matrix with zeros for all other topics.
-        topic_id_to_idx = {t: j for j, t in enumerate(topic_ids)}
+        topic_id_to_idx = {}
+        for j, t in enumerate(topic_ids):
+            topic_id_to_idx[t] = j
         probs_2d = np.zeros((len(topics), len(topic_ids)))
         for i, (t, p) in enumerate(zip(topics, probs_array)):
             if t in topic_id_to_idx:
@@ -89,22 +94,13 @@ def build_topic_results(topics, probs, topic_model, df, schema, top_n=5):
         probs_2d = probs_array
 
     id_col = schema.get("app_id_col", schema.get("index_col"))
-    applications_section = [
-        {
-            "app_id": row[id_col],
-            "topic_probabilities": dict(
-                sorted(
-                    {
-                        f"Topic {topic_ids[j]}": float(probs_2d[i][j])
-                        for j in range(len(topic_ids))
-                        if probs_2d[i][j] > 1e-6
-                    }.items(),
-                    key=lambda x: x[1],
-                    reverse=True,
-                )[:top_n]
-            ),
-        }
-        for i, (_, row) in enumerate(df.iterrows())
-    ]
+    applications_section = []
+    for i, (_, row) in enumerate(df.iterrows()):
+        topic_probs = {}
+        for j in range(len(topic_ids)):
+            if probs_2d[i][j] > 1e-6:
+                topic_probs[f"Topic {topic_ids[j]}"] = float(probs_2d[i][j])
+        top_probs = dict(sorted(topic_probs.items(), key=lambda x: x[1], reverse=True)[:top_n])
+        applications_section.append({"app_id": row[id_col], "topic_probabilities": top_probs})
 
     return {"topics": topics_section, "applications": applications_section}

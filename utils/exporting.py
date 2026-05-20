@@ -143,34 +143,34 @@ def export_results_to_excel(
     sheets = {}
 
     if grammar_results is not None:
-        sheets["grammar"] = pd.DataFrame([
-            flatten_grammar_record(record, schema, data_source_type, include_matches=include_matches)
-            for record in grammar_results
-        ])
+        rows = []
+        for record in grammar_results:
+            rows.append(flatten_grammar_record(record, schema, data_source_type, include_matches=include_matches))
+        sheets["grammar"] = pd.DataFrame(rows)
 
     if readability_results is not None:
-        sheets["readability"] = pd.DataFrame([
-            flatten_readability_record(record, schema, data_source_type)
-            for record in readability_results
-        ])
+        rows = []
+        for record in readability_results:
+            rows.append(flatten_readability_record(record, schema, data_source_type))
+        sheets["readability"] = pd.DataFrame(rows)
 
     if doc_semantic_results is not None:
-        sheets["document"] = pd.DataFrame([
-            flatten_doc_semantic_record(record, schema, data_source_type)
-            for record in doc_semantic_results
-        ])
+        rows = []
+        for record in doc_semantic_results:
+            rows.append(flatten_doc_semantic_record(record, schema, data_source_type))
+        sheets["document"] = pd.DataFrame(rows)
 
     if chunk_semantic_results is not None:
-        sheets["chunk"] = pd.DataFrame([
-            flatten_chunk_semantic_record(record, schema, data_source_type)
-            for record in chunk_semantic_results
-        ])
+        rows = []
+        for record in chunk_semantic_results:
+            rows.append(flatten_chunk_semantic_record(record, schema, data_source_type))
+        sheets["chunk"] = pd.DataFrame(rows)
 
     if topic_results is not None:
-        sheets["topic_modeling"] = pd.DataFrame([
-            flatten_topic_record(record, schema, data_source_type)
-            for record in topic_results["applications"]
-        ])
+        rows = []
+        for record in topic_results["applications"]:
+            rows.append(flatten_topic_record(record, schema, data_source_type))
+        sheets["topic_modeling"] = pd.DataFrame(rows)
 
     with pd.ExcelWriter(output_file, engine="openpyxl") as writer:
         for sheet_name, df in sheets.items():

@@ -80,10 +80,9 @@ def score_chunk_level_similarity(statement, description, alpha=0.7, k=3, desc_em
     tfidf_matrix = TfidfVectorizer().fit_transform(sentences + [description])
     tfidf_scores = cosine_similarity(tfidf_matrix[:-1], tfidf_matrix[-1:]).flatten()
 
-    chunk_scores = [
-        alpha * float(cos_sim(sent_emb, desc_embedding)) + (1 - alpha) * float(tfidf_score)
-        for sent_emb, tfidf_score in zip(sentence_embeddings, tfidf_scores)
-    ]
+    chunk_scores = []
+    for sent_emb, tfidf_score in zip(sentence_embeddings, tfidf_scores):
+        chunk_scores.append(alpha * float(cos_sim(sent_emb, desc_embedding)) + (1 - alpha) * float(tfidf_score))
 
     sorted_scores = sorted(chunk_scores, reverse=True)
     top_k_scores = sorted_scores[:k]
@@ -95,10 +94,10 @@ def score_chunk_level_similarity(statement, description, alpha=0.7, k=3, desc_em
     }
 
 def precompute_statement_embeddings(df, schema):
-    statements = [
-        clean_text_for_semantics(row[schema["statement_col"]]) or ""
-        for _, row in df.iterrows()
-    ]
+    statements = []
+    for _, row in df.iterrows():
+        cleaned = clean_text_for_semantics(row[schema["statement_col"]])
+        statements.append(cleaned or "")
     return EMBEDDING_MODEL.encode(statements, batch_size=64, convert_to_tensor=True, show_progress_bar=True)
 
 def precompute_sentence_embeddings(df, schema):
