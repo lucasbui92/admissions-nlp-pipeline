@@ -3,17 +3,15 @@ import pandas as pd
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from sentence_transformers import SentenceTransformer
 from sentence_transformers.util import cos_sim
 
 from utils.cleaning import clean_text_for_semantics
 from utils.processing import get_optional_value
 from config.schema import SEMANTIC_SOURCE_MAP
+from config.models import EMBEDDING_MODEL
 
 nltk.download("punkt", quiet=True)
 nltk.download("punkt_tab", quiet=True)
-
-EMBEDDING_MODEL = SentenceTransformer("all-MiniLM-L6-v2")
 
 
 def score_document_level_similarity(statement, description, alpha=0.7, desc_embedding=None, stmt_embedding=None):

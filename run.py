@@ -4,7 +4,8 @@ import pandas as pd
 from config.paths import COURSES_FILE, resolve_paths
 from config.schema import ALL_METRICS, DATA_SOURCE
 
-from utils.exporting import export_results_to_excel
+from utils.cleaning import clean_text_for_semantics
+from utils.exporting import export_results_to_excel, export_topic_keywords_to_txt
 from utils.processing import process_writing_quality
 from analyzers.semantic_similarity import (
     process_document_level_semantic,
@@ -12,6 +13,11 @@ from analyzers.semantic_similarity import (
     precompute_course_embeddings,
     precompute_statement_embeddings,
     precompute_sentence_embeddings,
+)
+from analyzers.topic_modeling import (
+    precompute_topic_embeddings,
+    build_topic_results,
+    run_bertopic,
 )
 
 
@@ -29,7 +35,7 @@ def main():
         default=None,
         help=(
             "Single metric to compute. Choices: chunk_semantic, doc_semantic, "
-            "grammar, readability. Defaults to all metrics when omitted."
+            "grammar, readability, topic_modeling. Defaults to all metrics when omitted."
         ),
     )
     args = parser.parse_args()
@@ -77,6 +83,16 @@ def main():
                 sentence_embeddings=sent_embeddings[i],
             ))
 
+    topic_results = None
+    if "topic_modeling" in metrics:
+        topic_embeddings = precompute_topic_embeddings(df, schema)
+        topic_docs = [
+            clean_text_for_semantics(row[schema["statement_col"]]) or ""
+            for _, row in df.iterrows()
+        ]
+        topics, probs, topic_model = run_bertopic(topic_docs, topic_embeddings, 5)
+        topic_results = build_topic_results(topics, probs, topic_model, df, schema)
+
     paths.output_dir.mkdir(parents=True, exist_ok=True)
 
     if grammar_results is not None:
@@ -99,6 +115,13 @@ def main():
             json.dump(chunk_semantic_results, f, indent=4, ensure_ascii=False)
         print(f"Chunk semantic output JSON → {paths.chunk_semantic_output_file}")
 
+    if topic_results is not None:
+        with open(paths.topic_output_file, "w", encoding="utf-8") as f:
+            json.dump(topic_results, f, indent=4, ensure_ascii=False)
+        print(f"Topic modeling output JSON → {paths.topic_output_file}")
+        txt_file = export_topic_keywords_to_txt(topic_results["topics"], args.output_name)
+        print(f"Topic keywords output TXT → {txt_file}")
+
     excel_file = export_results_to_excel(
         grammar_results,
         readability_results,
@@ -108,8 +131,10 @@ def main():
         paths.data_source_type,
         args.output_name,
         args.include_matches,
+        topic_results=topic_results,
     )
-    print(f"Excel output → {excel_file}")
+    if excel_file is not None:
+        print(f"Excel output → {excel_file}")
 
 
 if __name__ == "__main__":
