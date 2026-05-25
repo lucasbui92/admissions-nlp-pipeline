@@ -23,7 +23,9 @@ BLACKLIST = {
     "REFERENCES",
     "INFORMATION FOR TEACHERS AND ADVISORS"
 }
-BLACKLIST_NORM = {normalize_heading(x) for x in BLACKLIST}
+BLACKLIST_NORM = set()
+for _entry in BLACKLIST:
+    BLACKLIST_NORM.add(normalize_heading(_entry))
 
 def is_assessment_start(line: str) -> bool:
     s = line.strip()
@@ -57,7 +59,10 @@ def looks_like_subject_heading(line: str) -> bool:
     return True
 
 def split_into_subject_blocks(full_text: str):
-    lines = [ln.strip() for ln in full_text.split("\n") if ln.strip()]
+    lines = []
+    for ln in full_text.split("\n"):
+        if ln.strip():
+            lines.append(ln.strip())
 
     blocks = []
     current_subject = None

@@ -9,6 +9,7 @@ from utils.cleaning import clean_text_for_semantics
 from utils.processing import get_optional_value
 from config.schema import SEMANTIC_SOURCE_MAP
 from config.models import EMBEDDING_MODEL
+from config.settings import SEMANTIC_SETTINGS
 
 nltk.download("punkt", quiet=True)
 nltk.download("punkt_tab", quiet=True)
@@ -98,7 +99,7 @@ def precompute_statement_embeddings(df, schema):
     for _, row in df.iterrows():
         cleaned = clean_text_for_semantics(row[schema["statement_col"]])
         statements.append(cleaned or "")
-    return EMBEDDING_MODEL.encode(statements, batch_size=64, convert_to_tensor=True, show_progress_bar=True)
+    return EMBEDDING_MODEL.encode(statements, batch_size=SEMANTIC_SETTINGS["encoding"]["batch_size"], convert_to_tensor=True, show_progress_bar=True)
 
 def precompute_sentence_embeddings(df, schema):
     all_sentences = []
@@ -113,7 +114,7 @@ def precompute_sentence_embeddings(df, schema):
     if not all_sentences:
         return [None] * len(df)
 
-    all_embeddings = EMBEDDING_MODEL.encode(all_sentences, batch_size=64, convert_to_tensor=True, show_progress_bar=True)
+    all_embeddings = EMBEDDING_MODEL.encode(all_sentences, batch_size=SEMANTIC_SETTINGS["encoding"]["batch_size"], convert_to_tensor=True, show_progress_bar=True)
 
     result = []
     offset = 0
@@ -170,6 +171,7 @@ def process_document_level_semantic(row, schema, data_source_type, course_desc_d
                 if pd.notna(description) and str(description).strip():
                     semantic_result[score_key] = score_document_level_similarity(
                         cleaned_statement, str(description),
+                        alpha=SEMANTIC_SETTINGS["scoring"]["alpha"],
                         desc_embedding=precomputed.get(col),
                         stmt_embedding=stmt_embedding,
                     )
@@ -210,6 +212,8 @@ def process_chunk_level_semantic(row, schema, data_source_type, course_desc_df=N
                 if pd.notna(description) and str(description).strip():
                     semantic_result[score_key] = score_chunk_level_similarity(
                         cleaned_statement, str(description),
+                        alpha=SEMANTIC_SETTINGS["scoring"]["alpha"],
+                        k=SEMANTIC_SETTINGS["scoring"]["top_k"],
                         desc_embedding=precomputed.get(col),
                         sentence_embeddings=sentence_embeddings,
                     )

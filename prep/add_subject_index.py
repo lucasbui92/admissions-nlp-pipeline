@@ -30,12 +30,9 @@ def normalize(value):
 def add_subject_index(input_path):
     course_mappings_df = pd.read_excel(COURSE_MAPPINGS_FILE)
 
-    course_lookup = {
-        normalize(row["applicationCourse_titlemain"]): row["index"]
-        for _, row in course_mappings_df.dropna(
-            subset=["applicationCourse_titlemain", "index"]
-        ).iterrows()
-    }
+    course_lookup = {}
+    for _, row in course_mappings_df.dropna(subset=["applicationCourse_titlemain", "index"]).iterrows():
+        course_lookup[normalize(row["applicationCourse_titlemain"])] = row["index"]
 
     df = pd.read_excel(input_path)
 

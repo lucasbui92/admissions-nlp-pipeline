@@ -1,0 +1,20 @@
+topic_modeling:
+  umap:
+    n_neighbors: 15
+    n_components: 5
+  hdbscan:
+    min_cluster_size: 5
+  vectorizer:
+    min_df: 2
+    max_df: 0.5
+  output:
+    top_k: 5
+  encoding:
+    batch_size: 64
+
+semantic_similarity:
+  scoring:
+    alpha: 0.7
+    top_k: 3
+  encoding:
+    batch_size: 64

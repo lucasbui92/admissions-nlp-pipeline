@@ -7,9 +7,11 @@ from hdbscan import HDBSCAN
 from bertopic import BERTopic
 
 from config.models import EMBEDDING_MODEL
+from config.settings import TOPIC_SETTINGS
 from utils.cleaning import clean_text_for_semantics
 
 nltk.download("stopwords", quiet=True)
+
 
 STOPWORDS = set(stopwords.words("english"))
 
@@ -27,28 +29,28 @@ def precompute_topic_embeddings(df, schema):
         statements.append(cleaned or "")
     return EMBEDDING_MODEL.encode(
         statements,
-        batch_size=64,
+        batch_size=TOPIC_SETTINGS["encoding"]["batch_size"],
         convert_to_numpy=True,
         show_progress_bar=True,
     )
 
-def run_bertopic(docs, embeddings, min_cluster_size=150):
+def run_bertopic(docs, embeddings):
     umap_model = UMAP(
-        n_neighbors=15,
-        n_components=5,
+        n_neighbors=TOPIC_SETTINGS["umap"]["n_neighbors"],
+        n_components=TOPIC_SETTINGS["umap"]["n_components"],
         metric="cosine",
         random_state=42,
     )
     hdbscan_model = HDBSCAN(
-        min_cluster_size=min_cluster_size,
+        min_cluster_size=TOPIC_SETTINGS["hdbscan"]["min_cluster_size"],
         metric="euclidean",
         cluster_selection_method="eom",
         prediction_data=True,
     )
     vectorizer_model = CountVectorizer(
         stop_words=list(STOPWORDS),
-        min_df=2,
-        max_df=0.5,
+        min_df=TOPIC_SETTINGS["vectorizer"]["min_df"],
+        max_df=TOPIC_SETTINGS["vectorizer"]["max_df"],
     )
     topic_model = BERTopic(
         umap_model=umap_model,
@@ -65,7 +67,7 @@ def reduce_bertopic_topics(topic_model, docs, nr_topics):
     return topics, probs, topic_model
 
 
-def build_topic_results(topics, probs, topic_model, df, schema, top_n=5):
+def build_topic_results(topics, probs, topic_model, df, schema):
     topic_ids = []
     for t in set(topics):
         if t != -1:
@@ -93,6 +95,7 @@ def build_topic_results(topics, probs, topic_model, df, schema, top_n=5):
     else:
         probs_2d = probs_array
 
+    top_k = TOPIC_SETTINGS["output"]["top_k"]
     id_col = schema.get("app_id_col", schema.get("index_col"))
     applications_section = []
     for i, (_, row) in enumerate(df.iterrows()):
@@ -100,7 +103,7 @@ def build_topic_results(topics, probs, topic_model, df, schema, top_n=5):
         for j in range(len(topic_ids)):
             if probs_2d[i][j] > 1e-6:
                 topic_probs[f"Topic {topic_ids[j]}"] = float(probs_2d[i][j])
-        top_probs = dict(sorted(topic_probs.items(), key=lambda x: x[1], reverse=True)[:top_n])
+        top_probs = dict(sorted(topic_probs.items(), key=lambda x: x[1], reverse=True)[:top_k])
         applications_section.append({"app_id": row[id_col], "topic_probabilities": top_probs})
 
     return {"topics": topics_section, "applications": applications_section}

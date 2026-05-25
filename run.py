@@ -86,11 +86,11 @@ def main():
     topic_results = None
     if "topic_modeling" in metrics:
         topic_embeddings = precompute_topic_embeddings(df, schema)
-        topic_docs = [
-            clean_text_for_semantics(row[schema["statement_col"]]) or ""
-            for _, row in df.iterrows()
-        ]
-        topics, probs, topic_model = run_bertopic(topic_docs, topic_embeddings, 5)
+        topic_docs = []
+        for _, row in df.iterrows():
+            cleaned = clean_text_for_semantics(row[schema["statement_col"]])
+            topic_docs.append(cleaned or "")
+        topics, probs, topic_model = run_bertopic(topic_docs, topic_embeddings)
         topic_results = build_topic_results(topics, probs, topic_model, df, schema)
 
     paths.output_dir.mkdir(parents=True, exist_ok=True)
