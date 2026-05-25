@@ -56,6 +56,6 @@ def resolve_paths(mode, external_input, output_name):
         readability_output_file=output_dir / "readability.json",
         doc_semantic_output_file=output_dir / "doc_semantic.json",
         chunk_semantic_output_file=output_dir / "chunk_semantic.json",
-        topic_output_file=output_dir / "topic_modeling.json",
+        topic_output_file=output_dir / "topic_modelling.json",
         data_source_type=data_source_type,
     )

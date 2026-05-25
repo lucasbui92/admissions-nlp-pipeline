@@ -14,7 +14,7 @@ from analyzers.semantic_similarity import (
     precompute_statement_embeddings,
     precompute_sentence_embeddings,
 )
-from analyzers.topic_modeling import (
+from analyzers.topic_modelling import (
     precompute_topic_embeddings,
     build_topic_results,
     run_bertopic,
@@ -35,7 +35,7 @@ def main():
         default=None,
         help=(
             "Single metric to compute. Choices: chunk_semantic, doc_semantic, "
-            "grammar, readability, topic_modeling. Defaults to all metrics when omitted."
+            "grammar, readability, topic_modelling. Defaults to all metrics when omitted."
         ),
     )
     args = parser.parse_args()
@@ -84,7 +84,7 @@ def main():
             ))
 
     topic_results = None
-    if "topic_modeling" in metrics:
+    if "topic_modelling" in metrics:
         topic_embeddings = precompute_topic_embeddings(df, schema)
         topic_docs = []
         for _, row in df.iterrows():
@@ -118,7 +118,7 @@ def main():
     if topic_results is not None:
         with open(paths.topic_output_file, "w", encoding="utf-8") as f:
             json.dump(topic_results, f, indent=4, ensure_ascii=False)
-        print(f"Topic modeling output JSON → {paths.topic_output_file}")
+        print(f"Topic modelling output JSON → {paths.topic_output_file}")
         txt_file = export_topic_keywords_to_txt(topic_results["topics"], args.output_name)
         print(f"Topic keywords output TXT → {txt_file}")
 

@@ -1,4 +1,4 @@
-topic_modeling:
+topic_modelling:
   umap:
     n_neighbors: 15
     n_components: 5

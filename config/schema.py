@@ -1,4 +1,4 @@
-ALL_METRICS = {"grammar", "readability", "doc_semantic", "chunk_semantic", "topic_modeling"}
+ALL_METRICS = {"grammar", "readability", "doc_semantic", "chunk_semantic", "topic_modelling"}
 
 DATA_SOURCE = {
     "sample": {

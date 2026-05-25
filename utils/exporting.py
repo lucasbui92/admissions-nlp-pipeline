@@ -170,7 +170,7 @@ def export_results_to_excel(
         rows = []
         for record in topic_results["applications"]:
             rows.append(flatten_topic_record(record, schema, data_source_type))
-        sheets["topic_modeling"] = pd.DataFrame(rows)
+        sheets["topic_modelling"] = pd.DataFrame(rows)
 
     with pd.ExcelWriter(output_file, engine="openpyxl") as writer:
         for sheet_name, df in sheets.items():
