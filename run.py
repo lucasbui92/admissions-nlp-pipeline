@@ -6,16 +6,19 @@ from config.schema import ALL_METRICS, DATA_SOURCE
 
 from utils.cleaning import clean_text_for_semantics
 from utils.exporting import export_results_to_excel, export_topic_keywords_to_txt
-from utils.processing import process_writing_quality
-from analyzers.semantic_similarity import (
-    process_document_level_semantic,
-    process_chunk_level_semantic,
+from utils.preprocessing import (
     precompute_course_embeddings,
     precompute_statement_embeddings,
     precompute_sentence_embeddings,
-)
-from analyzers.topic_modelling import (
     precompute_topic_embeddings,
+)
+from analyzers.semantic_similarity import (
+    process_document_level_semantic,
+    process_chunk_level_semantic,
+)
+from analyzers.grammar import get_language_tool, process_grammar
+from analyzers.readability import process_readability
+from analyzers.topic_modelling import (
     build_topic_results,
     run_bertopic,
 )
@@ -64,15 +67,13 @@ def main():
     doc_semantic_results = [] if "doc_semantic" in metrics else None
     chunk_semantic_results = [] if "chunk_semantic" in metrics else None
 
+    tool = get_language_tool() if metrics & {"grammar", "readability"} else None
+
     for i, (_, row) in enumerate(df.iterrows()):
-        if metrics & {"grammar", "readability"}:
-            grammar_record, readability_record = process_writing_quality(
-                row, schema, paths.data_source_type,
-            )
-            if grammar_results is not None:
-                grammar_results.append(grammar_record)
-            if readability_results is not None:
-                readability_results.append(readability_record)
+        if "grammar" in metrics:
+            grammar_results.append(process_grammar(row, schema, paths.data_source_type, tool))
+        if "readability" in metrics:
+            readability_results.append(process_readability(row, schema, paths.data_source_type))
 
         if "doc_semantic" in metrics:
             doc_semantic_results.append(process_document_level_semantic(

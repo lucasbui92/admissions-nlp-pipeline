@@ -1,5 +1,12 @@
 import re, unicodedata
 import pandas as pd
+import nltk
+
+from nltk.corpus import stopwords
+
+nltk.download("stopwords", quiet=True)
+
+STOPWORDS = set(stopwords.words("english"))
 
 
 def clean_text_for_semantics(text):
@@ -41,3 +48,9 @@ def clean_text_for_semantics(text):
     text = text.lower()
 
     return text if text else None
+
+
+def remove_stopwords(text):
+    if not text:
+        return text
+    return " ".join(word for word in text.split() if word not in STOPWORDS)
