@@ -2,6 +2,7 @@ import nltk
 import numpy as np
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 from umap import UMAP
 from hdbscan import HDBSCAN
 from bertopic import BERTopic
@@ -22,19 +23,40 @@ def remove_stopwords(text):
     return " ".join(word for word in text.split() if word not in STOPWORDS)
 
 
-def precompute_topic_embeddings(df, schema):
+def precompute_topic_embeddings(df, schema, cache_path=None):
+    if cache_path and cache_path.exists():
+        meta_path = cache_path.with_suffix(".meta")
+        cached_count = int(meta_path.read_text()) if meta_path.exists() else None
+        if cached_count == len(df):
+            print(f"Loading cached topic embeddings from {cache_path}")
+            return np.load(cache_path)
+        print(f"Cache row count mismatch ({cached_count} cached vs {len(df)} current) — recomputing.")
+
     statements = []
     for _, row in df.iterrows():
         cleaned = remove_stopwords(clean_text_for_semantics(row[schema["statement_col"]]))
         statements.append(cleaned or "")
-    return EMBEDDING_MODEL.encode(
+    embeddings = EMBEDDING_MODEL.encode(
         statements,
         batch_size=TOPIC_SETTINGS["encoding"]["batch_size"],
         convert_to_numpy=True,
         show_progress_bar=True,
     )
+    if cache_path:
+        np.save(cache_path, embeddings)
+        cache_path.with_suffix(".meta").write_text(str(len(df)))
+        print(f"Topic embeddings cached to {cache_path}")
+    return embeddings
 
 def run_bertopic(docs, embeddings):
+    print(
+        f"Topic modelling settings:\n"
+        f"  umap.n_neighbors:       {TOPIC_SETTINGS['umap']['n_neighbors']}\n"
+        f"  umap.n_components:      {TOPIC_SETTINGS['umap']['n_components']}\n"
+        f"  hdbscan.min_cluster_size: {TOPIC_SETTINGS['hdbscan']['min_cluster_size']}\n"
+        f"  bertopic.temperature:   {TOPIC_SETTINGS['bertopic']['temperature']}"
+    )
+
     umap_model = UMAP(
         n_neighbors=TOPIC_SETTINGS["umap"]["n_neighbors"],
         n_components=TOPIC_SETTINGS["umap"]["n_components"],
@@ -45,7 +67,6 @@ def run_bertopic(docs, embeddings):
         min_cluster_size=TOPIC_SETTINGS["hdbscan"]["min_cluster_size"],
         metric="euclidean",
         cluster_selection_method="eom",
-        prediction_data=True,
     )
     vectorizer_model = CountVectorizer(
         stop_words=list(STOPWORDS),
@@ -56,24 +77,28 @@ def run_bertopic(docs, embeddings):
         umap_model=umap_model,
         hdbscan_model=hdbscan_model,
         vectorizer_model=vectorizer_model,
-        calculate_probabilities=True,
+        nr_topics=None,
     )
-    topics, probs = topic_model.fit_transform(docs, embeddings)
-    return topics, probs, topic_model
+    topics, _ = topic_model.fit_transform(docs, embeddings)
+
+    topic_ids = sorted([t for t in set(topics) if t != -1])
+    topics_array = np.array(topics)
+    centroids = []
+    for t in topic_ids:
+        centroid = embeddings[topics_array == t].mean(axis=0)
+        centroids.append(centroid)
+    centroids = np.array(centroids)
+
+    temperature = TOPIC_SETTINGS["bertopic"]["temperature"]
+    similarities = cosine_similarity(embeddings, centroids)
+    scaled = similarities / temperature
+    exp_scaled = np.exp(scaled - scaled.max(axis=1, keepdims=True))
+    probs = exp_scaled / exp_scaled.sum(axis=1, keepdims=True)
+
+    return topics, probs, topic_ids, topic_model
 
 
-def reduce_bertopic_topics(topic_model, docs, nr_topics):
-    topics, probs = topic_model.reduce_topics(docs, nr_topics=nr_topics)
-    return topics, probs, topic_model
-
-
-def build_topic_results(topics, probs, topic_model, df, schema):
-    topic_ids = []
-    for t in set(topics):
-        if t != -1:
-            topic_ids.append(t)
-    topic_ids.sort()
-
+def build_topic_results(topic_ids, probs, topic_model, df, schema):
     topics_section = []
     for t in topic_ids:
         keywords = []
@@ -81,28 +106,14 @@ def build_topic_results(topics, probs, topic_model, df, schema):
             keywords.append(word)
         topics_section.append({"topic_number": t, "keywords": keywords})
 
-    probs_array = np.array(probs)
-    if probs_array.ndim == 1:
-        # BERTopic returned one scalar per doc (assigned-topic probability only);
-        # reconstruct a full matrix with zeros for all other topics.
-        topic_id_to_idx = {}
-        for j, t in enumerate(topic_ids):
-            topic_id_to_idx[t] = j
-        probs_2d = np.zeros((len(topics), len(topic_ids)))
-        for i, (t, p) in enumerate(zip(topics, probs_array)):
-            if t in topic_id_to_idx:
-                probs_2d[i, topic_id_to_idx[t]] = float(p)
-    else:
-        probs_2d = probs_array
-
     top_k = TOPIC_SETTINGS["output"]["top_k"]
     id_col = schema.get("app_id_col", schema.get("index_col"))
     applications_section = []
     for i, (_, row) in enumerate(df.iterrows()):
         topic_probs = {}
         for j in range(len(topic_ids)):
-            if probs_2d[i][j] > 1e-6:
-                topic_probs[f"Topic {topic_ids[j]}"] = float(probs_2d[i][j])
+            if probs[i][j] > 1e-6:
+                topic_probs[f"Topic {topic_ids[j]}"] = float(probs[i][j])
         top_probs = dict(sorted(topic_probs.items(), key=lambda x: x[1], reverse=True)[:top_k])
         applications_section.append({"app_id": row[id_col], "topic_probabilities": top_probs})
 

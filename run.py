@@ -29,6 +29,9 @@ def main():
     parser.add_argument("--include_matches", action="store_true",
             help="Include grammar match details in the Excel export."
     )
+    parser.add_argument("--debug_topics", action="store_true",
+            help="Print topic count only and exit, skipping all file output."
+    )
     parser.add_argument(
         "--metric",
         choices=sorted(ALL_METRICS),
@@ -85,13 +88,16 @@ def main():
 
     topic_results = None
     if "topic_modelling" in metrics:
-        topic_embeddings = precompute_topic_embeddings(df, schema)
+        topic_embeddings = precompute_topic_embeddings(df, schema, cache_path=paths.topic_embeddings_cache)
         topic_docs = []
         for _, row in df.iterrows():
             cleaned = clean_text_for_semantics(row[schema["statement_col"]])
             topic_docs.append(cleaned or "")
-        topics, probs, topic_model = run_bertopic(topic_docs, topic_embeddings)
-        topic_results = build_topic_results(topics, probs, topic_model, df, schema)
+        topics, probs, topic_ids, topic_model = run_bertopic(topic_docs, topic_embeddings)
+        print(f"Total topics discovered: {len(topic_ids)}")
+        if args.debug_topics:
+            return
+        topic_results = build_topic_results(topic_ids, probs, topic_model, df, schema)
 
     paths.output_dir.mkdir(parents=True, exist_ok=True)
 
