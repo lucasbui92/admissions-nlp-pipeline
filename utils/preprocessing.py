@@ -4,8 +4,8 @@ import pandas as pd
 
 from config.models import EMBEDDING_MODEL
 from config.schema import SEMANTIC_SOURCE_MAP
-from config.settings import SEMANTIC_SETTINGS, TOPIC_SETTINGS
-from utils.cleaning import clean_text_for_semantics, remove_stopwords
+from config.settings import SEMANTIC_SETTINGS
+from utils.cleaning import clean_text_for_semantics
 
 
 def get_optional_value(row, col_name):
@@ -60,27 +60,3 @@ def precompute_course_embeddings(course_desc_df):
                 embeddings[idx][col] = None
     return embeddings
 
-def precompute_topic_embeddings(df, schema, cache_path=None):
-    if cache_path and cache_path.exists():
-        meta_path = cache_path.with_suffix(".meta")
-        cached_count = int(meta_path.read_text()) if meta_path.exists() else None
-        if cached_count == len(df):
-            print(f"Loading cached topic embeddings from {cache_path}")
-            return np.load(cache_path)
-        print(f"Cache row count mismatch ({cached_count} cached vs {len(df)} current) — recomputing.")
-
-    statements = []
-    for _, row in df.iterrows():
-        cleaned = remove_stopwords(clean_text_for_semantics(row[schema["statement_col"]]))
-        statements.append(cleaned or "")
-    embeddings = EMBEDDING_MODEL.encode(
-        statements,
-        batch_size=TOPIC_SETTINGS["encoding"]["batch_size"],
-        convert_to_numpy=True,
-        show_progress_bar=True,
-    )
-    if cache_path:
-        np.save(cache_path, embeddings)
-        cache_path.with_suffix(".meta").write_text(str(len(df)))
-        print(f"Topic embeddings cached to {cache_path}")
-    return embeddings

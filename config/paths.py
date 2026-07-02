@@ -4,11 +4,13 @@ from datetime import datetime
 
 DATA_ROOT = Path("data")
 OUTPUT_ROOT = Path("output")
+DERIVED_DIR = Path(r"B:\derived")
 CACHE_DIR = DATA_ROOT / "cache"
 
 SAMPLE_INPUT_FILE = DATA_ROOT / "sample" / "sample_personal_statements.xlsx"
 COURSES_FILE = DATA_ROOT / "reference" / "course_descriptions.xlsx"
 COURSE_MAPPINGS_FILE = DATA_ROOT / "reference" / "course_mappings.xlsx"
+TOPIC_KEYWORDS_FILE = DATA_ROOT / "reference" / "topics_keywords.txt"
 
 VALID_MODES = {"sample", "restricted"}
 
@@ -24,6 +26,7 @@ class Paths:
     chunk_semantic_output_file: Path
     topic_output_file: Path
     topic_embeddings_cache: Path
+    topic_candidates_file: Path
     data_source_type: str
 
 
@@ -48,7 +51,6 @@ def resolve_paths(mode, external_input, output_name):
 
     today = datetime.now().strftime("%Y%m%d")
     output_dir = OUTPUT_ROOT / mode / f"{output_name}_{today}"
-    output_dir.mkdir(parents=True, exist_ok=True)
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
     return Paths(
@@ -61,5 +63,6 @@ def resolve_paths(mode, external_input, output_name):
         chunk_semantic_output_file=output_dir / "chunk_semantic.json",
         topic_output_file=output_dir / "topic_modelling.json",
         topic_embeddings_cache=CACHE_DIR / f"{input_file.stem}_topic_embeddings.npy",
+        topic_candidates_file=DERIVED_DIR / f"{output_name}_{today}.csv",
         data_source_type=data_source_type,
     )

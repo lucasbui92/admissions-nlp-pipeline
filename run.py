@@ -1,16 +1,14 @@
 import argparse, json
 import pandas as pd
 
-from config.paths import COURSES_FILE, resolve_paths
+from config.paths import COURSES_FILE, TOPIC_KEYWORDS_FILE, resolve_paths
 from config.schema import ALL_METRICS, DATA_SOURCE
 
-from utils.cleaning import clean_text_for_semantics
-from utils.exporting import export_results_to_excel, export_topic_keywords_to_txt
+from utils.exporting import export_results_to_excel
 from utils.preprocessing import (
     precompute_course_embeddings,
     precompute_statement_embeddings,
     precompute_sentence_embeddings,
-    precompute_topic_embeddings,
 )
 from analyzers.semantic_similarity import (
     process_document_level_semantic,
@@ -18,10 +16,7 @@ from analyzers.semantic_similarity import (
 )
 from analyzers.grammar import get_language_tool, process_grammar
 from analyzers.readability import process_readability
-from analyzers.topic_modelling import (
-    build_topic_results,
-    run_bertopic,
-)
+from analyzers.topic_modelling import find_related_keywords, load_seed_keywords, prepare_topic_docs
 
 
 def main():
@@ -31,9 +26,6 @@ def main():
     parser.add_argument("--output_name", required=True, type=str)
     parser.add_argument("--include_matches", action="store_true",
             help="Include grammar match details in the Excel export."
-    )
-    parser.add_argument("--debug_topics", action="store_true",
-            help="Print topic count only and exit, skipping all file output."
     )
     parser.add_argument(
         "--metric",
@@ -87,20 +79,17 @@ def main():
                 sentence_embeddings=sent_embeddings[i],
             ))
 
-    topic_results = None
+    topic_docs = None
+    topic_candidates = None
     if "topic_modelling" in metrics:
-        topic_embeddings = precompute_topic_embeddings(df, schema, cache_path=paths.topic_embeddings_cache)
-        topic_docs = []
-        for _, row in df.iterrows():
-            cleaned = clean_text_for_semantics(row[schema["statement_col"]])
-            topic_docs.append(cleaned or "")
-        topics, probs, topic_ids, topic_model = run_bertopic(topic_docs, topic_embeddings)
-        print(f"Total topics discovered: {len(topic_ids)}")
-        if args.debug_topics:
-            return
-        topic_results = build_topic_results(topic_ids, probs, topic_model, df, schema)
+        topic_docs = prepare_topic_docs(df, schema)
+        print(f"Topic modelling Step 1 complete: {len(topic_docs)} documents prepared.")
+        seed_categories = load_seed_keywords(TOPIC_KEYWORDS_FILE)
+        topic_candidates = find_related_keywords(df, schema, seed_categories)
 
-    paths.output_dir.mkdir(parents=True, exist_ok=True)
+    has_json_output = any(r is not None for r in [grammar_results, readability_results, doc_semantic_results, chunk_semantic_results])
+    if has_json_output:
+        paths.output_dir.mkdir(parents=True, exist_ok=True)
 
     if grammar_results is not None:
         with open(paths.grammar_output_file, "w", encoding="utf-8") as f:
@@ -122,12 +111,14 @@ def main():
             json.dump(chunk_semantic_results, f, indent=4, ensure_ascii=False)
         print(f"Chunk semantic output JSON → {paths.chunk_semantic_output_file}")
 
-    if topic_results is not None:
-        with open(paths.topic_output_file, "w", encoding="utf-8") as f:
-            json.dump(topic_results, f, indent=4, ensure_ascii=False)
-        print(f"Topic modelling output JSON → {paths.topic_output_file}")
-        txt_file = export_topic_keywords_to_txt(topic_results["topics"], args.output_name)
-        print(f"Topic keywords output TXT → {txt_file}")
+    if topic_candidates is not None:
+        paths.topic_candidates_file.parent.mkdir(parents=True, exist_ok=True)
+        rows = []
+        for category, kw_list in topic_candidates.items():
+            for rank, (keyword, freq) in enumerate(kw_list, start=1):
+                rows.append({"category": category, "rank": rank, "keyword": keyword, "frequency": freq})
+        pd.DataFrame(rows).to_csv(paths.topic_candidates_file, index=False)
+        print(f"Topic candidates CSV → {paths.topic_candidates_file}")
 
     excel_file = export_results_to_excel(
         grammar_results,
@@ -138,7 +129,6 @@ def main():
         paths.data_source_type,
         args.output_name,
         args.include_matches,
-        topic_results=topic_results,
     )
     if excel_file is not None:
         print(f"Excel output → {excel_file}")
