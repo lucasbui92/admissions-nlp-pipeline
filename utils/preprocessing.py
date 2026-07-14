@@ -1,3 +1,4 @@
+import re
 import nltk
 import numpy as np
 import pandas as pd
@@ -26,6 +27,8 @@ def precompute_statement_embeddings(df, schema):
     return EMBEDDING_MODEL.encode(statements, batch_size=SEMANTIC_SETTINGS["encoding"]["batch_size"], convert_to_tensor=True, show_progress_bar=True)
 
 def precompute_sentence_embeddings(df, schema):
+    """Unlike tokenize_statements_to_sentences, this keeps every sentence unfiltered
+    and converts them straight to embedding tensors — output is vectors, not text."""
     all_sentences = []
     sentence_counts = []
 
@@ -47,6 +50,32 @@ def precompute_sentence_embeddings(df, schema):
         offset += count
     return result
 
+def tokenize_statements_to_sentences(df, schema):
+    """Unlike precompute_sentence_embeddings, this returns (stmt_id, sentence) text tuples
+    with noise filtered out (< 3 words, punctuation-only) — for steps that need readable sentences, not vectors."""
+    id_col = schema.get("index_col") or schema.get("app_id_col")
+    results = []
+    processed = 0
+
+    for _, row in df.iterrows():
+        raw = row[schema["statement_col"]]
+        if not isinstance(raw, str) or not raw.strip():
+            continue
+
+        stmt_id = row[id_col] if id_col and id_col in row.index else row.name
+        processed += 1
+
+        for sentence in nltk.sent_tokenize(raw):
+            sentence = re.sub(r"\s+", " ", sentence).strip().lower()
+            if len(sentence.split()) < 3:
+                continue
+            if not re.search(r"[a-z0-9]", sentence):
+                continue
+            results.append((stmt_id, sentence))
+
+    return results, processed
+
+
 def precompute_course_embeddings(course_desc_df):
     embeddings = {}
     for _, row in course_desc_df.iterrows():
@@ -58,5 +87,5 @@ def precompute_course_embeddings(course_desc_df):
                 embeddings[idx][col] = EMBEDDING_MODEL.encode(str(desc), convert_to_tensor=True)
             else:
                 embeddings[idx][col] = None
-    return embeddings
 
+    return embeddings

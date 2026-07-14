@@ -1,3 +1,16 @@
+"""
+One-time script to build a combined_description column in the courses file
+by merging per-source description columns (Essex, Manchester, UCAS).
+
+Each non-blank source description is prefixed with its label and joined
+with newlines. Rows where all source columns are blank are left as None.
+
+The courses file is modified in-place.
+
+Usage:
+    python prep/build_course_descriptions.py
+"""
+
 import pandas as pd
 
 from config.paths import COURSES_FILE

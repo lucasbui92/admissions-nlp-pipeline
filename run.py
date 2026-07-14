@@ -1,14 +1,17 @@
-import argparse, json
+import argparse, gzip, json, pickle, sys
+
 import pandas as pd
 
-from config.paths import COURSES_FILE, TOPIC_KEYWORDS_FILE, resolve_paths
+from config.paths import COURSES_FILE, TOPIC_KEYWORDS_FILE, TOPIC_KEYWORDS_FINAL_FILE, resolve_paths
 from config.schema import ALL_METRICS, DATA_SOURCE
 
 from utils.exporting import export_results_to_excel
 from utils.preprocessing import (
+    get_optional_value,
     precompute_course_embeddings,
     precompute_statement_embeddings,
     precompute_sentence_embeddings,
+    tokenize_statements_to_sentences,
 )
 from analyzers.semantic_similarity import (
     process_document_level_semantic,
@@ -16,7 +19,14 @@ from analyzers.semantic_similarity import (
 )
 from analyzers.grammar import get_language_tool, process_grammar
 from analyzers.readability import process_readability
-from analyzers.topic_modelling import find_related_keywords, load_seed_keywords, prepare_topic_docs
+from analyzers.topic_modelling import (
+    aggregate_statement_topics,
+    apply_semantic_fallback,
+    build_keyword_embeddings,
+    find_related_keywords,
+    load_seed_keywords,
+    match_sentences_to_topics,
+)
 
 
 def main():
@@ -34,6 +44,16 @@ def main():
         help=(
             "Single metric to compute. Choices: chunk_semantic, doc_semantic, "
             "grammar, readability, topic_modelling. Defaults to all metrics when omitted."
+        ),
+    )
+    parser.add_argument(
+        "--stage",
+        choices=["candidates", "scoring"],
+        default=None,
+        help=(
+            "Topic modelling stage. Required when --metric topic_modelling is used. "
+            "'candidates' extracts keyword candidates for review. "
+            "'scoring' runs sentence matching (requires topics_keywords_final.txt)."
         ),
     )
     args = parser.parse_args()
@@ -79,13 +99,81 @@ def main():
                 sentence_embeddings=sent_embeddings[i],
             ))
 
-    topic_docs = None
     topic_candidates = None
     if "topic_modelling" in metrics:
-        topic_docs = prepare_topic_docs(df, schema)
-        print(f"Topic modelling Step 1 complete: {len(topic_docs)} documents prepared.")
-        seed_categories = load_seed_keywords(TOPIC_KEYWORDS_FILE)
-        topic_candidates = find_related_keywords(df, schema, seed_categories)
+        if args.stage is None:
+            print("ERROR: --stage is required when running topic_modelling. Choose 'candidates' or 'scoring'.")
+            sys.exit(1)
+
+        if args.stage == "candidates":
+            print("Running topic modelling candidates stage.")
+            seed_topics = load_seed_keywords(TOPIC_KEYWORDS_FILE)
+            topic_candidates = find_related_keywords(df, schema, seed_topics)
+            print("✓ Complete. Review topic_candidates file, finalise topics_keywords_final.txt, then run --stage scoring.")
+
+        elif args.stage == "scoring":
+            if not TOPIC_KEYWORDS_FINAL_FILE.exists():
+                print(f"ERROR: Approved keywords not found at {TOPIC_KEYWORDS_FINAL_FILE}")
+                print("Run --stage candidates first, finalise keywords, then re-run with --stage scoring.")
+                sys.exit(1)
+
+            # Step 1: Tokenize statements into sentences
+            if paths.sentences_tokenized_pkl.exists():
+                with gzip.open(paths.sentences_tokenized_pkl, "rb") as f:
+                    sentences = pickle.load(f)
+                print(f"Step 1: cache hit — {len(sentences):,} sentences loaded from {paths.sentences_tokenized_pkl}")
+            else:
+                sentences, stmt_count = tokenize_statements_to_sentences(df, schema)
+                paths.sentences_tokenized_pkl.parent.mkdir(parents=True, exist_ok=True)
+                try:
+                    with gzip.open(paths.sentences_tokenized_pkl, "wb") as f:
+                        pickle.dump(sentences, f)
+                except Exception:
+                    paths.sentences_tokenized_pkl.unlink(missing_ok=True)
+                    raise
+                print(f"Step 1 complete: {stmt_count} statements, {len(sentences):,} sentences → {paths.sentences_tokenized_pkl}")
+
+            # Step 2: Phase 1 — lemmatization-based keyword matching
+            topics = load_seed_keywords(TOPIC_KEYWORDS_FINAL_FILE)
+            print(f"Step 2: matching {len(sentences):,} sentences across {len(topics)} topics...")
+            results = match_sentences_to_topics(sentences, topics)
+            print("Step 2 complete.")
+
+            # Step 3: Phase 2 — semantic similarity fallback for low-scoring sentences
+            print("Step 3: building keyword embeddings for semantic fallback...")
+            keyword_embeddings = build_keyword_embeddings(topics)
+            results = apply_semantic_fallback(results, keyword_embeddings)
+            print("Step 3 complete.")
+
+            # Step 4: Aggregate per-sentence scores into per-topic proportions per statement
+            statement_topics = aggregate_statement_topics(results, topics.keys())
+            del results
+
+            if paths.data_source_type == "restricted":
+                id_col = schema["app_id_col"]
+                identifier_lookup = df.set_index(id_col)
+            else:
+                identifier_lookup = None
+
+            rows = []
+            for entry in statement_topics:
+                stmt_id = entry["statement_id"]
+                if identifier_lookup is not None and stmt_id in identifier_lookup.index:
+                    id_row = identifier_lookup.loc[stmt_id]
+                    row = {
+                        "ApplicantNumber": stmt_id,
+                        "YearOfEntry": id_row[schema["admit_year_col"]],
+                        "applicationCourse": get_optional_value(id_row, schema.get("course_col")),
+                        "applicationCourse_titlemain": get_optional_value(id_row, schema.get("course_title")),
+                    }
+                else:
+                    row = {"statement_id": stmt_id}
+                row.update(entry["topic_proportions"])
+                rows.append(row)
+
+            paths.topic_scoring_csv.parent.mkdir(parents=True, exist_ok=True)
+            pd.DataFrame(rows).to_csv(paths.topic_scoring_csv, index=False)
+            print(f"✓ Complete. {len(rows):,} statements → {paths.topic_scoring_csv}")
 
     has_json_output = any(r is not None for r in [grammar_results, readability_results, doc_semantic_results, chunk_semantic_results])
     if has_json_output:
@@ -114,9 +202,9 @@ def main():
     if topic_candidates is not None:
         paths.topic_candidates_file.parent.mkdir(parents=True, exist_ok=True)
         rows = []
-        for category, kw_list in topic_candidates.items():
+        for topic, kw_list in topic_candidates.items():
             for rank, (keyword, freq) in enumerate(kw_list, start=1):
-                rows.append({"category": category, "rank": rank, "keyword": keyword, "frequency": freq})
+                rows.append({"topic": topic, "rank": rank, "keyword": keyword, "frequency": freq})
         pd.DataFrame(rows).to_csv(paths.topic_candidates_file, index=False)
         print(f"Topic candidates CSV → {paths.topic_candidates_file}")
 
