@@ -1,5 +1,7 @@
 import language_tool_python
 
+from utils.preprocessing import get_optional_value
+
 
 def get_language_tool():
     return language_tool_python.LanguageTool("en-UK")
@@ -73,3 +75,24 @@ def score_grammar_quality(text, tool):
         "char_count": char_count,
         "matches": match_list
     }
+
+def process_grammar(row, schema, data_source_type, tool):
+    raw_statement = row[schema["statement_col"]]
+    grammar_result = score_grammar_quality(raw_statement, tool)
+
+    if data_source_type == "sample":
+        return {
+            "index": row[schema["index_col"]],
+            "subject": row[schema["subject_col"]],
+            "grammar_result": grammar_result,
+        }
+    elif data_source_type == "restricted":
+        return {
+            "app_id": row[schema["app_id_col"]],
+            "admit_year": row[schema["admit_year_col"]],
+            "application_course": get_optional_value(row, schema.get("course_col")),
+            "application_course_titlemain": get_optional_value(row, schema.get("course_title")),
+            "grammar_result": grammar_result,
+        }
+    else:
+        raise ValueError(f"Unsupported data source type: {data_source_type}")

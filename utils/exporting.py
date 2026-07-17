@@ -101,26 +101,6 @@ def flatten_chunk_semantic_record(record, schema, data_source_type):
     return row
 
 
-def export_topic_keywords_to_txt(topics_section, output_name):
-    EXCEL_EXPORT_DIR.mkdir(parents=True, exist_ok=True)
-    today = datetime.now().strftime("%Y%m%d")
-    output_file = EXCEL_EXPORT_DIR / f"{output_name}_topic_keywords_{today}.txt"
-    with open(output_file, "w", encoding="utf-8") as f:
-        for topic in topics_section:
-            keywords = ", ".join(topic["keywords"])
-            f.write(f"Topic {topic['topic_number']}: {keywords}\n")
-    return output_file
-
-
-def flatten_topic_record(record, schema, data_source_type):
-    id_col = schema.get("app_id_col") or schema.get("index_col")
-    row = {id_col: record["app_id"]}
-    for rank, (topic, score) in enumerate(record["topic_probabilities"].items(), start=1):
-        row[f"Topic_Rank{rank}"] = topic
-        row[f"Score_Rank{rank}"] = round(score, 4)
-    return row
-
-
 def export_results_to_excel(
     grammar_results,
     readability_results,
@@ -130,14 +110,13 @@ def export_results_to_excel(
     data_source_type,
     output_name,
     include_matches=False,
-    topic_results=None,
 ):
     EXCEL_EXPORT_DIR.mkdir(parents=True, exist_ok=True)
 
     today = datetime.now().strftime("%Y%m%d")
     output_file = EXCEL_EXPORT_DIR / f"{output_name}_{today}.xlsx"
 
-    if all(r is None for r in [grammar_results, readability_results, doc_semantic_results, chunk_semantic_results, topic_results]):
+    if all(r is None for r in [grammar_results, readability_results, doc_semantic_results, chunk_semantic_results]):
         return None
 
     sheets = {}
@@ -165,12 +144,6 @@ def export_results_to_excel(
         for record in chunk_semantic_results:
             rows.append(flatten_chunk_semantic_record(record, schema, data_source_type))
         sheets["chunk"] = pd.DataFrame(rows)
-
-    if topic_results is not None:
-        rows = []
-        for record in topic_results["applications"]:
-            rows.append(flatten_topic_record(record, schema, data_source_type))
-        sheets["topic_modelling"] = pd.DataFrame(rows)
 
     with pd.ExcelWriter(output_file, engine="openpyxl") as writer:
         for sheet_name, df in sheets.items():

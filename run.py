@@ -1,23 +1,31 @@
-import argparse, json
+import argparse, gzip, json, pickle, sys
+
 import pandas as pd
 
-from config.paths import COURSES_FILE, resolve_paths
+from config.paths import COURSES_FILE, TOPIC_KEYWORDS_FILE, TOPIC_KEYWORDS_FINAL_FILE, resolve_paths
 from config.schema import ALL_METRICS, DATA_SOURCE
 
-from utils.cleaning import clean_text_for_semantics
-from utils.exporting import export_results_to_excel, export_topic_keywords_to_txt
-from utils.processing import process_writing_quality
-from analyzers.semantic_similarity import (
-    process_document_level_semantic,
-    process_chunk_level_semantic,
+from utils.exporting import export_results_to_excel
+from utils.preprocessing import (
+    get_optional_value,
     precompute_course_embeddings,
     precompute_statement_embeddings,
     precompute_sentence_embeddings,
+    tokenize_statements_to_sentences,
 )
+from analyzers.semantic_similarity import (
+    process_document_level_semantic,
+    process_chunk_level_semantic,
+)
+from analyzers.grammar import get_language_tool, process_grammar
+from analyzers.readability import process_readability
 from analyzers.topic_modelling import (
-    precompute_topic_embeddings,
-    build_topic_results,
-    run_bertopic,
+    aggregate_statement_topics,
+    apply_semantic_fallback,
+    build_keyword_embeddings,
+    find_related_keywords,
+    load_seed_keywords,
+    match_sentences_to_topics,
 )
 
 
@@ -36,6 +44,16 @@ def main():
         help=(
             "Single metric to compute. Choices: chunk_semantic, doc_semantic, "
             "grammar, readability, topic_modelling. Defaults to all metrics when omitted."
+        ),
+    )
+    parser.add_argument(
+        "--stage",
+        choices=["candidates", "scoring"],
+        default=None,
+        help=(
+            "Topic modelling stage. Required when --metric topic_modelling is used. "
+            "'candidates' extracts keyword candidates for review. "
+            "'scoring' runs sentence matching (requires topics_keywords_final.txt)."
         ),
     )
     args = parser.parse_args()
@@ -61,15 +79,13 @@ def main():
     doc_semantic_results = [] if "doc_semantic" in metrics else None
     chunk_semantic_results = [] if "chunk_semantic" in metrics else None
 
+    tool = get_language_tool() if metrics & {"grammar", "readability"} else None
+
     for i, (_, row) in enumerate(df.iterrows()):
-        if metrics & {"grammar", "readability"}:
-            grammar_record, readability_record = process_writing_quality(
-                row, schema, paths.data_source_type,
-            )
-            if grammar_results is not None:
-                grammar_results.append(grammar_record)
-            if readability_results is not None:
-                readability_results.append(readability_record)
+        if "grammar" in metrics:
+            grammar_results.append(process_grammar(row, schema, paths.data_source_type, tool))
+        if "readability" in metrics:
+            readability_results.append(process_readability(row, schema, paths.data_source_type))
 
         if "doc_semantic" in metrics:
             doc_semantic_results.append(process_document_level_semantic(
@@ -83,17 +99,85 @@ def main():
                 sentence_embeddings=sent_embeddings[i],
             ))
 
-    topic_results = None
+    topic_candidates = None
     if "topic_modelling" in metrics:
-        topic_embeddings = precompute_topic_embeddings(df, schema)
-        topic_docs = []
-        for _, row in df.iterrows():
-            cleaned = clean_text_for_semantics(row[schema["statement_col"]])
-            topic_docs.append(cleaned or "")
-        topics, probs, topic_model = run_bertopic(topic_docs, topic_embeddings)
-        topic_results = build_topic_results(topics, probs, topic_model, df, schema)
+        if args.stage is None:
+            print("ERROR: --stage is required when running topic_modelling. Choose 'candidates' or 'scoring'.")
+            sys.exit(1)
 
-    paths.output_dir.mkdir(parents=True, exist_ok=True)
+        if args.stage == "candidates":
+            print("Running topic modelling candidates stage.")
+            seed_topics = load_seed_keywords(TOPIC_KEYWORDS_FILE)
+            topic_candidates = find_related_keywords(df, schema, seed_topics)
+            print("✓ Complete. Review topic_candidates file, finalise topics_keywords_final.txt, then run --stage scoring.")
+
+        elif args.stage == "scoring":
+            if not TOPIC_KEYWORDS_FINAL_FILE.exists():
+                print(f"ERROR: Approved keywords not found at {TOPIC_KEYWORDS_FINAL_FILE}")
+                print("Run --stage candidates first, finalise keywords, then re-run with --stage scoring.")
+                sys.exit(1)
+
+            # Step 1: Tokenize statements into sentences
+            if paths.sentences_tokenized_pkl.exists():
+                with gzip.open(paths.sentences_tokenized_pkl, "rb") as f:
+                    sentences = pickle.load(f)
+                print(f"Step 1: cache hit — {len(sentences):,} sentences loaded from {paths.sentences_tokenized_pkl}")
+            else:
+                sentences, stmt_count = tokenize_statements_to_sentences(df, schema)
+                paths.sentences_tokenized_pkl.parent.mkdir(parents=True, exist_ok=True)
+                try:
+                    with gzip.open(paths.sentences_tokenized_pkl, "wb") as f:
+                        pickle.dump(sentences, f)
+                except Exception:
+                    paths.sentences_tokenized_pkl.unlink(missing_ok=True)
+                    raise
+                print(f"Step 1 complete: {stmt_count} statements, {len(sentences):,} sentences → {paths.sentences_tokenized_pkl}")
+
+            # Step 2: Phase 1 — lemmatization-based keyword matching
+            topics = load_seed_keywords(TOPIC_KEYWORDS_FINAL_FILE)
+            print(f"Step 2: matching {len(sentences):,} sentences across {len(topics)} topics...")
+            results = match_sentences_to_topics(sentences, topics)
+            print("Step 2 complete.")
+
+            # Step 3: Phase 2 — semantic similarity fallback for low-scoring sentences
+            print("Step 3: building keyword embeddings for semantic fallback...")
+            keyword_embeddings = build_keyword_embeddings(topics)
+            results = apply_semantic_fallback(results, keyword_embeddings)
+            print("Step 3 complete.")
+
+            # Step 4: Aggregate per-sentence scores into per-topic proportions per statement
+            statement_topics = aggregate_statement_topics(results, topics.keys())
+            del results
+
+            if paths.data_source_type == "restricted":
+                id_col = schema["app_id_col"]
+                identifier_lookup = df.set_index(id_col)
+            else:
+                identifier_lookup = None
+
+            rows = []
+            for entry in statement_topics:
+                stmt_id = entry["statement_id"]
+                if identifier_lookup is not None and stmt_id in identifier_lookup.index:
+                    id_row = identifier_lookup.loc[stmt_id]
+                    row = {
+                        "ApplicantNumber": stmt_id,
+                        "YearOfEntry": id_row[schema["admit_year_col"]],
+                        "applicationCourse": get_optional_value(id_row, schema.get("course_col")),
+                        "applicationCourse_titlemain": get_optional_value(id_row, schema.get("course_title")),
+                    }
+                else:
+                    row = {"statement_id": stmt_id}
+                row.update(entry["topic_proportions"])
+                rows.append(row)
+
+            paths.topic_scoring_csv.parent.mkdir(parents=True, exist_ok=True)
+            pd.DataFrame(rows).to_csv(paths.topic_scoring_csv, index=False)
+            print(f"✓ Complete. {len(rows):,} statements → {paths.topic_scoring_csv}")
+
+    has_json_output = any(r is not None for r in [grammar_results, readability_results, doc_semantic_results, chunk_semantic_results])
+    if has_json_output:
+        paths.output_dir.mkdir(parents=True, exist_ok=True)
 
     if grammar_results is not None:
         with open(paths.grammar_output_file, "w", encoding="utf-8") as f:
@@ -115,12 +199,14 @@ def main():
             json.dump(chunk_semantic_results, f, indent=4, ensure_ascii=False)
         print(f"Chunk semantic output JSON → {paths.chunk_semantic_output_file}")
 
-    if topic_results is not None:
-        with open(paths.topic_output_file, "w", encoding="utf-8") as f:
-            json.dump(topic_results, f, indent=4, ensure_ascii=False)
-        print(f"Topic modelling output JSON → {paths.topic_output_file}")
-        txt_file = export_topic_keywords_to_txt(topic_results["topics"], args.output_name)
-        print(f"Topic keywords output TXT → {txt_file}")
+    if topic_candidates is not None:
+        paths.topic_candidates_file.parent.mkdir(parents=True, exist_ok=True)
+        rows = []
+        for topic, kw_list in topic_candidates.items():
+            for rank, (keyword, freq) in enumerate(kw_list, start=1):
+                rows.append({"topic": topic, "rank": rank, "keyword": keyword, "frequency": freq})
+        pd.DataFrame(rows).to_csv(paths.topic_candidates_file, index=False)
+        print(f"Topic candidates CSV → {paths.topic_candidates_file}")
 
     excel_file = export_results_to_excel(
         grammar_results,
@@ -131,7 +217,6 @@ def main():
         paths.data_source_type,
         args.output_name,
         args.include_matches,
-        topic_results=topic_results,
     )
     if excel_file is not None:
         print(f"Excel output → {excel_file}")

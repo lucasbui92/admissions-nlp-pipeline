@@ -41,3 +41,16 @@ def clean_text_for_semantics(text):
     text = text.lower()
 
     return text if text else None
+
+
+def clean_text_for_topics(text):
+    if pd.isna(text):
+        return None
+    text = str(text)
+    text = unicodedata.normalize("NFKC", text)
+    text = re.sub(r"[\r\n\t]+", " ", text)
+    text = text.lower()
+    text = re.sub(r"[^\w\s]", "", text)
+    text = re.sub(r"\s+", " ", text)
+    text = text.strip()
+    return text if text else None

@@ -4,10 +4,15 @@ from datetime import datetime
 
 DATA_ROOT = Path("data")
 OUTPUT_ROOT = Path("output")
+DERIVED_DIR = Path(r"B:\derived")
+RAW_DIR = Path(r"B:\raw")
+CACHE_DIR = DATA_ROOT / "cache"
 
 SAMPLE_INPUT_FILE = DATA_ROOT / "sample" / "sample_personal_statements.xlsx"
 COURSES_FILE = DATA_ROOT / "reference" / "course_descriptions.xlsx"
 COURSE_MAPPINGS_FILE = DATA_ROOT / "reference" / "course_mappings.xlsx"
+TOPIC_KEYWORDS_FILE = DATA_ROOT / "reference" / "topics_keywords_seed.txt"
+TOPIC_KEYWORDS_FINAL_FILE = DATA_ROOT / "reference" / "topics_keywords_final.txt"
 
 VALID_MODES = {"sample", "restricted"}
 
@@ -21,7 +26,10 @@ class Paths:
     readability_output_file: Path
     doc_semantic_output_file: Path
     chunk_semantic_output_file: Path
-    topic_output_file: Path
+    topic_scoring_csv: Path
+    topic_embeddings_cache: Path
+    sentences_tokenized_pkl: Path
+    topic_candidates_file: Path
     data_source_type: str
 
 
@@ -46,7 +54,7 @@ def resolve_paths(mode, external_input, output_name):
 
     today = datetime.now().strftime("%Y%m%d")
     output_dir = OUTPUT_ROOT / mode / f"{output_name}_{today}"
-    output_dir.mkdir(parents=True, exist_ok=True)
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
     return Paths(
         input_file=input_file,
@@ -56,6 +64,9 @@ def resolve_paths(mode, external_input, output_name):
         readability_output_file=output_dir / "readability.json",
         doc_semantic_output_file=output_dir / "doc_semantic.json",
         chunk_semantic_output_file=output_dir / "chunk_semantic.json",
-        topic_output_file=output_dir / "topic_modelling.json",
+        topic_scoring_csv=DERIVED_DIR / f"{output_name}_{today}.csv",
+        topic_embeddings_cache=CACHE_DIR / f"{input_file.stem}_topic_embeddings.npy",
+        sentences_tokenized_pkl=(RAW_DIR if mode == "restricted" else CACHE_DIR) / f"{input_file.stem}_sentences_tokenized.pkl",
+        topic_candidates_file=DERIVED_DIR / f"{output_name}_{today}.csv",
         data_source_type=data_source_type,
     )
