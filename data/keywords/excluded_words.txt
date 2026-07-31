@@ -1,0 +1,17 @@
+# Type 1: Generic Words (removed from ALL topics)
+[TYPE1_GENERIC]
+also, well, year, many, one, like, able, different, would, within, need, take, make, give, believe, allow, gain, want, use, receive, time, help, look, include, always, people, understand, become, such as, currently, enjoy, love, find, apply, think, new, get, first, read, day, show, open, outside, age, choose, others, whilst, week, two, good, see, come
+
+# Type 1: Cross-Topic Generics (appear in 3+ topics, removed from ALL)
+[TYPE1_CROSS_TOPIC_GENERICS]
+role, interest, knowledge, opportunity, group, course, local, life, challenge, achieve, improve, complete, provide, teach, career, level, develop, school, skill, experience, study, learn, world, future, young
+
+# Type 2: Selective Removal (removed only from specific topics)
+[TYPE2_SELECTIVE]
+Academic Interests and Backgrounds:
+Work Experience:
+Leadership and Recognition: work, health, read
+Awards and Prizes:
+Sporting Activities: business
+Artistic Activities: work, read
+Personal Circumstances and Adversity:
