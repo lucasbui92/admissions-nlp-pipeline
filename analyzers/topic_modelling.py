@@ -1,14 +1,28 @@
 import nltk
+import torch
+import yaml
 from collections import Counter
+from pathlib import Path
 
 from sentence_transformers import util as st_util
 
 from config.models import EMBEDDING_MODEL, LEMMATIZER, NLP, STOPWORDS
-from config.settings import TOPIC_SETTINGS
+from config.paths import EXCLUDED_WORDS_FILE
 
 from utils.cleaning import clean_text_for_topics
 
 nltk.download("punkt_tab", quiet=True)
+
+with open(Path("config") / "settings.yml") as f:
+    TOPIC_SETTINGS = yaml.safe_load(f)["topic_modelling"]
+
+
+def lemmatize(word):
+    """Lemmatize as a verb first (catches more inflections), falling back to the default POS if unchanged."""
+    lemma = LEMMATIZER.lemmatize(word, pos="v")
+    if lemma == word:
+        lemma = LEMMATIZER.lemmatize(word)
+    return lemma
 
 
 def build_topic_lookup(topics):
@@ -20,10 +34,7 @@ def build_topic_lookup(topics):
         for kw in keywords:
             parts = []
             for w in kw.split():
-                lemma = LEMMATIZER.lemmatize(w, pos="v")
-                if lemma == w:
-                    lemma = LEMMATIZER.lemmatize(w)
-                parts.append(lemma)
+                parts.append(lemmatize(w))
             lemmatized = " ".join(parts)
             if " " in lemmatized:
                 phrases.append(lemmatized)
@@ -52,9 +63,7 @@ def match_sentences_to_topics(sentences, topics):
             if not w.isalpha():
                 lemma_parts.append(w)
                 continue
-            lemma = LEMMATIZER.lemmatize(w, pos="v")
-            if lemma == w:
-                lemma = LEMMATIZER.lemmatize(w)
+            lemma = lemmatize(w)
             lemma_words.add(lemma)
             lemma_parts.append(lemma)
         lemma_text = " ".join(lemma_parts)
@@ -81,7 +90,6 @@ def match_sentences_to_topics(sentences, topics):
 
 def build_keyword_embeddings(topics):
     """Embed all keywords upfront, stacked per topic for efficient cosine similarity in Phase 2."""
-    import torch
     all_pairs = []
     for topic, kws in topics.items():
         for kw in kws:
@@ -178,12 +186,43 @@ def aggregate_statement_topics(results, topic_names):
     return aggregated
 
 
-def prepare_topic_docs(df, schema):
-    docs = []
-    for _, row in df.iterrows():
-        cleaned = clean_text_for_topics(row[schema["statement_col"]])
-        docs.append(cleaned or "")
-    return docs
+def load_excluded_words(filepath):
+    """Parse excluded_words.txt into type1 generic set, type1 cross-topic set, and type2 per-topic dict."""
+    type1_generic = set()
+    type1_cross_topic = set()
+    type2_selective = {}
+    current_section = None
+
+    with open(filepath, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if line == "[TYPE1_GENERIC]":
+                current_section = "type1_generic"
+            elif line == "[TYPE1_CROSS_TOPIC_GENERICS]":
+                current_section = "type1_cross_topic"
+            elif line == "[TYPE2_SELECTIVE]":
+                current_section = "type2_selective"
+            elif current_section in ("type1_generic", "type1_cross_topic"):
+                for word in line.split(","):
+                    word = word.strip()
+                    if word:
+                        if current_section == "type1_generic":
+                            type1_generic.add(word)
+                        else:
+                            type1_cross_topic.add(word)
+            elif current_section == "type2_selective" and ":" in line:
+                topic, _, words_part = line.partition(":")
+                topic = topic.strip()
+                words = set()
+                for word in words_part.split(","):
+                    word = word.strip()
+                    if word:
+                        words.add(word)
+                type2_selective[topic] = words
+
+    return type1_generic, type1_cross_topic, type2_selective
 
 
 def load_seed_keywords(filepath):
@@ -254,12 +293,8 @@ def find_related_keywords(df, schema, seed_topics, top_n=30):
         for kw in kws:
             all_seed_phrases.add(kw)
 
-    type1_generic_keywords = set(TOPIC_SETTINGS["type1_generic_keywords"])
-    type1_generic_keywords |= set(TOPIC_SETTINGS.get("type1_cross_topic_generics", []))
-
-    type2_selective_removing = {}
-    for topic, words in TOPIC_SETTINGS.get("type2_selective_removing", {}).items():
-        type2_selective_removing[topic] = set(words)
+    type1_generic, type1_cross_topic, type2_selective_removing = load_excluded_words(EXCLUDED_WORDS_FILE)
+    type1_generic_keywords = type1_generic | type1_cross_topic
 
     topic_counters = {}
     for topic in seed_topics:
@@ -309,9 +344,7 @@ def find_related_keywords(df, schema, seed_topics, top_n=30):
                     word = token.text.lower()
                     if not token.is_alpha or len(word) < 3 or word in STOPWORDS:
                         continue
-                    lemma = LEMMATIZER.lemmatize(word, pos="v")
-                    if lemma == word:
-                        lemma = LEMMATIZER.lemmatize(word)
+                    lemma = lemmatize(word)
                     if lemma in all_seed_phrases or lemma in type1_generic_keywords:
                         continue
                     if lemma in topic_stopwords:

@@ -4,30 +4,35 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import pandas as pd
+import yaml
 
-from config.paths import CACHE_DIR, RAW_DIR, SAMPLE_INPUT_FILE
 from config.schema import DATA_SOURCE
 from utils.preprocessing import tokenize_statements_to_sentences
+
+with open(Path("config") / "settings.yml") as f:
+    MODE_SETTINGS = yaml.safe_load(f)["modes"]
 
 
 def main():
     parser = argparse.ArgumentParser(description="Tokenize statements into sentences and cache to pickle.")
     parser.add_argument("--mode", default="sample", choices=["sample", "restricted"])
-    parser.add_argument("--input", default=None, help="Path to input Excel (required for restricted mode)")
     args = parser.parse_args()
 
-    if args.mode == "sample":
-        input_file = SAMPLE_INPUT_FILE
-        data_source_type = "sample"
-    else:
-        if not args.input:
-            raise ValueError("--input is required for restricted mode")
-        input_file = Path(args.input)
-        if not input_file.exists():
-            raise FileNotFoundError(f"Input file not found: {input_file}")
-        data_source_type = "restricted"
+    mode_cfg = MODE_SETTINGS.get(args.mode, {})
+    input_path = mode_cfg.get("input_path")
+    input_name = mode_cfg.get("input_name")
+    if not input_path or not input_name:
+        raise ValueError(
+            f"settings.yml is missing input_path/input_name for mode '{args.mode}'. "
+            f"Fill these in under modes.{args.mode} before running."
+        )
 
-    pkl_path = (RAW_DIR if args.mode == "restricted" else CACHE_DIR) / f"{input_file.stem}_sentences_tokenized.pkl"
+    input_file = Path(input_path) / input_name
+    if not input_file.exists():
+        raise FileNotFoundError(f"Input file not found: {input_file}")
+    data_source_type = args.mode
+
+    pkl_path = input_file.parent / f"{input_file.stem}_sentences_tokenized.pkl"
 
     print(f"Pickle path: {pkl_path.resolve()}")
 

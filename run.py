@@ -32,7 +32,6 @@ from analyzers.topic_modelling import (
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", required=True, choices=["sample", "restricted"])
-    parser.add_argument("--input", type=str, default=None)
     parser.add_argument("--output_name", required=True, type=str)
     parser.add_argument("--include_matches", action="store_true",
             help="Include grammar match details in the Excel export."
@@ -56,8 +55,17 @@ def main():
             "'scoring' runs sentence matching (requires topics_keywords_final.txt)."
         ),
     )
+    parser.add_argument(
+        "--export_unassigned",
+        action="store_true",
+        help=(
+            "During --stage scoring, also export a CSV of sentences that matched no "
+            "topic at all. Off by default — meant as a one-time diagnostic, not for "
+            "every run."
+        ),
+    )
     args = parser.parse_args()
-    paths = resolve_paths(args.mode, args.input, args.output_name)
+    paths = resolve_paths(args.mode, args.output_name)
 
     metrics = {args.metric} if args.metric else ALL_METRICS
 
@@ -105,6 +113,10 @@ def main():
             print("ERROR: --stage is required when running topic_modelling. Choose 'candidates' or 'scoring'.")
             sys.exit(1)
 
+        if args.export_unassigned and args.stage != "scoring":
+            print("ERROR: --export_unassigned is only valid with --stage scoring.")
+            sys.exit(1)
+
         if args.stage == "candidates":
             print("Running topic modelling candidates stage.")
             seed_topics = load_seed_keywords(TOPIC_KEYWORDS_FILE)
@@ -145,29 +157,52 @@ def main():
             results = apply_semantic_fallback(results, keyword_embeddings)
             print("Step 3 complete.")
 
-            # Step 4: Aggregate per-sentence scores into per-topic proportions per statement
-            statement_topics = aggregate_statement_topics(results, topics.keys())
-            del results
-
             if paths.data_source_type == "restricted":
                 id_col = schema["app_id_col"]
                 identifier_lookup = df.set_index(id_col)
             else:
                 identifier_lookup = None
 
-            rows = []
-            for entry in statement_topics:
-                stmt_id = entry["statement_id"]
+            def build_identifier_row(stmt_id):
                 if identifier_lookup is not None and stmt_id in identifier_lookup.index:
                     id_row = identifier_lookup.loc[stmt_id]
-                    row = {
+                    return {
                         "ApplicantNumber": stmt_id,
                         "YearOfEntry": id_row[schema["admit_year_col"]],
                         "applicationCourse": get_optional_value(id_row, schema.get("course_col")),
                         "applicationCourse_titlemain": get_optional_value(id_row, schema.get("course_title")),
                     }
-                else:
-                    row = {"statement_id": stmt_id}
+                return {"statement_id": stmt_id}
+
+            # Step 4a: Collect sentences that matched no topic at all, before results is discarded.
+            # Opt-in only (--export_unassigned) — a one-time diagnostic, not needed on every run.
+            if args.export_unassigned:
+                unassigned_rows = []
+                last_stmt_id = None
+                for stmt_id, sentence, _, assigned in results:
+                    if not assigned:
+                        if stmt_id == last_stmt_id:
+                            id_row = {}
+                            for key in unassigned_rows[-1]:
+                                if key != "sentence":
+                                    id_row[key] = ""
+                        else:
+                            id_row = build_identifier_row(stmt_id)
+                            last_stmt_id = stmt_id
+                        id_row["sentence"] = sentence
+                        unassigned_rows.append(id_row)
+
+                paths.topic_unassigned_csv.parent.mkdir(parents=True, exist_ok=True)
+                pd.DataFrame(unassigned_rows).to_csv(paths.topic_unassigned_csv, index=False)
+                print(f"✓ {len(unassigned_rows):,} unassigned sentences → {paths.topic_unassigned_csv}")
+
+            # Step 4b: Aggregate per-sentence scores into per-topic proportions per statement
+            statement_topics = aggregate_statement_topics(results, topics.keys())
+            del results
+
+            rows = []
+            for entry in statement_topics:
+                row = build_identifier_row(entry["statement_id"])
                 row.update(entry["topic_proportions"])
                 rows.append(row)
 
@@ -216,6 +251,7 @@ def main():
         schema,
         paths.data_source_type,
         args.output_name,
+        paths.derived_dir,
         args.include_matches,
     )
     if excel_file is not None:

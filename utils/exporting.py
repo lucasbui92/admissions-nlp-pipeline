@@ -1,11 +1,7 @@
 import pandas as pd
 
-from pathlib import Path
 from datetime import datetime
 from config.schema import GRAMMAR_EXPORT_MAP, READABILITY_EXPORT_MAP, SEMANTIC_EXPORT_MAP
-
-
-EXCEL_EXPORT_DIR = Path(r"B:\derived")
 
 
 def flatten_base_identifiers(record, schema, data_source_type):
@@ -109,12 +105,13 @@ def export_results_to_excel(
     schema,
     data_source_type,
     output_name,
+    output_dir,
     include_matches=False,
 ):
-    EXCEL_EXPORT_DIR.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     today = datetime.now().strftime("%Y%m%d")
-    output_file = EXCEL_EXPORT_DIR / f"{output_name}_{today}.xlsx"
+    output_file = output_dir / f"{output_name}_{today}.xlsx"
 
     if all(r is None for r in [grammar_results, readability_results, doc_semantic_results, chunk_semantic_results]):
         return None

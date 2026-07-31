@@ -20,10 +20,32 @@ python prep/add_subject_index.py --input <path>
 
 Both scripts must be run from the project root.
 
+## Configuring Input/Output Paths
+
+Before running the pipeline, set the `input_path`, `input_name`, and `output_path` for the mode you're using under `modes:` in [`config/settings.yml`](config/settings.yml):
+
+```yaml
+modes:
+  sample:
+    input_path: data/sample
+    input_name: sample_personal_statements.xlsx
+    output_path: C:\path\to\output
+  restricted:
+    input_path: B:\raw
+    input_name: Statements_Home_Issue2.xslx
+    output_path: B:\derived
+```
+
+- `input_path` — directory containing the input `.xlsx` file. It's also where the sentence-tokenization cache is written/read (see [Topic Modelling](#topic-modelling)).
+- `input_name` — filename of the input `.xlsx` file inside `input_path`. Stays fixed across runs; only change it when you're switching to a different input file.
+- `output_path` — directory where CSV/Excel outputs are written.
+
+`resolve_paths()` raises an error at startup if any of these are missing for the mode you selected — fill them in before running.
+
 ## Running the Pipeline
 
 ```bash
-python run.py --mode <mode> --output_name <name> [--input <path>] [--output_path <dir>] [--metric <metric>] [--include_matches] [--stage <stage>] [--export_unassigned]
+python run.py --mode <mode> --output_name <name> [--metric <metric>] [--include_matches] [--stage <stage>] [--export_unassigned]
 ```
 
 ### Arguments
@@ -32,8 +54,6 @@ python run.py --mode <mode> --output_name <name> [--input <path>] [--output_path
 |---|---|---|
 | `--mode` | Yes | `sample` (for external use) or `restricted` (internal only — requires access to the production dataset) |
 | `--output_name` | Yes | Label for the output folder (e.g. `trial1`) |
-| `--input` | Only in `restricted` mode | Path to your `.xlsx` input file |
-| `--output_path` | Only in `sample` mode | Directory where CSV/Excel outputs are written |
 | `--metric` | No | Single metric to compute: `chunk_semantic`, `doc_semantic`, `grammar`, `readability`, `topic_modelling`. Defaults to all metrics when omitted. |
 | `--include_matches` | No | Only valid with `--metric grammar` — adds per-rule grammar match details to the Excel export |
 | `--stage` | Only when `--metric topic_modelling` | `candidates` or `scoring` — see [Topic Modelling](#topic-modelling) |
@@ -41,13 +61,13 @@ python run.py --mode <mode> --output_name <name> [--input <path>] [--output_path
 
 ### Modes
 
-**`sample`** — Uses the built-in file at `data/sample/sample_personal_statements.xlsx`. No `--input` needed, but `--output_path` is required for CSV/Excel outputs.
+**`sample`** — Reads from `modes.sample.input_path`/`input_name` in `settings.yml`. Defaults to the built-in file at `data/sample/sample_personal_statements.xlsx` once you fill those keys in.
 
 ```bash
-python run.py --mode sample --output_name trial1 --output_path C:\path\to\output
+python run.py --mode sample --output_name trial1
 ```
 
-**`restricted`** — For internal use only. Requires access to the production dataset, which is not publicly available. If you are an external user, use `sample` mode instead.
+**`restricted`** — For internal use only. Reads from `modes.restricted.input_path`/`input_name` in `settings.yml`. Requires access to the production dataset, which is not publicly available. If you are an external user, use `sample` mode instead.
 
 ### Output
 
@@ -63,9 +83,9 @@ Results are saved to `output/<mode>/<output_name>_<YYYYMMDD>/`:
 
 Only the files for the computed metrics are written. If `--metric` is used, only the relevant JSON file(s) are produced.
 
-The Excel report is written to `--output_path`.
+The Excel report is written to the mode's `output_path` from `settings.yml`.
 
-`topic_modelling` is the exception — it doesn't write JSON or feed the Excel report. It writes CSVs to `--output_path` instead; see [Topic Modelling](#topic-modelling).
+`topic_modelling` is the exception — it doesn't write JSON or feed the Excel report. It writes CSVs to the mode's `output_path` instead; see [Topic Modelling](#topic-modelling).
 
 ### Optional: Grammar Match Details
 
@@ -104,6 +124,6 @@ Requires `data/reference/topics_keywords_final.txt` to exist (fails otherwise). 
 
 Each sentence is assigned to its highest-scoring topic(s) (ties split evenly); a statement's final score per topic is the proportion of its sentences assigned to that topic. Writes a CSV of per-statement topic proportions to `<output_path>\<output_name>_<YYYYMMDD>.csv` — one column per topic, values between 0 and 1.
 
-Sentence tokenization is cached in `data/cache/` and reused on subsequent runs against the same input file.
+Sentence tokenization is cached alongside the input file (in the mode's `input_path` from `settings.yml`) and reused on subsequent runs against the same input file.
 
 `--export_unassigned` additionally writes a diagnostic CSV of sentences that matched no topic at all, to `<output_path>\<output_name>_<YYYYMMDD>_unassigned_sentences.csv`. This is a one-time diagnostic, not meant for every run.

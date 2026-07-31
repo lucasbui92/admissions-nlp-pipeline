@@ -1,12 +1,17 @@
 import re
+from pathlib import Path
+
 import nltk
 import numpy as np
 import pandas as pd
+import yaml
 
 from config.models import EMBEDDING_MODEL
 from config.schema import SEMANTIC_SOURCE_MAP
-from config.settings import SEMANTIC_SETTINGS
 from utils.cleaning import clean_text_for_semantics
+
+with open(Path("config") / "settings.yml") as f:
+    SEMANTIC_SETTINGS = yaml.safe_load(f)["semantic_similarity"]
 
 
 def get_optional_value(row, col_name):
