@@ -5,7 +5,7 @@ import pandas as pd
 from config.paths import COURSES_FILE, TOPIC_KEYWORDS_FILE, TOPIC_KEYWORDS_FINAL_FILE, resolve_paths
 from config.schema import ALL_METRICS, DATA_SOURCE
 
-from utils.exporting import export_results_to_excel
+from utils.exporting import export_results_to_csv, export_results_to_excel
 from utils.preprocessing import (
     get_optional_value,
     precompute_course_embeddings,
@@ -121,7 +121,7 @@ def main():
             print("Running topic modelling candidates stage.")
             seed_topics = load_seed_keywords(TOPIC_KEYWORDS_FILE)
             topic_candidates = find_related_keywords(df, schema, seed_topics)
-            print("✓ Complete. Review topic_candidates file, finalise topics_keywords_final.txt, then run --stage scoring.")
+            print("Complete. Review topic_candidates file, finalise topics_keywords_final.txt, then run --stage scoring.")
 
         elif args.stage == "scoring":
             if not TOPIC_KEYWORDS_FINAL_FILE.exists():
@@ -143,7 +143,7 @@ def main():
                 except Exception:
                     paths.sentences_tokenized_pkl.unlink(missing_ok=True)
                     raise
-                print(f"Step 1 complete: {stmt_count} statements, {len(sentences):,} sentences → {paths.sentences_tokenized_pkl}")
+                print(f"Step 1 complete: {stmt_count} statements, {len(sentences):,} sentences -> {paths.sentences_tokenized_pkl}")
 
             # Step 2: Phase 1 — lemmatization-based keyword matching
             topics = load_seed_keywords(TOPIC_KEYWORDS_FINAL_FILE)
@@ -194,7 +194,7 @@ def main():
 
                 paths.topic_unassigned_csv.parent.mkdir(parents=True, exist_ok=True)
                 pd.DataFrame(unassigned_rows).to_csv(paths.topic_unassigned_csv, index=False)
-                print(f"✓ {len(unassigned_rows):,} unassigned sentences → {paths.topic_unassigned_csv}")
+                print(f"{len(unassigned_rows):,} unassigned sentences -> {paths.topic_unassigned_csv}")
 
             # Step 4b: Aggregate per-sentence scores into per-topic proportions per statement
             statement_topics = aggregate_statement_topics(results, topics.keys())
@@ -208,7 +208,7 @@ def main():
 
             paths.topic_scoring_csv.parent.mkdir(parents=True, exist_ok=True)
             pd.DataFrame(rows).to_csv(paths.topic_scoring_csv, index=False)
-            print(f"✓ Complete. {len(rows):,} statements → {paths.topic_scoring_csv}")
+            print(f"Complete. {len(rows):,} statements -> {paths.topic_scoring_csv}")
 
     has_json_output = any(r is not None for r in [grammar_results, readability_results, doc_semantic_results, chunk_semantic_results])
     if has_json_output:
@@ -217,22 +217,22 @@ def main():
     if grammar_results is not None:
         with open(paths.grammar_output_file, "w", encoding="utf-8") as f:
             json.dump(grammar_results, f, indent=4, ensure_ascii=False)
-        print(f"Grammar output JSON → {paths.grammar_output_file}")
+        print(f"Grammar output JSON -> {paths.grammar_output_file}")
 
     if readability_results is not None:
         with open(paths.readability_output_file, "w", encoding="utf-8") as f:
             json.dump(readability_results, f, indent=4, ensure_ascii=False)
-        print(f"Readability output JSON → {paths.readability_output_file}")
+        print(f"Readability output JSON -> {paths.readability_output_file}")
 
     if doc_semantic_results is not None:
         with open(paths.doc_semantic_output_file, "w", encoding="utf-8") as f:
             json.dump(doc_semantic_results, f, indent=4, ensure_ascii=False)
-        print(f"Document-level semantic output JSON → {paths.doc_semantic_output_file}")
+        print(f"Document-level semantic output JSON -> {paths.doc_semantic_output_file}")
 
     if chunk_semantic_results is not None:
         with open(paths.chunk_semantic_output_file, "w", encoding="utf-8") as f:
             json.dump(chunk_semantic_results, f, indent=4, ensure_ascii=False)
-        print(f"Chunk semantic output JSON → {paths.chunk_semantic_output_file}")
+        print(f"Chunk semantic output JSON -> {paths.chunk_semantic_output_file}")
 
     if topic_candidates is not None:
         paths.topic_candidates_file.parent.mkdir(parents=True, exist_ok=True)
@@ -241,21 +241,35 @@ def main():
             for rank, (keyword, freq) in enumerate(kw_list, start=1):
                 rows.append({"topic": topic, "rank": rank, "keyword": keyword, "frequency": freq})
         pd.DataFrame(rows).to_csv(paths.topic_candidates_file, index=False)
-        print(f"Topic candidates CSV → {paths.topic_candidates_file}")
+        print(f"Topic candidates CSV -> {paths.topic_candidates_file}")
 
-    excel_file = export_results_to_excel(
-        grammar_results,
-        readability_results,
-        doc_semantic_results,
-        chunk_semantic_results,
-        schema,
-        paths.data_source_type,
-        args.output_name,
-        paths.derived_dir,
-        args.include_matches,
-    )
-    if excel_file is not None:
-        print(f"Excel output → {excel_file}")
+    if paths.data_source_type == "sample":
+        csv_files = export_results_to_csv(
+            grammar_results,
+            readability_results,
+            doc_semantic_results,
+            chunk_semantic_results,
+            schema,
+            paths.data_source_type,
+            paths.output_dir,
+            args.include_matches,
+        )
+        for csv_file in csv_files:
+            print(f"CSV output -> {csv_file}")
+    else:
+        excel_file = export_results_to_excel(
+            grammar_results,
+            readability_results,
+            doc_semantic_results,
+            chunk_semantic_results,
+            schema,
+            paths.data_source_type,
+            args.output_name,
+            paths.derived_dir,
+            args.include_matches,
+        )
+        if excel_file is not None:
+            print(f"Excel output -> {excel_file}")
 
 
 if __name__ == "__main__":

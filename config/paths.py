@@ -69,6 +69,7 @@ def resolve_paths(mode, output_name):
 
     today = datetime.now().strftime("%Y%m%d")
     output_dir = OUTPUT_ROOT / mode / f"{output_name}_{today}"
+    topic_output_dir = output_dir if mode == "sample" else derived_dir
 
     return Paths(
         input_file=input_file,
@@ -78,10 +79,10 @@ def resolve_paths(mode, output_name):
         readability_output_file=output_dir / "readability.json",
         doc_semantic_output_file=output_dir / "doc_semantic.json",
         chunk_semantic_output_file=output_dir / "chunk_semantic.json",
-        topic_scoring_csv=derived_dir / f"{output_name}_{today}.csv",
-        topic_unassigned_csv=derived_dir / f"{output_name}_{today}_unassigned_sentences.csv",
+        topic_scoring_csv=topic_output_dir / f"{output_name}_{today}.csv",
+        topic_unassigned_csv=topic_output_dir / f"{output_name}_{today}_unassigned_sentences.csv",
         sentences_tokenized_pkl=input_file.parent / f"{input_file.stem}_sentences_tokenized.pkl",
-        topic_candidates_file=derived_dir / f"{output_name}_{today}.csv",
+        topic_candidates_file=topic_output_dir / f"{output_name}_{today}.csv",
         data_source_type=data_source_type,
         derived_dir=derived_dir,
     )

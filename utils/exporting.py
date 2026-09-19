@@ -97,6 +97,61 @@ def flatten_chunk_semantic_record(record, schema, data_source_type):
     return row
 
 
+def export_results_to_csv(
+    grammar_results,
+    readability_results,
+    doc_semantic_results,
+    chunk_semantic_results,
+    schema,
+    data_source_type,
+    output_dir,
+    include_matches=False,
+):
+    """
+    Write each present metric to its own CSV inside output_dir (the same
+    per-run folder as the JSON outputs) — used for sample mode instead of
+    the single Excel workbook used for restricted mode.
+    """
+    if all(r is None for r in [grammar_results, readability_results, doc_semantic_results, chunk_semantic_results]):
+        return []
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    files = {}
+
+    if grammar_results is not None:
+        rows = []
+        for record in grammar_results:
+            rows.append(flatten_grammar_record(record, schema, data_source_type, include_matches=include_matches))
+        files["grammar"] = pd.DataFrame(rows)
+
+    if readability_results is not None:
+        rows = []
+        for record in readability_results:
+            rows.append(flatten_readability_record(record, schema, data_source_type))
+        files["readability"] = pd.DataFrame(rows)
+
+    if doc_semantic_results is not None:
+        rows = []
+        for record in doc_semantic_results:
+            rows.append(flatten_doc_semantic_record(record, schema, data_source_type))
+        files["doc_semantic"] = pd.DataFrame(rows)
+
+    if chunk_semantic_results is not None:
+        rows = []
+        for record in chunk_semantic_results:
+            rows.append(flatten_chunk_semantic_record(record, schema, data_source_type))
+        files["chunk_semantic"] = pd.DataFrame(rows)
+
+    written = []
+    for name, df in files.items():
+        csv_file = output_dir / f"{name}.csv"
+        df.to_csv(csv_file, index=False)
+        written.append(csv_file)
+
+    return written
+
+
 def export_results_to_excel(
     grammar_results,
     readability_results,

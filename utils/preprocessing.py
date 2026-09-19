@@ -2,7 +2,6 @@ import re
 from pathlib import Path
 
 import nltk
-import numpy as np
 import pandas as pd
 import yaml
 
@@ -79,7 +78,6 @@ def tokenize_statements_to_sentences(df, schema):
             results.append((stmt_id, sentence))
 
     return results, processed
-
 
 def precompute_course_embeddings(course_desc_df):
     embeddings = {}

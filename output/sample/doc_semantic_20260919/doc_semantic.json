@@ -1,0 +1,282 @@
+[
+    {
+        "index": 1000,
+        "subject": 1,
+        "doc_semantic_result": {
+            "essex_score": 0.6267,
+            "manchester_score": 0.5567,
+            "ucas_score": 0.5564,
+            "combined_score": 0.6171
+        }
+    },
+    {
+        "index": 1001,
+        "subject": 2,
+        "doc_semantic_result": {
+            "essex_score": 0.5064,
+            "manchester_score": 0.4011,
+            "ucas_score": null,
+            "combined_score": 0.5096
+        }
+    },
+    {
+        "index": 1002,
+        "subject": 3,
+        "doc_semantic_result": {
+            "essex_score": null,
+            "manchester_score": 0.6862,
+            "ucas_score": null,
+            "combined_score": 0.6677
+        }
+    },
+    {
+        "index": 1003,
+        "subject": 4,
+        "doc_semantic_result": {
+            "essex_score": 0.6411,
+            "manchester_score": 0.6198,
+            "ucas_score": 0.6216,
+            "combined_score": 0.6576
+        }
+    },
+    {
+        "index": 1004,
+        "subject": 5,
+        "doc_semantic_result": {
+            "essex_score": 0.507,
+            "manchester_score": 0.488,
+            "ucas_score": null,
+            "combined_score": 0.5415
+        }
+    },
+    {
+        "index": 1005,
+        "subject": 6,
+        "doc_semantic_result": {
+            "essex_score": 0.5302,
+            "manchester_score": 0.5227,
+            "ucas_score": 0.5746,
+            "combined_score": 0.5564
+        }
+    },
+    {
+        "index": 1006,
+        "subject": 7,
+        "doc_semantic_result": {
+            "essex_score": 0.6314,
+            "manchester_score": null,
+            "ucas_score": 0.519,
+            "combined_score": 0.6097
+        }
+    },
+    {
+        "index": 1007,
+        "subject": 8,
+        "doc_semantic_result": {
+            "essex_score": 0.5164,
+            "manchester_score": 0.539,
+            "ucas_score": 0.4282,
+            "combined_score": 0.5383
+        }
+    },
+    {
+        "index": 1008,
+        "subject": 9,
+        "doc_semantic_result": {
+            "essex_score": 0.7237,
+            "manchester_score": 0.585,
+            "ucas_score": 0.629,
+            "combined_score": 0.6986
+        }
+    },
+    {
+        "index": 1009,
+        "subject": 10,
+        "doc_semantic_result": {
+            "essex_score": 0.5415,
+            "manchester_score": 0.5273,
+            "ucas_score": 0.5151,
+            "combined_score": 0.5535
+        }
+    },
+    {
+        "index": 1010,
+        "subject": 11,
+        "doc_semantic_result": {
+            "essex_score": 0.5809,
+            "manchester_score": 0.5042,
+            "ucas_score": 0.506,
+            "combined_score": 0.5774
+        }
+    },
+    {
+        "index": 1011,
+        "subject": 12,
+        "doc_semantic_result": {
+            "essex_score": 0.6712,
+            "manchester_score": 0.5997,
+            "ucas_score": null,
+            "combined_score": 0.6544
+        }
+    },
+    {
+        "index": 1012,
+        "subject": 13,
+        "doc_semantic_result": {
+            "essex_score": 0.6484,
+            "manchester_score": 0.5208,
+            "ucas_score": 0.5356,
+            "combined_score": 0.6331
+        }
+    },
+    {
+        "index": 1013,
+        "subject": 14,
+        "doc_semantic_result": {
+            "essex_score": 0.6045,
+            "manchester_score": 0.5641,
+            "ucas_score": 0.5634,
+            "combined_score": 0.5958
+        }
+    },
+    {
+        "index": 1014,
+        "subject": 15,
+        "doc_semantic_result": {
+            "essex_score": 0.7086,
+            "manchester_score": 0.538,
+            "ucas_score": null,
+            "combined_score": 0.7277
+        }
+    },
+    {
+        "index": 1015,
+        "subject": 16,
+        "doc_semantic_result": {
+            "essex_score": 0.4917,
+            "manchester_score": 0.6141,
+            "ucas_score": 0.6129,
+            "combined_score": 0.5486
+        }
+    },
+    {
+        "index": 1016,
+        "subject": 17,
+        "doc_semantic_result": {
+            "essex_score": 0.5578,
+            "manchester_score": 0.5266,
+            "ucas_score": null,
+            "combined_score": 0.575
+        }
+    },
+    {
+        "index": 1017,
+        "subject": 18,
+        "doc_semantic_result": {
+            "essex_score": 0.5507,
+            "manchester_score": 0.5244,
+            "ucas_score": 0.5602,
+            "combined_score": 0.5932
+        }
+    },
+    {
+        "index": 1018,
+        "subject": 19,
+        "doc_semantic_result": {
+            "essex_score": 0.5274,
+            "manchester_score": 0.5445,
+            "ucas_score": 0.4044,
+            "combined_score": 0.541
+        }
+    },
+    {
+        "index": 1019,
+        "subject": 20,
+        "doc_semantic_result": {
+            "essex_score": 0.6252,
+            "manchester_score": null,
+            "ucas_score": 0.6025,
+            "combined_score": 0.6229
+        }
+    },
+    {
+        "index": 1020,
+        "subject": 21,
+        "doc_semantic_result": {
+            "essex_score": 0.5683,
+            "manchester_score": 0.5402,
+            "ucas_score": 0.533,
+            "combined_score": 0.5531
+        }
+    },
+    {
+        "index": 1021,
+        "subject": 22,
+        "doc_semantic_result": {
+            "essex_score": 0.5702,
+            "manchester_score": null,
+            "ucas_score": 0.544,
+            "combined_score": 0.6052
+        }
+    },
+    {
+        "index": 1022,
+        "subject": 23,
+        "doc_semantic_result": {
+            "essex_score": 0.5267,
+            "manchester_score": 0.4642,
+            "ucas_score": 0.5223,
+            "combined_score": 0.5225
+        }
+    },
+    {
+        "index": 1023,
+        "subject": 24,
+        "doc_semantic_result": {
+            "essex_score": 0.5184,
+            "manchester_score": 0.4474,
+            "ucas_score": 0.6113,
+            "combined_score": 0.502
+        }
+    },
+    {
+        "index": 1024,
+        "subject": 25,
+        "doc_semantic_result": {
+            "essex_score": 0.6739,
+            "manchester_score": null,
+            "ucas_score": 0.6107,
+            "combined_score": 0.6585
+        }
+    },
+    {
+        "index": 1025,
+        "subject": 26,
+        "doc_semantic_result": {
+            "essex_score": 0.5438,
+            "manchester_score": 0.5219,
+            "ucas_score": 0.4988,
+            "combined_score": 0.5397
+        }
+    },
+    {
+        "index": 1026,
+        "subject": 27,
+        "doc_semantic_result": {
+            "essex_score": 0.5614,
+            "manchester_score": 0.461,
+            "ucas_score": null,
+            "combined_score": 0.5844
+        }
+    },
+    {
+        "index": 1027,
+        "subject": 28,
+        "doc_semantic_result": {
+            "essex_score": 0.531,
+            "manchester_score": 0.494,
+            "ucas_score": null,
+            "combined_score": 0.5469
+        }
+    }
+]
