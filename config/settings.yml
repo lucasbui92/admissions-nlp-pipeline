@@ -1,44 +1,5 @@
 topic_modelling:
-  type1_generic_keywords: [
-    "also", "well", "year", "many", "one", "like", "able", "different",
-    "would", "within", "need", "take", "make", "give", "believe", "allow",
-    "gain", "want", "use", "receive", "time", "help", "look", "include",
-    "always", "people", "understand", "become", "such as", "currently",
-    "enjoy", "love", "find", "apply", "think", "new", "get", "first", "read",
-    "day", "show", "open", "outside", "age", "choose", "others", "whilst", "week",
-    "two", "good", "see", "come"
-  ]
-
-  type1_cross_topic_generics: [
-    "role", "interest", "knowledge", "opportunity", "group", "course",
-    "local", "life", "challenge", "achieve", "improve", "complete", "provide",
-    "teach", "career", "level", "develop", "school", "skill", "experience",
-    "study", "learn", "world", "future", "young"
-  ]
-
-  type2_selective_removing:
-    Academic Interests and Backgrounds: []
-    Work Experience: []
-    Leadership and Recognition: ["work", "health", "read"]
-    Awards and Prizes: []
-    Sporting Activities: ["business"]
-    Artistic Activities: ["work", "read"]
-    Personal Circumstances and Adversity: []
   buffer_multiplier: 1.7
-  umap:
-    n_neighbors: 15
-    n_components: 10 
-  hdbscan:
-    min_cluster_size: 150  # depending on nr of statements, higher = lower nr topics
-  bertopic:
-    temperature: 3.0   # higher = softer distribution across topics
-  vectorizer:
-    min_df: 2
-    max_df: 0.5
-  output:
-    top_k: 5
-  encoding:
-    batch_size: 64
 
 semantic_similarity:
   scoring:
@@ -46,3 +7,13 @@ semantic_similarity:
     top_k: 3
   encoding:
     batch_size: 64
+
+modes:
+  sample:
+    input_path: data/sample
+    input_name: null
+    output_path: null
+  restricted:
+    input_path: B:\raw
+    input_name: Statements_Home_Issue2_random500.xlsx
+    output_path: B:\derived

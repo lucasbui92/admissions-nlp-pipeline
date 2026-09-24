@@ -1,19 +1,18 @@
 ALL_METRICS = {"grammar", "readability", "doc_semantic", "chunk_semantic", "topic_modelling"}
 
+COMMON_SCHEMA = {
+    "statement_col": "StatementText",
+    "index_col": "ApplicantNumber",
+    "app_id_col": "ApplicantNumber",
+    "admit_year_col": "YearOfEntry",
+    "course_col": "applicationCourse",
+    "course_title": "applicationCourse_titlemain",
+    "subject_col": "subject"
+}
+
 DATA_SOURCE = {
-    "sample": {
-        "statement_col": "personal_statement",
-        "index_col": "index",
-        "subject_col": "subject"
-    },
-    "restricted": {
-        "statement_col": "StatementText",
-        "app_id_col": "ApplicantNumber",
-        "admit_year_col": "YearOfEntry",
-        "course_col": "applicationCourse",
-        "course_title": "applicationCourse_titlemain",
-        "subject_col": "subject"
-    }
+    "sample": COMMON_SCHEMA,
+    "restricted": COMMON_SCHEMA
 }
 
 GRAMMAR_EXPORT_MAP = {

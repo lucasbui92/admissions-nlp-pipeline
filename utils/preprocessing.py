@@ -1,12 +1,16 @@
 import re
+from pathlib import Path
+
 import nltk
-import numpy as np
 import pandas as pd
+import yaml
 
 from config.models import EMBEDDING_MODEL
 from config.schema import SEMANTIC_SOURCE_MAP
-from config.settings import SEMANTIC_SETTINGS
 from utils.cleaning import clean_text_for_semantics
+
+with open(Path("config") / "settings.yml") as f:
+    SEMANTIC_SETTINGS = yaml.safe_load(f)["semantic_similarity"]
 
 
 def get_optional_value(row, col_name):
@@ -74,7 +78,6 @@ def tokenize_statements_to_sentences(df, schema):
             results.append((stmt_id, sentence))
 
     return results, processed
-
 
 def precompute_course_embeddings(course_desc_df):
     embeddings = {}

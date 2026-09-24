@@ -1,5 +1,8 @@
+from pathlib import Path
+
 import nltk
 import pandas as pd
+import yaml
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -7,9 +10,11 @@ from sentence_transformers.util import cos_sim
 
 from config.models import EMBEDDING_MODEL
 from config.schema import SEMANTIC_SOURCE_MAP
-from config.settings import SEMANTIC_SETTINGS
 from utils.cleaning import clean_text_for_semantics
 from utils.preprocessing import get_optional_value
+
+with open(Path("config") / "settings.yml") as f:
+    SEMANTIC_SETTINGS = yaml.safe_load(f)["semantic_similarity"]
 
 nltk.download("punkt", quiet=True)
 nltk.download("punkt_tab", quiet=True)
